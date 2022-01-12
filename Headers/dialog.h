@@ -1,4 +1,4 @@
-#ifndef DIALOG_H
+﻿#ifndef DIALOG_H
 #define DIALOG_H
 
 #include <QDialog>
@@ -10,12 +10,25 @@ class Dialog;
 class Dialog : public QDialog
 {
     Q_OBJECT
-
+    Q_CLASSINFO ("author", "GuixinWang")
 public:
     explicit Dialog(QWidget *parent = nullptr);
     ~Dialog();
 
+private slots:
+    void on_pushButton_register_clicked();
+
 private:
+    void setLog();
+    void setStyle();
+
+    void mousePressEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
+
+    QPoint mouseStartPoint;
+    QPoint windowTopLeftPoint;
+    bool IsMoving = false;
     Ui::Dialog *ui;
 };
 

@@ -25,16 +25,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp \
-        dialog.cpp
+		Sources/dialog.cpp \
+		Sources/main.cpp \
+		Sources/register.cpp \
+
 
 HEADERS += \
-        dialog.h
+		Headers/dialog.h \
+	Headers/register.h \
 
 FORMS += \
-        dialog.ui
+		Forms/dialog.ui \
+	Forms/register.ui\
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+	resource/qss.qrc \
+	resource/ui.qrc \
+

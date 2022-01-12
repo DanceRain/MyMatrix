@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/ui">
+        <file>image/icon/minimize anti.png</file>
+        <file>image/icon/minimize.png</file>
+        <file>image/icon/shutdown anti.png</file>
+        <file>image/icon/shutdown.png</file>
+        <file>image/icon/log.png</file>
+        <file>image/icon/log.jpg</file>
+        <file>image/icon/right.png</file>
+        <file>image/icon/wrong.png</file>
+    </qresource>
+</RCC>

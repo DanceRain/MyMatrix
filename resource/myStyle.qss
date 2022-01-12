@@ -1,0 +1,55 @@
+/*Login*/
+QPushButton{
+	font: "微软雅黑";
+	font-size: 20px;
+	border: none;
+	border-radius: 6px;
+}
+QLineEdit{
+	border-style: outset;
+	border-style: none none solid none;
+	border-width: 2px;
+}
+
+QCheckBox:indicator{
+	width: 13px;
+	height: 13px;
+}
+
+#Dialog
+{
+	background-color:white
+}
+#pushButton_login
+{
+	color: white;
+	background:rgb(0, 0, 0);
+}
+#pushButton_register
+{
+	font-size: 15px;
+}
+#pushButton_register:hover
+{
+	color: rgb(107, 107, 107);
+}
+#pushButton_login:hover
+{
+	background:rgb(62, 62, 62);
+}
+
+#pushButton_minimize{
+	image:url(:ui/image/icon/minimize.png);
+}
+#pushButton_minimize:hover
+{
+	image:url(:ui/image/icon/minimize anti.png);
+}
+
+#pushButton_shutdown{
+	image:url(:ui/image/icon/shutdown.png);
+}
+#pushButton_shutdown:hover
+{
+	image:url(:ui/image/icon/shutdown anti.png);
+}
