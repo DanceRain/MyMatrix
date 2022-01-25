@@ -29,19 +29,19 @@ public:
     QPushButton *pushButton_login;
     QPushButton *pushButton_register;
     QWidget *layoutWidget;
-    QHBoxLayout *horizontalLayout;
+    QHBoxLayout *hla_title;
     QLabel *label_log;
     QLabel *label_name;
     QWidget *layoutWidget1;
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *vla_actAndPwd;
     QLineEdit *lineEdit_account;
     QLineEdit *lineEdit_password;
     QWidget *layoutWidget2;
-    QHBoxLayout *horizontalLayout_2;
+    QHBoxLayout *hla_quitAndMin;
     QPushButton *pushButton_minimize;
     QPushButton *pushButton_shutdown;
     QWidget *layoutWidget3;
-    QHBoxLayout *horizontalLayout_3;
+    QHBoxLayout *hla_rpwAndAlogin;
     QCheckBox *cbx_remPw;
     QCheckBox *cbx_autoLogin;
 
@@ -75,11 +75,11 @@ public:
         layoutWidget = new QWidget(Dialog);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
         layoutWidget->setGeometry(QRect(0, 0, 151, 41));
-        horizontalLayout = new QHBoxLayout(layoutWidget);
-        horizontalLayout->setSpacing(6);
-        horizontalLayout->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        hla_title = new QHBoxLayout(layoutWidget);
+        hla_title->setSpacing(6);
+        hla_title->setContentsMargins(11, 11, 11, 11);
+        hla_title->setObjectName(QString::fromUtf8("hla_title"));
+        hla_title->setContentsMargins(0, 0, 0, 0);
         label_log = new QLabel(layoutWidget);
         label_log->setObjectName(QString::fromUtf8("label_log"));
         label_log->setMinimumSize(QSize(0, 0));
@@ -87,7 +87,7 @@ public:
         label_log->setLayoutDirection(Qt::LeftToRight);
         label_log->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout->addWidget(label_log);
+        hla_title->addWidget(label_log);
 
         label_name = new QLabel(layoutWidget);
         label_name->setObjectName(QString::fromUtf8("label_name"));
@@ -99,22 +99,22 @@ public:
         label_name->setFont(font2);
         label_name->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
-        horizontalLayout->addWidget(label_name);
+        hla_title->addWidget(label_name);
 
         layoutWidget1 = new QWidget(Dialog);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
         layoutWidget1->setGeometry(QRect(30, 70, 281, 141));
-        verticalLayout = new QVBoxLayout(layoutWidget1);
-        verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        vla_actAndPwd = new QVBoxLayout(layoutWidget1);
+        vla_actAndPwd->setSpacing(6);
+        vla_actAndPwd->setContentsMargins(11, 11, 11, 11);
+        vla_actAndPwd->setObjectName(QString::fromUtf8("vla_actAndPwd"));
+        vla_actAndPwd->setContentsMargins(0, 0, 0, 0);
         lineEdit_account = new QLineEdit(layoutWidget1);
         lineEdit_account->setObjectName(QString::fromUtf8("lineEdit_account"));
         lineEdit_account->setMinimumSize(QSize(0, 30));
         lineEdit_account->setFont(font1);
 
-        verticalLayout->addWidget(lineEdit_account);
+        vla_actAndPwd->addWidget(lineEdit_account);
 
         lineEdit_password = new QLineEdit(layoutWidget1);
         lineEdit_password->setObjectName(QString::fromUtf8("lineEdit_password"));
@@ -122,38 +122,38 @@ public:
         lineEdit_password->setFont(font1);
         lineEdit_password->setEchoMode(QLineEdit::Password);
 
-        verticalLayout->addWidget(lineEdit_password);
+        vla_actAndPwd->addWidget(lineEdit_password);
 
         layoutWidget2 = new QWidget(Dialog);
         layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
         layoutWidget2->setGeometry(QRect(240, 0, 126, 41));
-        horizontalLayout_2 = new QHBoxLayout(layoutWidget2);
-        horizontalLayout_2->setSpacing(0);
-        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(20, 0, 20, 0);
+        hla_quitAndMin = new QHBoxLayout(layoutWidget2);
+        hla_quitAndMin->setSpacing(0);
+        hla_quitAndMin->setContentsMargins(11, 11, 11, 11);
+        hla_quitAndMin->setObjectName(QString::fromUtf8("hla_quitAndMin"));
+        hla_quitAndMin->setContentsMargins(20, 0, 20, 0);
         pushButton_minimize = new QPushButton(layoutWidget2);
         pushButton_minimize->setObjectName(QString::fromUtf8("pushButton_minimize"));
         pushButton_minimize->setMinimumSize(QSize(30, 30));
         pushButton_minimize->setIconSize(QSize(30, 30));
 
-        horizontalLayout_2->addWidget(pushButton_minimize);
+        hla_quitAndMin->addWidget(pushButton_minimize);
 
         pushButton_shutdown = new QPushButton(layoutWidget2);
         pushButton_shutdown->setObjectName(QString::fromUtf8("pushButton_shutdown"));
         pushButton_shutdown->setMinimumSize(QSize(30, 30));
         pushButton_shutdown->setIconSize(QSize(30, 30));
 
-        horizontalLayout_2->addWidget(pushButton_shutdown);
+        hla_quitAndMin->addWidget(pushButton_shutdown);
 
         layoutWidget3 = new QWidget(Dialog);
         layoutWidget3->setObjectName(QString::fromUtf8("layoutWidget3"));
         layoutWidget3->setGeometry(QRect(80, 220, 201, 29));
-        horizontalLayout_3 = new QHBoxLayout(layoutWidget3);
-        horizontalLayout_3->setSpacing(6);
-        horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
+        hla_rpwAndAlogin = new QHBoxLayout(layoutWidget3);
+        hla_rpwAndAlogin->setSpacing(6);
+        hla_rpwAndAlogin->setContentsMargins(11, 11, 11, 11);
+        hla_rpwAndAlogin->setObjectName(QString::fromUtf8("hla_rpwAndAlogin"));
+        hla_rpwAndAlogin->setContentsMargins(0, 0, 0, 0);
         cbx_remPw = new QCheckBox(layoutWidget3);
         cbx_remPw->setObjectName(QString::fromUtf8("cbx_remPw"));
         QFont font3;
@@ -161,13 +161,13 @@ public:
         font3.setPointSize(8);
         cbx_remPw->setFont(font3);
 
-        horizontalLayout_3->addWidget(cbx_remPw);
+        hla_rpwAndAlogin->addWidget(cbx_remPw);
 
         cbx_autoLogin = new QCheckBox(layoutWidget3);
         cbx_autoLogin->setObjectName(QString::fromUtf8("cbx_autoLogin"));
         cbx_autoLogin->setFont(font3);
 
-        horizontalLayout_3->addWidget(cbx_autoLogin);
+        hla_rpwAndAlogin->addWidget(cbx_autoLogin);
 
 
         retranslateUi(Dialog);

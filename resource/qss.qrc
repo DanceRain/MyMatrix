@@ -8,5 +8,10 @@
         <file>image/icon/log.jpg</file>
         <file>image/icon/right.png</file>
         <file>image/icon/wrong.png</file>
+        <file>image/icon/message.png</file>
+        <file>image/icon/user.png</file>
+        <file>image/icon/file.png</file>
+        <file>image/icon/maxmize.png</file>
+        <file>image/icon/maxmize anti.png</file>
     </qresource>
 </RCC>

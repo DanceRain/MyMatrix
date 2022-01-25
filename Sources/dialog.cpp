@@ -5,6 +5,7 @@
 #include "ui_dialog.h"
 #include "Headers/dialog.h"
 #include "Headers/register.h"
+#include "Headers/usermainwindow.h"
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -13,6 +14,7 @@ Dialog::Dialog(QWidget *parent) :
     ui->setupUi(this);
     setStyle();
     setLog();
+    this->setAttribute(Qt::WA_DeleteOnClose);
     this->setWindowFlags(Qt::FramelessWindowHint);
 }
 
@@ -76,5 +78,13 @@ void Dialog::on_pushButton_register_clicked()
 {
     Register* qdlog_Register = new Register(nullptr, this);
     qdlog_Register->show();
-    this->hide();
+    this->setVisible(false);
+}
+
+void Dialog::on_pushButton_login_clicked()
+{
+    UserMainWindow* userWindow = new UserMainWindow(nullptr);
+    userWindow->show();
+//    this->hide();
+    this->close();
 }

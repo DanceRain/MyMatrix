@@ -1,0 +1,65 @@
+#UserMainWindow
+{
+	background-color:white
+}
+QPushButton{
+	font: "微软雅黑";
+	font-size: 20px;
+	border: none;
+	border-radius: 6px;
+}
+
+/*ptn*/
+#ptn_userIcon:hover{
+	background-color:gray;
+}
+
+#ptn_friendList:hover{
+	background-color:gray;
+}
+#ptn_file:hover{
+	background-color:gray;
+}
+#ptn_message:hover{
+	background-color:gray;
+}
+
+#ptn_userIcon{
+	image:url(:/ui/image/icon/log.png)
+}
+
+#ptn_friendList{
+	image:url(:/ui/image/icon/user.png)
+}
+#ptn_file{
+	image:url(:/ui/image/icon/file.png)
+}
+#ptn_message{
+	image:url(:/ui/image/icon/message.png)
+}
+
+
+
+#pushButton_minimize{
+	image:url(:ui/image/icon/minimize.png);
+}
+#pushButton_minimize:hover
+{
+	image:url(:ui/image/icon/minimize anti.png);
+}
+
+#pushButton_shutdown{
+	image:url(:ui/image/icon/shutdown.png);
+}
+#pushButton_shutdown:hover
+{
+	image:url(:ui/image/icon/shutdown anti.png);
+}
+#pushButton_maxmize
+{
+	image:url(:/ui/image/icon/maxmize.png);
+}
+#pushButton_maxmize:hover
+{
+	image:url(:/ui/image/icon/maxmize anti.png);
+}

@@ -26,22 +26,22 @@ class Ui_Register
 {
 public:
     QWidget *layoutWidget;
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *hla_register;
     QLineEdit *lineEdit_account;
     QLineEdit *lineEdit_password;
     QLineEdit *lineEdit_pwdIdentify;
     QWidget *layoutWidget_2;
-    QHBoxLayout *horizontalLayout_2;
+    QHBoxLayout *hla_quitAndMin;
     QPushButton *pushButton_minimize;
     QPushButton *pushButton_shutdown;
     QPushButton *pushButton_back;
     QPushButton *pushButton_finReg;
     QWidget *layoutWidget_3;
-    QHBoxLayout *horizontalLayout;
+    QHBoxLayout *hla_title;
     QLabel *label_log;
     QLabel *label_name;
-    QWidget *widget;
-    QVBoxLayout *verticalLayout_2;
+    QWidget *layoutWidget1;
+    QVBoxLayout *vla_status;
     QLabel *label_statusUser;
     QLabel *label_statusPwd;
     QLabel *label_statusIdtiPwd;
@@ -57,9 +57,9 @@ public:
         layoutWidget = new QWidget(Register);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
         layoutWidget->setGeometry(QRect(50, 50, 281, 251));
-        verticalLayout = new QVBoxLayout(layoutWidget);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        hla_register = new QVBoxLayout(layoutWidget);
+        hla_register->setObjectName(QString::fromUtf8("hla_register"));
+        hla_register->setContentsMargins(0, 0, 0, 0);
         lineEdit_account = new QLineEdit(layoutWidget);
         lineEdit_account->setObjectName(QString::fromUtf8("lineEdit_account"));
         lineEdit_account->setMinimumSize(QSize(0, 30));
@@ -68,7 +68,7 @@ public:
         font.setPointSize(10);
         lineEdit_account->setFont(font);
 
-        verticalLayout->addWidget(lineEdit_account);
+        hla_register->addWidget(lineEdit_account);
 
         lineEdit_password = new QLineEdit(layoutWidget);
         lineEdit_password->setObjectName(QString::fromUtf8("lineEdit_password"));
@@ -76,7 +76,7 @@ public:
         lineEdit_password->setFont(font);
         lineEdit_password->setEchoMode(QLineEdit::Password);
 
-        verticalLayout->addWidget(lineEdit_password);
+        hla_register->addWidget(lineEdit_password);
 
         lineEdit_pwdIdentify = new QLineEdit(layoutWidget);
         lineEdit_pwdIdentify->setObjectName(QString::fromUtf8("lineEdit_pwdIdentify"));
@@ -84,28 +84,28 @@ public:
         lineEdit_pwdIdentify->setFont(font);
         lineEdit_pwdIdentify->setEchoMode(QLineEdit::Password);
 
-        verticalLayout->addWidget(lineEdit_pwdIdentify);
+        hla_register->addWidget(lineEdit_pwdIdentify);
 
         layoutWidget_2 = new QWidget(Register);
         layoutWidget_2->setObjectName(QString::fromUtf8("layoutWidget_2"));
         layoutWidget_2->setGeometry(QRect(280, 0, 126, 41));
-        horizontalLayout_2 = new QHBoxLayout(layoutWidget_2);
-        horizontalLayout_2->setSpacing(0);
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(20, 0, 20, 0);
+        hla_quitAndMin = new QHBoxLayout(layoutWidget_2);
+        hla_quitAndMin->setSpacing(0);
+        hla_quitAndMin->setObjectName(QString::fromUtf8("hla_quitAndMin"));
+        hla_quitAndMin->setContentsMargins(20, 0, 20, 0);
         pushButton_minimize = new QPushButton(layoutWidget_2);
         pushButton_minimize->setObjectName(QString::fromUtf8("pushButton_minimize"));
         pushButton_minimize->setMinimumSize(QSize(30, 30));
         pushButton_minimize->setIconSize(QSize(30, 30));
 
-        horizontalLayout_2->addWidget(pushButton_minimize);
+        hla_quitAndMin->addWidget(pushButton_minimize);
 
         pushButton_shutdown = new QPushButton(layoutWidget_2);
         pushButton_shutdown->setObjectName(QString::fromUtf8("pushButton_shutdown"));
         pushButton_shutdown->setMinimumSize(QSize(30, 30));
         pushButton_shutdown->setIconSize(QSize(30, 30));
 
-        horizontalLayout_2->addWidget(pushButton_shutdown);
+        hla_quitAndMin->addWidget(pushButton_shutdown);
 
         pushButton_back = new QPushButton(Register);
         pushButton_back->setObjectName(QString::fromUtf8("pushButton_back"));
@@ -121,9 +121,9 @@ public:
         layoutWidget_3 = new QWidget(Register);
         layoutWidget_3->setObjectName(QString::fromUtf8("layoutWidget_3"));
         layoutWidget_3->setGeometry(QRect(0, 0, 151, 41));
-        horizontalLayout = new QHBoxLayout(layoutWidget_3);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        hla_title = new QHBoxLayout(layoutWidget_3);
+        hla_title->setObjectName(QString::fromUtf8("hla_title"));
+        hla_title->setContentsMargins(0, 0, 0, 0);
         label_log = new QLabel(layoutWidget_3);
         label_log->setObjectName(QString::fromUtf8("label_log"));
         label_log->setMinimumSize(QSize(0, 0));
@@ -131,7 +131,7 @@ public:
         label_log->setLayoutDirection(Qt::LeftToRight);
         label_log->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout->addWidget(label_log);
+        hla_title->addWidget(label_log);
 
         label_name = new QLabel(layoutWidget_3);
         label_name->setObjectName(QString::fromUtf8("label_name"));
@@ -143,28 +143,28 @@ public:
         label_name->setFont(font2);
         label_name->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
-        horizontalLayout->addWidget(label_name);
+        hla_title->addWidget(label_name);
 
-        widget = new QWidget(Register);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(340, 70, 41, 211));
-        verticalLayout_2 = new QVBoxLayout(widget);
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        label_statusUser = new QLabel(widget);
+        layoutWidget1 = new QWidget(Register);
+        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(340, 70, 74, 211));
+        vla_status = new QVBoxLayout(layoutWidget1);
+        vla_status->setObjectName(QString::fromUtf8("vla_status"));
+        vla_status->setContentsMargins(0, 0, 0, 0);
+        label_statusUser = new QLabel(layoutWidget1);
         label_statusUser->setObjectName(QString::fromUtf8("label_statusUser"));
 
-        verticalLayout_2->addWidget(label_statusUser);
+        vla_status->addWidget(label_statusUser);
 
-        label_statusPwd = new QLabel(widget);
+        label_statusPwd = new QLabel(layoutWidget1);
         label_statusPwd->setObjectName(QString::fromUtf8("label_statusPwd"));
 
-        verticalLayout_2->addWidget(label_statusPwd);
+        vla_status->addWidget(label_statusPwd);
 
-        label_statusIdtiPwd = new QLabel(widget);
+        label_statusIdtiPwd = new QLabel(layoutWidget1);
         label_statusIdtiPwd->setObjectName(QString::fromUtf8("label_statusIdtiPwd"));
 
-        verticalLayout_2->addWidget(label_statusIdtiPwd);
+        vla_status->addWidget(label_statusIdtiPwd);
 
 
         retranslateUi(Register);

@@ -91,7 +91,7 @@
      <height>41</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QHBoxLayout" name="hla_title">
     <item>
      <widget class="QLabel" name="label_log">
       <property name="minimumSize">
@@ -156,7 +156,7 @@
      <height>141</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="vla_actAndPwd">
     <item>
      <widget class="QLineEdit" name="lineEdit_account">
       <property name="minimumSize">
@@ -209,7 +209,7 @@
      <height>41</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QHBoxLayout" name="hla_quitAndMin">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -268,7 +268,7 @@
      <height>29</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <layout class="QHBoxLayout" name="hla_rpwAndAlogin">
     <item>
      <widget class="QCheckBox" name="cbx_remPw">
       <property name="font">

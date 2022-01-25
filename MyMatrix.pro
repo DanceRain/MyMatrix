@@ -28,15 +28,18 @@ SOURCES += \
 		Sources/dialog.cpp \
 		Sources/main.cpp \
 		Sources/register.cpp \
+		Sources/usermainwindow.cpp \
 
 
 HEADERS += \
 		Headers/dialog.h \
-	Headers/register.h \
+		Headers/register.h \
+		Headers/usermainwindow.h \
 
 FORMS += \
 		Forms/dialog.ui \
-	Forms/register.ui\
+		Forms/register.ui \
+		Forms/usermainwindow.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

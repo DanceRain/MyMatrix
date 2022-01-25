@@ -28,6 +28,7 @@ QPushButton{
 {
 	color: rgb(107, 107, 107);
 }
+
 #pushButton_minimize{
 	image:url(:ui/image/icon/minimize.png);
 }

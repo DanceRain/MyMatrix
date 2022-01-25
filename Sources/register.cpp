@@ -13,11 +13,11 @@ Register::Register(QWidget *parent, QWidget *lastWindow) :
     ui(new Ui::Register)
 {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
     setStyle();
     setLog();
     setLineEditValidator();
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
-    this->setVisible(true);
+    this->setWindowFlags(Qt::FramelessWindowHint);
 }
 
 Register::~Register()
@@ -83,8 +83,8 @@ void Register::setLineEditValidator()
 
 void Register::on_pushButton_shutdown_clicked()
 {
-    widget_lastWindow->show();
-    delete this;
+    widget_lastWindow->setVisible(true);
+    this->close();
 }
 
 void Register::on_pushButton_minimize_clicked()
@@ -94,12 +94,13 @@ void Register::on_pushButton_minimize_clicked()
 
 void Register::on_pushButton_back_clicked()
 {
-    widget_lastWindow->show();
-    delete this;
+    widget_lastWindow->setVisible(true);
+    this->close();
 }
 
 void Register::on_lineEdit_pwdIdentify_textChanged(const QString &arg1)
 {
+    Q_UNUSED(arg1);
     QImage img_Judge;
     if(ui->lineEdit_password->text().size() < 8)
     {
@@ -122,6 +123,7 @@ void Register::on_lineEdit_pwdIdentify_textChanged(const QString &arg1)
 
 void Register::on_lineEdit_password_textChanged(const QString &arg1)
 {
+    Q_UNUSED(arg1);
     QImage img_JudgeSelfStatus;
     QImage img_JudgeIdtiStatus;
     if(ui->lineEdit_password->text().size() < 8)
