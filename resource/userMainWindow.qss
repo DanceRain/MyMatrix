@@ -3,10 +3,7 @@
 	background-color:white
 }
 QPushButton{
-	font: "微软雅黑";
-	font-size: 20px;
 	border: none;
-	border-radius: 6px;
 }
 
 /*ptn*/
@@ -38,6 +35,11 @@ QPushButton{
 	image:url(:/ui/image/icon/message.png)
 }
 
+/*vla*/
+#widget_nav
+{
+	background-color: gray;
+}
 
 
 #pushButton_minimize{

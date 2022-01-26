@@ -35,8 +35,9 @@ public:
     QAction *actionUserInfo;
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout_4;
-    QHBoxLayout *horizontalLayout;
-    QVBoxLayout *vla_unityButton;
+    QHBoxLayout *hla_ceterWidget;
+    QWidget *widget_nav;
+    QVBoxLayout *vla_nav;
     QPushButton *ptn_userIcon;
     QVBoxLayout *vla_unity;
     QPushButton *ptn_message;
@@ -44,13 +45,13 @@ public:
     QPushButton *ptn_file;
     QSpacerItem *verticalSpacer;
     QSplitter *splitter;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QVBoxLayout *vla_unityInfor;
     QHBoxLayout *hla_find;
     QLineEdit *lineEdit_search;
     QPushButton *pushButton_addFriend;
     QListWidget *listWidget_unityList;
-    QWidget *widget1;
+    QWidget *layoutWidget1;
     QVBoxLayout *vla_unityList;
     QHBoxLayout *hla_quitAndMin;
     QLabel *label_name;
@@ -89,38 +90,47 @@ public:
         centralwidget = new QWidget(UserMainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         verticalLayout_4 = new QVBoxLayout(centralwidget);
+        verticalLayout_4->setSpacing(0);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        vla_unityButton = new QVBoxLayout();
-        vla_unityButton->setSpacing(15);
-        vla_unityButton->setObjectName(QString::fromUtf8("vla_unityButton"));
-        vla_unityButton->setSizeConstraint(QLayout::SetMaximumSize);
-        vla_unityButton->setContentsMargins(-1, 0, -1, -1);
-        ptn_userIcon = new QPushButton(centralwidget);
+        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        hla_ceterWidget = new QHBoxLayout();
+        hla_ceterWidget->setSpacing(7);
+        hla_ceterWidget->setObjectName(QString::fromUtf8("hla_ceterWidget"));
+        widget_nav = new QWidget(centralwidget);
+        widget_nav->setObjectName(QString::fromUtf8("widget_nav"));
+        widget_nav->setMinimumSize(QSize(100, 600));
+        vla_nav = new QVBoxLayout(widget_nav);
+        vla_nav->setSpacing(10);
+        vla_nav->setObjectName(QString::fromUtf8("vla_nav"));
+        vla_nav->setSizeConstraint(QLayout::SetMinAndMaxSize);
+        vla_nav->setContentsMargins(0, 0, 0, 0);
+        ptn_userIcon = new QPushButton(widget_nav);
         ptn_userIcon->setObjectName(QString::fromUtf8("ptn_userIcon"));
         ptn_userIcon->setMinimumSize(QSize(80, 60));
-        ptn_userIcon->setMaximumSize(QSize(16777215, 16777215));
+        ptn_userIcon->setMaximumSize(QSize(80, 16777215));
 
-        vla_unityButton->addWidget(ptn_userIcon);
+        vla_nav->addWidget(ptn_userIcon);
 
         vla_unity = new QVBoxLayout();
         vla_unity->setObjectName(QString::fromUtf8("vla_unity"));
-        ptn_message = new QPushButton(centralwidget);
+        ptn_message = new QPushButton(widget_nav);
         ptn_message->setObjectName(QString::fromUtf8("ptn_message"));
-        ptn_message->setMinimumSize(QSize(0, 35));
+        ptn_message->setMinimumSize(QSize(80, 35));
+        ptn_message->setMaximumSize(QSize(80, 35));
 
         vla_unity->addWidget(ptn_message);
 
-        ptn_friendList = new QPushButton(centralwidget);
+        ptn_friendList = new QPushButton(widget_nav);
         ptn_friendList->setObjectName(QString::fromUtf8("ptn_friendList"));
         ptn_friendList->setMinimumSize(QSize(0, 35));
+        ptn_friendList->setMaximumSize(QSize(80, 16777215));
 
         vla_unity->addWidget(ptn_friendList);
 
-        ptn_file = new QPushButton(centralwidget);
+        ptn_file = new QPushButton(widget_nav);
         ptn_file->setObjectName(QString::fromUtf8("ptn_file"));
         ptn_file->setMinimumSize(QSize(0, 35));
+        ptn_file->setMaximumSize(QSize(80, 16777215));
 
         vla_unity->addWidget(ptn_file);
 
@@ -129,21 +139,21 @@ public:
         vla_unity->addItem(verticalSpacer);
 
 
-        vla_unityButton->addLayout(vla_unity);
+        vla_nav->addLayout(vla_unity);
 
 
-        horizontalLayout->addLayout(vla_unityButton);
+        hla_ceterWidget->addWidget(widget_nav);
 
         splitter = new QSplitter(centralwidget);
         splitter->setObjectName(QString::fromUtf8("splitter"));
         splitter->setLayoutDirection(Qt::LeftToRight);
-        splitter->setLineWidth(1);
+        splitter->setLineWidth(0);
         splitter->setOrientation(Qt::Horizontal);
         splitter->setOpaqueResize(false);
         splitter->setHandleWidth(0);
-        widget = new QWidget(splitter);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        vla_unityInfor = new QVBoxLayout(widget);
+        layoutWidget = new QWidget(splitter);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        vla_unityInfor = new QVBoxLayout(layoutWidget);
         vla_unityInfor->setSpacing(0);
         vla_unityInfor->setObjectName(QString::fromUtf8("vla_unityInfor"));
         vla_unityInfor->setSizeConstraint(QLayout::SetMaximumSize);
@@ -153,15 +163,20 @@ public:
         hla_find->setObjectName(QString::fromUtf8("hla_find"));
         hla_find->setSizeConstraint(QLayout::SetMaximumSize);
         hla_find->setContentsMargins(-1, 6, -1, 5);
-        lineEdit_search = new QLineEdit(widget);
+        lineEdit_search = new QLineEdit(layoutWidget);
         lineEdit_search->setObjectName(QString::fromUtf8("lineEdit_search"));
         lineEdit_search->setMinimumSize(QSize(150, 0));
         lineEdit_search->setMaximumSize(QSize(200, 16777215));
 
         hla_find->addWidget(lineEdit_search);
 
-        pushButton_addFriend = new QPushButton(widget);
+        pushButton_addFriend = new QPushButton(layoutWidget);
         pushButton_addFriend->setObjectName(QString::fromUtf8("pushButton_addFriend"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(pushButton_addFriend->sizePolicy().hasHeightForWidth());
+        pushButton_addFriend->setSizePolicy(sizePolicy);
         pushButton_addFriend->setMinimumSize(QSize(50, 0));
         pushButton_addFriend->setMaximumSize(QSize(50, 16777215));
 
@@ -170,17 +185,17 @@ public:
 
         vla_unityInfor->addLayout(hla_find);
 
-        listWidget_unityList = new QListWidget(widget);
+        listWidget_unityList = new QListWidget(layoutWidget);
         listWidget_unityList->setObjectName(QString::fromUtf8("listWidget_unityList"));
         listWidget_unityList->setMinimumSize(QSize(300, 0));
         listWidget_unityList->setMaximumSize(QSize(300, 16777215));
 
         vla_unityInfor->addWidget(listWidget_unityList);
 
-        splitter->addWidget(widget);
-        widget1 = new QWidget(splitter);
-        widget1->setObjectName(QString::fromUtf8("widget1"));
-        vla_unityList = new QVBoxLayout(widget1);
+        splitter->addWidget(layoutWidget);
+        layoutWidget1 = new QWidget(splitter);
+        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
+        vla_unityList = new QVBoxLayout(layoutWidget1);
         vla_unityList->setSpacing(0);
         vla_unityList->setObjectName(QString::fromUtf8("vla_unityList"));
         vla_unityList->setContentsMargins(0, 0, 0, 0);
@@ -188,7 +203,7 @@ public:
         hla_quitAndMin->setSpacing(0);
         hla_quitAndMin->setObjectName(QString::fromUtf8("hla_quitAndMin"));
         hla_quitAndMin->setContentsMargins(10, -1, 20, 5);
-        label_name = new QLabel(widget1);
+        label_name = new QLabel(layoutWidget1);
         label_name->setObjectName(QString::fromUtf8("label_name"));
 
         hla_quitAndMin->addWidget(label_name);
@@ -197,21 +212,21 @@ public:
 
         hla_quitAndMin->addItem(horizontalSpacer);
 
-        pushButton_maxmize = new QPushButton(widget1);
+        pushButton_maxmize = new QPushButton(layoutWidget1);
         pushButton_maxmize->setObjectName(QString::fromUtf8("pushButton_maxmize"));
         pushButton_maxmize->setMinimumSize(QSize(30, 30));
         pushButton_maxmize->setIconSize(QSize(30, 30));
 
         hla_quitAndMin->addWidget(pushButton_maxmize);
 
-        pushButton_minimize = new QPushButton(widget1);
+        pushButton_minimize = new QPushButton(layoutWidget1);
         pushButton_minimize->setObjectName(QString::fromUtf8("pushButton_minimize"));
         pushButton_minimize->setMinimumSize(QSize(30, 30));
         pushButton_minimize->setIconSize(QSize(30, 30));
 
         hla_quitAndMin->addWidget(pushButton_minimize);
 
-        pushButton_shutdown = new QPushButton(widget1);
+        pushButton_shutdown = new QPushButton(layoutWidget1);
         pushButton_shutdown->setObjectName(QString::fromUtf8("pushButton_shutdown"));
         pushButton_shutdown->setEnabled(true);
         pushButton_shutdown->setMinimumSize(QSize(30, 30));
@@ -222,18 +237,18 @@ public:
 
         vla_unityList->addLayout(hla_quitAndMin);
 
-        plainTextEdit = new QPlainTextEdit(widget1);
+        plainTextEdit = new QPlainTextEdit(layoutWidget1);
         plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
         plainTextEdit->setEnabled(true);
 
         vla_unityList->addWidget(plainTextEdit);
 
-        splitter->addWidget(widget1);
+        splitter->addWidget(layoutWidget1);
 
-        horizontalLayout->addWidget(splitter);
+        hla_ceterWidget->addWidget(splitter);
 
 
-        verticalLayout_4->addLayout(horizontalLayout);
+        verticalLayout_4->addLayout(hla_ceterWidget);
 
         UserMainWindow->setCentralWidget(centralwidget);
 

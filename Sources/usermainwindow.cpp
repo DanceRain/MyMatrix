@@ -11,6 +11,11 @@ UserMainWindow::UserMainWindow(QWidget *parent) :
     this->setStyle();
     this->setWindowFlag(Qt::FramelessWindowHint);
     ui->splitter->handle(1)->setDisabled(true);
+    QWidget* test = new QWidget(this);
+    test->setLayout(ui->vla_nav);
+    auto palette = test->palette();
+    palette.setColor(QPalette::Window, Qt::blue);
+    test->setPalette(palette);
 }
 
 UserMainWindow::~UserMainWindow()
