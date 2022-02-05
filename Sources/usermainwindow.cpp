@@ -1,5 +1,6 @@
 ﻿#include "Headers/usermainwindow.h"
 #include "ui_usermainwindow.h"
+#include "Headers/userdetaildlg.h"
 #include <QMouseEvent>
 #include <QDebug>
 
@@ -29,7 +30,12 @@ void UserMainWindow::mousePressEvent(QMouseEvent* e)
     {
         IsMoving = true;
         mouseStartPoint = e->globalPos();
+        qDebug() << mouseStartPoint;
         windowTopLeftPoint = this->frameGeometry().topLeft();
+    }
+    if(userIcon != nullptr)
+    {
+        delete userIcon;
     }
 }
 
@@ -93,4 +99,11 @@ void UserMainWindow::on_actionUserInfo_triggered()
 {
     QWidget* UserInfor = new QWidget();
     UserInfor->show();
+}
+
+void UserMainWindow::on_ptn_userIcon_clicked()
+{
+    userIcon = new UserDetailDlg();
+    userIcon->move(QCursor::pos());
+    userIcon->show();
 }

@@ -6,6 +6,7 @@ UserDetailDlg::UserDetailDlg(QWidget *parent) :
     ui(new Ui::UserDetailDlg)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_StyledBackground);
 }
 
 UserDetailDlg::~UserDetailDlg()

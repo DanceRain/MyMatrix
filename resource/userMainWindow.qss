@@ -6,19 +6,25 @@ QPushButton{
 	border: none;
 }
 
+/*vla*/
+#widget_nav
+{
+	background-color: gray;
+}
+
 /*ptn*/
 #ptn_userIcon:hover{
-	background-color:gray;
+	background-color:blue;
 }
 
 #ptn_friendList:hover{
-	background-color:gray;
+	background-color:blue;
 }
 #ptn_file:hover{
-	background-color:gray;
+	background-color:blue;
 }
 #ptn_message:hover{
-	background-color:gray;
+	background-color:blue;
 }
 
 #ptn_userIcon{
@@ -35,11 +41,7 @@ QPushButton{
 	image:url(:/ui/image/icon/message.png)
 }
 
-/*vla*/
-#widget_nav
-{
-	background-color: gray;
-}
+
 
 
 #pushButton_minimize{

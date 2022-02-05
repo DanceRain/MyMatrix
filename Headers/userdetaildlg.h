@@ -1,4 +1,4 @@
-#ifndef USERDETAILDLG_H
+﻿#ifndef USERDETAILDLG_H
 #define USERDETAILDLG_H
 
 #include <QWidget>

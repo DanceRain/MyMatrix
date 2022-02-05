@@ -7,6 +7,8 @@ namespace Ui {
 class UserMainWindow;
 }
 
+class UserDetailDlg;
+
 class UserMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -26,6 +28,8 @@ private slots:
 
     void on_actionUserInfo_triggered();
 
+    void on_ptn_userIcon_clicked();
+
 private:
     void setStyle();
 
@@ -36,6 +40,7 @@ private:
     bool IsMaxmize = false;
     QRect originalGeometry;
 
+    UserDetailDlg* userIcon;
     Ui::UserMainWindow *ui;
 };
 
