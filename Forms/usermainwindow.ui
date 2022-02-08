@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -244,7 +244,13 @@
            </layout>
           </item>
           <item>
-           <widget class="QListWidget" name="listWidget_unityList">
+           <widget class="FriendList" name="matrixFriendList" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
               <width>300</width>
@@ -370,6 +376,12 @@
             <property name="enabled">
              <bool>true</bool>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>500</width>
+              <height>0</height>
+             </size>
+            </property>
            </widget>
           </item>
          </layout>
@@ -423,6 +435,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FriendList</class>
+   <extends>QWidget</extends>
+   <header location="global">Headers/friendlist.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../resource/qss.qrc"/>
  </resources>

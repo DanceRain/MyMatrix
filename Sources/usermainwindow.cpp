@@ -4,11 +4,14 @@
 #include <QMouseEvent>
 #include <QDebug>
 
-UserMainWindow::UserMainWindow(QWidget *parent) :
+UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentUserData) :
     QMainWindow(parent),
+    userIcon(nullptr),
+    userData(currentUserData),
     ui(new Ui::UserMainWindow)
 {
     ui->setupUi(this);
+    ui->matrixFriendList->initFriendList(userData);
     this->setStyle();
     this->setWindowFlag(Qt::FramelessWindowHint);
     ui->splitter->handle(1)->setDisabled(true);
@@ -21,6 +24,7 @@ UserMainWindow::UserMainWindow(QWidget *parent) :
 
 UserMainWindow::~UserMainWindow()
 {
+    delete userData;
     delete ui;
 }
 
@@ -36,6 +40,7 @@ void UserMainWindow::mousePressEvent(QMouseEvent* e)
     if(userIcon != nullptr)
     {
         delete userIcon;
+        userIcon = nullptr;
     }
 }
 

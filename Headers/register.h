@@ -3,6 +3,7 @@
 
 #include <QDialog>
 
+/*注册界面*/
 namespace Ui {
 class Register;
 }

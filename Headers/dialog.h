@@ -3,6 +3,7 @@
 
 #include <QDialog>
 
+/*登录界面*/
 namespace Ui {
 class Dialog;
 }

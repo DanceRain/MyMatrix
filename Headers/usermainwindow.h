@@ -2,6 +2,7 @@
 #define USERMAINWINDOW_H
 
 #include <QMainWindow>
+#include "Headers/userinfor.h"
 
 namespace Ui {
 class UserMainWindow;
@@ -14,7 +15,7 @@ class UserMainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit UserMainWindow(QWidget *parent = nullptr);
+    explicit UserMainWindow(QWidget *parent = nullptr, QVector<UserInfor>* currentUserData = nullptr);
     ~UserMainWindow();
 protected:
     void mousePressEvent(QMouseEvent* e);
@@ -41,7 +42,10 @@ private:
     QRect originalGeometry;
 
     UserDetailDlg* userIcon;
+    QVector<UserInfor>* userData;
+
     Ui::UserMainWindow *ui;
+
 };
 
 #endif // USERMAINWINDOW_H
