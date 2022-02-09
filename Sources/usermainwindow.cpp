@@ -1,8 +1,9 @@
 ﻿#include "Headers/usermainwindow.h"
 #include "ui_usermainwindow.h"
-#include "Headers/userdetaildlg.h"
 #include <QMouseEvent>
 #include <QDebug>
+#include "Headers/userinfor.h"
+#include "Headers/userdetaildlg.h"
 
 UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentUserData) :
     QMainWindow(parent),
@@ -11,15 +12,17 @@ UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentUserD
     ui(new Ui::UserMainWindow)
 {
     ui->setupUi(this);
-    ui->matrixFriendList->initFriendList(userData);
+    initFriendList();
+//    ui->splitter->setStretchFactor(0, 0);
+//    ui->splitter->setStretchFactor(0, 1);
+//    ui->matrixFriendList->initFriendList(userData);
+//    ui->matrixFriendList->setStyleSheet("background:black");
+//    ui->matrixFriendList->setMinimumSize(QSize(300, 30));
+//    qDebug() << ui->matrixFriendList->size();
     this->setStyle();
     this->setWindowFlag(Qt::FramelessWindowHint);
-    ui->splitter->handle(1)->setDisabled(true);
-    QWidget* test = new QWidget(this);
-    test->setLayout(ui->vla_nav);
-    auto palette = test->palette();
-    palette.setColor(QPalette::Window, Qt::blue);
-    test->setPalette(palette);
+    //使鼠标在splitter上不再显示分隔符
+//    ui->splitter->handle(1)->setDisabled(true);
 }
 
 UserMainWindow::~UserMainWindow()
@@ -61,13 +64,37 @@ void UserMainWindow::mouseReleaseEvent(QMouseEvent* e)
     }
 }
 
-void UserMainWindow::dragEnterEvent(QDragEnterEvent* event)
+//初始化好友信息
+void UserMainWindow::initFriendList()
 {
-}
+    if(userData == nullptr)
+    {
+        return;
+    }
+    /*登录界面*/
+    for (int i = 0; i < userData->size(); i++)
+    {
+        QListWidgetItem *item = new QListWidgetItem;
+        item->setText("王桂鑫");
+        item->setSizeHint(QSize(295, 80));
+        ui->listWidget_matrix->addItem(item);
 
-void UserMainWindow::dropEvent(QDropEvent* event)
-{
-
+        QWidget *pItemWidget = new QWidget(ui->listWidget_matrix);
+        QLabel* nickName = new QLabel(userData->at(i).getSNickName());
+        QLabel* recentMessage = new QLabel(userData->at(i).getVRecentMessage()[0]);
+        QVBoxLayout* vlaNameAndMsg = new QVBoxLayout();
+        vlaNameAndMsg->addWidget(nickName);
+        vlaNameAndMsg->addWidget(recentMessage);
+        QHBoxLayout* hlaUserProfile = new QHBoxLayout();
+        QLabel* userIcon = new QLabel();
+        userIcon->setFixedSize(QSize(60, 60));
+        userIcon->setPixmap(QPixmap(userData->at(i).getPixUserIcon()).scaled(userIcon->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        hlaUserProfile->addWidget(userIcon);
+        hlaUserProfile->addLayout(vlaNameAndMsg);
+        pItemWidget->setLayout(hlaUserProfile);
+        ui->listWidget_matrix->setItemWidget(item, pItemWidget);
+    }
+    ui->listWidget_matrix->setCurrentRow(0);
 }
 
 void UserMainWindow::setStyle()
@@ -88,15 +115,14 @@ void UserMainWindow::on_pushButton_maxmize_clicked()
     if(IsMaxmize == true)
     {
         this->showNormal();
-//        this->setGeometry(originalGeometry);
         IsMaxmize = false;
-        qDebug() << "set Original";
+        //当窗口放大时，使窗口不能够移动
         IsMoving = false;
     }
     else {
-        qDebug() << "set Max";
         IsMaxmize = true;
         this->showMaximized();
+//        ui->matrixFriendList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     }
 }
 
@@ -111,4 +137,11 @@ void UserMainWindow::on_ptn_userIcon_clicked()
     userIcon = new UserDetailDlg();
     userIcon->move(QCursor::pos());
     userIcon->show();
+}
+
+void UserMainWindow::on_lineEdit_search_textChanged(const QString &arg1)
+{
+    qDebug() << arg1;
+
+    qDebug() << ui->listWidget_matrix->findItems(arg1, 0);
 }

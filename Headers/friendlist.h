@@ -13,6 +13,8 @@ class FriendList : public QWidget
     Q_OBJECT
 public:
     explicit FriendList(QWidget *parent = nullptr);
+
+    //为m_listWidgetFriends添加数据
     void initFriendList(QVector<UserInfor>* recentContacts);
     ~FriendList();
 
@@ -20,9 +22,8 @@ signals:
 
 public slots:
 
-//FriendList初始化
 private:
-    void initList();
+    void setListWidgetStyle();
 private:
     QListWidget *m_listWidgetFriends;
 };

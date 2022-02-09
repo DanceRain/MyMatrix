@@ -54,8 +54,7 @@ void Register::mouseReleaseEvent(QMouseEvent* e)
 
 void Register::setLog()
 {
-    QImage img_Log(":/ui/image/icon/log.png");
-    QPixmap pm_Log = QPixmap::fromImage(img_Log);
+    QPixmap pm_Log(":/ui/image/icon/log.png");
     ui->label_log->setPixmap(pm_Log.scaled(ui->label_log->size(),
                                        Qt::KeepAspectRatio,
                                        Qt::SmoothTransformation));
