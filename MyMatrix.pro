@@ -25,22 +25,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-		Sources/friendlist.cpp \
 		Sources/dialog.cpp \
 		Sources/main.cpp \
 		Sources/register.cpp \
 		Sources/usermainwindow.cpp \
 		Sources/userdetaildlg.cpp \
 		Sources/userinfor.cpp \
+		Sources/MuItemDelegate.cpp\
 
 
 HEADERS += \
 		Headers/dialog.h \
-		Headers/friendlist.h \
 		Headers/register.h \
 		Headers/usermainwindow.h \
 		Headers/userdetaildlg.h \
-		Headers/userinfor.h
+		Headers/userinfor.h \
+		Headers/MuItemDelegate.h \
+		Headers/MuListItemData.h \
 
 FORMS += \
 		Forms/dialog.ui \

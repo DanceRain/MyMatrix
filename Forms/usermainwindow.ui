@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resource/qss.qrc">
+    <normaloff>:/ui/image/icon/log.png</normaloff>:/ui/image/icon/log.png</iconset>
+  </property>
   <property name="dockOptions">
    <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
@@ -259,7 +263,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QListWidget" name="listWidget_matrix"/>
+        <widget class="QListView" name="listView_matrix"/>
        </item>
       </layout>
      </widget>

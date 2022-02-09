@@ -85,7 +85,10 @@ void Dialog::on_pushButton_login_clicked()
     QVector<UserInfor>* userData = new QVector<UserInfor>();
     QVector<QString>* message = new QVector<QString>();
     message->push_back("这是句测试");
-    userData->push_back(UserInfor("王桂鑫", QPixmap(":/ui/image/icon/log.png"), *message));
+    for(int i = 0; i < 100; ++i)
+    {
+        userData->push_back(UserInfor("王桂鑫", QPixmap(":/ui/image/icon/log.png"), *message));
+    }
     UserMainWindow* userWindow = new UserMainWindow(nullptr, userData);
     userWindow->show();
 //    this->hide();

@@ -4,11 +4,12 @@
 #include <QMainWindow>
 
 class UserInfor;
+class UserDetailDlg;
+class QStandardItemModel;
+
 namespace Ui {
 class UserMainWindow;
 }
-
-class UserDetailDlg;
 
 class UserMainWindow : public QMainWindow
 {
@@ -31,21 +32,22 @@ private slots:
 
 private:
     void setStyle();
-    void initFriendList();
+    void initFriendView();
+//    void initFriendList();
     void findFriend();
-
+private:
+    //用于窗口移动和缩放
     QPoint mouseStartPoint;
     QPoint windowTopLeftPoint;
     bool IsMoving = false;
-
     bool IsMaxmize = false;
-    QRect originalGeometry;
-
+private:
+    //用于窗口信息初始化
     UserDetailDlg* userIcon;
     QVector<UserInfor>* userData;
-
-    Ui::UserMainWindow *ui;
-
+    QStandardItemModel* userDataModel;
+private:
+    Ui::UserMainWindow* ui;
 };
 
 #endif // USERMAINWINDOW_H

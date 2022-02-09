@@ -1,18 +1,27 @@
-﻿#include "Headers/usermainwindow.h"
+﻿#include "Headers/userinfor.h"
+#include "Headers/userdetaildlg.h"
+#include "Headers/MuItemDelegate.h"
+#include "Headers/MuListItemData.h"
+#include "Headers/usermainwindow.h"
+
 #include "ui_usermainwindow.h"
+#include <QStandardItem>
+#include <QStandardItemModel>
 #include <QMouseEvent>
 #include <QDebug>
-#include "Headers/userinfor.h"
-#include "Headers/userdetaildlg.h"
+
 
 UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentUserData) :
     QMainWindow(parent),
     userIcon(nullptr),
     userData(currentUserData),
+    userDataModel(new QStandardItemModel()),
     ui(new Ui::UserMainWindow)
 {
     ui->setupUi(this);
-    initFriendList();
+    initFriendView();
+
+//    initFriendList();
 //    ui->splitter->setStretchFactor(0, 0);
 //    ui->splitter->setStretchFactor(0, 1);
 //    ui->matrixFriendList->initFriendList(userData);
@@ -65,37 +74,37 @@ void UserMainWindow::mouseReleaseEvent(QMouseEvent* e)
 }
 
 //初始化好友信息
-void UserMainWindow::initFriendList()
-{
-    if(userData == nullptr)
-    {
-        return;
-    }
-    /*登录界面*/
-    for (int i = 0; i < userData->size(); i++)
-    {
-        QListWidgetItem *item = new QListWidgetItem;
-        item->setText("王桂鑫");
-        item->setSizeHint(QSize(295, 80));
-        ui->listWidget_matrix->addItem(item);
+//void UserMainWindow::initFriendList()
+//{
+//    if(userData == nullptr)
+//    {
+//        return;
+//    }
+//    /*登录界面*/
+//    for (int i = 0; i < userData->size(); i++)
+//    {
+//        QListWidgetItem *item = new QListWidgetItem;
+//        item->setText("王桂鑫");
+//        item->setSizeHint(QSize(295, 80));
+//        ui->listWidget_matrix->addItem(item);
 
-        QWidget *pItemWidget = new QWidget(ui->listWidget_matrix);
-        QLabel* nickName = new QLabel(userData->at(i).getSNickName());
-        QLabel* recentMessage = new QLabel(userData->at(i).getVRecentMessage()[0]);
-        QVBoxLayout* vlaNameAndMsg = new QVBoxLayout();
-        vlaNameAndMsg->addWidget(nickName);
-        vlaNameAndMsg->addWidget(recentMessage);
-        QHBoxLayout* hlaUserProfile = new QHBoxLayout();
-        QLabel* userIcon = new QLabel();
-        userIcon->setFixedSize(QSize(60, 60));
-        userIcon->setPixmap(QPixmap(userData->at(i).getPixUserIcon()).scaled(userIcon->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        hlaUserProfile->addWidget(userIcon);
-        hlaUserProfile->addLayout(vlaNameAndMsg);
-        pItemWidget->setLayout(hlaUserProfile);
-        ui->listWidget_matrix->setItemWidget(item, pItemWidget);
-    }
-    ui->listWidget_matrix->setCurrentRow(0);
-}
+//        QWidget *pItemWidget = new QWidget(ui->listWidget_matrix);
+//        QLabel* nickName = new QLabel(userData->at(i).getSNickName());
+//        QLabel* recentMessage = new QLabel(userData->at(i).getVRecentMessage()[0]);
+//        QVBoxLayout* vlaNameAndMsg = new QVBoxLayout();
+//        vlaNameAndMsg->addWidget(nickName);
+//        vlaNameAndMsg->addWidget(recentMessage);
+//        QHBoxLayout* hlaUserProfile = new QHBoxLayout();
+//        QLabel* userIcon = new QLabel();
+//        userIcon->setFixedSize(QSize(60, 60));
+//        userIcon->setPixmap(QPixmap(userData->at(i).getPixUserIcon()).scaled(userIcon->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+//        hlaUserProfile->addWidget(userIcon);
+//        hlaUserProfile->addLayout(vlaNameAndMsg);
+//        pItemWidget->setLayout(hlaUserProfile);
+//        ui->listWidget_matrix->setItemWidget(item, pItemWidget);
+//    }
+//    ui->listWidget_matrix->setCurrentRow(0);
+//}
 
 void UserMainWindow::setStyle()
 {
@@ -108,6 +117,24 @@ void UserMainWindow::setStyle()
         this->setStyleSheet(qss);
         qssFile.close();
     }
+}
+
+void UserMainWindow::initFriendView()
+{
+    for(int i = 0; i < userData->size(); ++i)
+    {
+        QStandardItem *pItem = new QStandardItem;
+        MuItemData itemData;
+        itemData.userName = userData->at(i).getSNickName();
+        itemData.icon = userData->at(i).getPixUserIcon();
+        itemData.recentMessage = userData->at(i).getVRecentMessage()[0];
+        pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
+        userDataModel->appendRow(pItem);
+    }
+    MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
+
+    ui->listView_matrix->setItemDelegate(pItemDelegate);
+    ui->listView_matrix->setModel(userDataModel);
 }
 
 void UserMainWindow::on_pushButton_maxmize_clicked()
@@ -143,5 +170,4 @@ void UserMainWindow::on_lineEdit_search_textChanged(const QString &arg1)
 {
     qDebug() << arg1;
 
-    qDebug() << ui->listWidget_matrix->findItems(arg1, 0);
 }
