@@ -9,29 +9,21 @@
 #include <QStandardItemModel>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QSortFilterProxyModel>
 
 
 UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentUserData) :
     QMainWindow(parent),
     userIcon(nullptr),
     userData(currentUserData),
-    userDataModel(new QStandardItemModel()),
+    userDataModel(new QStandardItemModel(this)),
+    userDataProxyModel(new QSortFilterProxyModel(this)),
     ui(new Ui::UserMainWindow)
 {
     ui->setupUi(this);
     initFriendView();
-
-//    initFriendList();
-//    ui->splitter->setStretchFactor(0, 0);
-//    ui->splitter->setStretchFactor(0, 1);
-//    ui->matrixFriendList->initFriendList(userData);
-//    ui->matrixFriendList->setStyleSheet("background:black");
-//    ui->matrixFriendList->setMinimumSize(QSize(300, 30));
-//    qDebug() << ui->matrixFriendList->size();
     this->setStyle();
     this->setWindowFlag(Qt::FramelessWindowHint);
-    //使鼠标在splitter上不再显示分隔符
-//    ui->splitter->handle(1)->setDisabled(true);
 }
 
 UserMainWindow::~UserMainWindow()
@@ -73,39 +65,6 @@ void UserMainWindow::mouseReleaseEvent(QMouseEvent* e)
     }
 }
 
-//初始化好友信息
-//void UserMainWindow::initFriendList()
-//{
-//    if(userData == nullptr)
-//    {
-//        return;
-//    }
-//    /*登录界面*/
-//    for (int i = 0; i < userData->size(); i++)
-//    {
-//        QListWidgetItem *item = new QListWidgetItem;
-//        item->setText("王桂鑫");
-//        item->setSizeHint(QSize(295, 80));
-//        ui->listWidget_matrix->addItem(item);
-
-//        QWidget *pItemWidget = new QWidget(ui->listWidget_matrix);
-//        QLabel* nickName = new QLabel(userData->at(i).getSNickName());
-//        QLabel* recentMessage = new QLabel(userData->at(i).getVRecentMessage()[0]);
-//        QVBoxLayout* vlaNameAndMsg = new QVBoxLayout();
-//        vlaNameAndMsg->addWidget(nickName);
-//        vlaNameAndMsg->addWidget(recentMessage);
-//        QHBoxLayout* hlaUserProfile = new QHBoxLayout();
-//        QLabel* userIcon = new QLabel();
-//        userIcon->setFixedSize(QSize(60, 60));
-//        userIcon->setPixmap(QPixmap(userData->at(i).getPixUserIcon()).scaled(userIcon->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-//        hlaUserProfile->addWidget(userIcon);
-//        hlaUserProfile->addLayout(vlaNameAndMsg);
-//        pItemWidget->setLayout(hlaUserProfile);
-//        ui->listWidget_matrix->setItemWidget(item, pItemWidget);
-//    }
-//    ui->listWidget_matrix->setCurrentRow(0);
-//}
-
 void UserMainWindow::setStyle()
 {
     QString qss;
@@ -129,12 +88,15 @@ void UserMainWindow::initFriendView()
         itemData.icon = userData->at(i).getPixUserIcon();
         itemData.recentMessage = userData->at(i).getVRecentMessage()[0];
         pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
+        pItem->setData(userData->at(i).getSNickName(), Qt::UserRole);
         userDataModel->appendRow(pItem);
     }
     MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
 
+    userDataProxyModel->setSourceModel(userDataModel);
+    userDataProxyModel->setFilterRole(Qt::UserRole);
     ui->listView_matrix->setItemDelegate(pItemDelegate);
-    ui->listView_matrix->setModel(userDataModel);
+    ui->listView_matrix->setModel(userDataProxyModel);
 }
 
 void UserMainWindow::on_pushButton_maxmize_clicked()
@@ -149,7 +111,6 @@ void UserMainWindow::on_pushButton_maxmize_clicked()
     else {
         IsMaxmize = true;
         this->showMaximized();
-//        ui->matrixFriendList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     }
 }
 
@@ -169,5 +130,6 @@ void UserMainWindow::on_ptn_userIcon_clicked()
 void UserMainWindow::on_lineEdit_search_textChanged(const QString &arg1)
 {
     qDebug() << arg1;
-
+    QRegExp regExp(arg1, Qt::CaseInsensitive, QRegExp::RegExp);
+    userDataProxyModel->setFilterRegExp(regExp);
 }

@@ -87,7 +87,7 @@ void Dialog::on_pushButton_login_clicked()
     message->push_back("这是句测试");
     for(int i = 0; i < 100; ++i)
     {
-        userData->push_back(UserInfor("王桂鑫", QPixmap(":/ui/image/icon/log.png"), *message));
+        userData->push_back(UserInfor(QString("王桂鑫%1").arg(i), QPixmap(":/ui/image/icon/log.png"), *message));
     }
     UserMainWindow* userWindow = new UserMainWindow(nullptr, userData);
     userWindow->show();

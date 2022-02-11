@@ -6,6 +6,7 @@
 class UserInfor;
 class UserDetailDlg;
 class QStandardItemModel;
+class QSortFilterProxyModel;
 
 namespace Ui {
 class UserMainWindow;
@@ -46,6 +47,7 @@ private:
     UserDetailDlg* userIcon;
     QVector<UserInfor>* userData;
     QStandardItemModel* userDataModel;
+    QSortFilterProxyModel* userDataProxyModel;
 private:
     Ui::UserMainWindow* ui;
 };
