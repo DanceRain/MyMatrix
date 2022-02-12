@@ -26,9 +26,7 @@ protected:
 
 private slots:
     void on_pushButton_maxmize_clicked();
-    void on_actionUserInfo_triggered();
     void on_ptn_userIcon_clicked();
-
     void on_lineEdit_search_textChanged(const QString &arg1);
 
 private:
@@ -44,10 +42,10 @@ private:
     bool IsMaxmize = false;
 private:
     //用于窗口信息初始化
-    UserDetailDlg* userIcon;
-    QVector<UserInfor>* userData;
-    QStandardItemModel* userDataModel;
-    QSortFilterProxyModel* userDataProxyModel;
+    UserDetailDlg* m_UserDetailDlg;
+    QVector<UserInfor>* m_UserData;
+    QStandardItemModel* m_UserDataModel;
+    QSortFilterProxyModel* m_UserDataProxyModel;
 private:
     Ui::UserMainWindow* ui;
 };

@@ -1,0 +1,10 @@
+#UserDetailDlg
+{
+	background: white;
+	border: black;
+}
+QLabel
+{
+	font-size: 20px;
+	font: "微软雅黑";
+}

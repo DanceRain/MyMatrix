@@ -3,5 +3,6 @@
         <file>myStyle.qss</file>
         <file>register.qss</file>
         <file>userMainWindow.qss</file>
+        <file>userDetailDlg.qss</file>
     </qresource>
 </RCC>

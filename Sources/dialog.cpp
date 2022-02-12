@@ -7,16 +7,17 @@
 #include "Headers/register.h"
 #include "Headers/usermainwindow.h"
 #include "Headers/userinfor.h"
+#include <QGraphicsDropShadowEffect>
+#include <QPainter>
 
 Dialog::Dialog(QWidget *parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
     setStyle();
     setLog();
     this->setAttribute(Qt::WA_DeleteOnClose);
-    this->setWindowFlags(Qt::FramelessWindowHint);
 }
 
 Dialog::~Dialog()
@@ -71,6 +72,7 @@ void Dialog::setStyle()
         this->setStyleSheet(qss);
         qssFile.close();
     }
+    this->setWindowFlags(Qt::FramelessWindowHint);
 }
 
 void Dialog::on_pushButton_register_clicked()
@@ -89,6 +91,11 @@ void Dialog::on_pushButton_login_clicked()
     {
         userData->push_back(UserInfor(QString("王桂鑫%1").arg(i), QPixmap(":/ui/image/icon/log.png"), *message));
     }
+    (*userData)[0].setSUserArea("中国 湖北");
+    (*userData)[0].setSUserNumber("000001");
+    (*userData)[0].setSUserNote("这是我自己");
+    (*userData)[0].setPixUserGender(QPixmap(":/ui/image/icon/famale.jpg"));
+    (*userData)[0].setSUserNote("这是我自己");
     UserMainWindow* userWindow = new UserMainWindow(nullptr, userData);
     userWindow->show();
 //    this->hide();

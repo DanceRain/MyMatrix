@@ -10,25 +10,25 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <QSortFilterProxyModel>
+#include <QGraphicsDropShadowEffect>
 
 
-UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentUserData) :
+UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentm_UserData) :
     QMainWindow(parent),
-    userIcon(nullptr),
-    userData(currentUserData),
-    userDataModel(new QStandardItemModel(this)),
-    userDataProxyModel(new QSortFilterProxyModel(this)),
+    m_UserDetailDlg(nullptr),
+    m_UserData(currentm_UserData),
+    m_UserDataModel(new QStandardItemModel(this)),
+    m_UserDataProxyModel(new QSortFilterProxyModel(this)),
     ui(new Ui::UserMainWindow)
 {
     ui->setupUi(this);
     initFriendView();
-    this->setStyle();
-    this->setWindowFlag(Qt::FramelessWindowHint);
+    setStyle();
 }
 
 UserMainWindow::~UserMainWindow()
 {
-    delete userData;
+    delete m_UserData;
     delete ui;
 }
 
@@ -41,10 +41,10 @@ void UserMainWindow::mousePressEvent(QMouseEvent* e)
         qDebug() << mouseStartPoint;
         windowTopLeftPoint = this->frameGeometry().topLeft();
     }
-    if(userIcon != nullptr)
+    if(m_UserDetailDlg != nullptr)
     {
-        delete userIcon;
-        userIcon = nullptr;
+        delete m_UserDetailDlg;
+        m_UserDetailDlg = nullptr;
     }
 }
 
@@ -76,27 +76,28 @@ void UserMainWindow::setStyle()
         this->setStyleSheet(qss);
         qssFile.close();
     }
+    this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 void UserMainWindow::initFriendView()
 {
-    for(int i = 0; i < userData->size(); ++i)
+    for(int i = 0; i < m_UserData->size(); ++i)
     {
         QStandardItem *pItem = new QStandardItem;
         MuItemData itemData;
-        itemData.userName = userData->at(i).getSNickName();
-        itemData.icon = userData->at(i).getPixUserIcon();
-        itemData.recentMessage = userData->at(i).getVRecentMessage()[0];
+        itemData.userName = m_UserData->at(i).getSNickName();
+        itemData.icon = m_UserData->at(i).getPixUserIcon();
+        itemData.recentMessage = m_UserData->at(i).getVRecentMessage()[0];
         pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
-        pItem->setData(userData->at(i).getSNickName(), Qt::UserRole);
-        userDataModel->appendRow(pItem);
+        pItem->setData(m_UserData->at(i).getSNickName(), Qt::UserRole);
+        m_UserDataModel->appendRow(pItem);
     }
     MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
 
-    userDataProxyModel->setSourceModel(userDataModel);
-    userDataProxyModel->setFilterRole(Qt::UserRole);
+    m_UserDataProxyModel->setSourceModel(m_UserDataModel);
+    m_UserDataProxyModel->setFilterRole(Qt::UserRole);
     ui->listView_matrix->setItemDelegate(pItemDelegate);
-    ui->listView_matrix->setModel(userDataProxyModel);
+    ui->listView_matrix->setModel(m_UserDataProxyModel);
 }
 
 void UserMainWindow::on_pushButton_maxmize_clicked()
@@ -114,22 +115,23 @@ void UserMainWindow::on_pushButton_maxmize_clicked()
     }
 }
 
-void UserMainWindow::on_actionUserInfo_triggered()
-{
-    QWidget* UserInfor = new QWidget();
-    UserInfor->show();
-}
-
 void UserMainWindow::on_ptn_userIcon_clicked()
 {
-    userIcon = new UserDetailDlg();
-    userIcon->move(QCursor::pos());
-    userIcon->show();
+    m_UserDetailDlg = new UserDetailDlg(this);
+    m_UserDetailDlg->setUseIcon(m_UserData->at(0).getPixUserIcon());
+    m_UserDetailDlg->setUserName(m_UserData->at(0).getSNickName());
+    m_UserDetailDlg->setUserArea(m_UserData->at(0).getSUserArea());
+    m_UserDetailDlg->setUserGender(m_UserData->at(0).getPixUserGender());
+    m_UserDetailDlg->setUserNote(m_UserData->at(0).getSUserNote());
+    m_UserDetailDlg->setUserCallNumber(m_UserData->at(0).getSUserNumber());
+
+    m_UserDetailDlg->move(QCursor::pos() - this->pos());
+    m_UserDetailDlg->show();
 }
 
 void UserMainWindow::on_lineEdit_search_textChanged(const QString &arg1)
 {
     qDebug() << arg1;
     QRegExp regExp(arg1, Qt::CaseInsensitive, QRegExp::RegExp);
-    userDataProxyModel->setFilterRegExp(regExp);
+    m_UserDataProxyModel->setFilterRegExp(regExp);
 }

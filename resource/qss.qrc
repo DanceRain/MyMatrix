@@ -13,5 +13,7 @@
         <file>image/icon/file.png</file>
         <file>image/icon/maxmize.png</file>
         <file>image/icon/maxmize anti.png</file>
+        <file>image/icon/famale.jpg</file>
+        <file>image/icon/male.jpg</file>
     </qresource>
 </RCC>

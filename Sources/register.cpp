@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QMouseEvent>
 #include <QRegExpValidator>
+#include <QGraphicsDropShadowEffect>
 
 Register::Register(QWidget *parent, QWidget *lastWindow) :
     QDialog(parent),
@@ -17,7 +18,6 @@ Register::Register(QWidget *parent, QWidget *lastWindow) :
     setStyle();
     setLog();
     setLineEditValidator();
-    this->setWindowFlags(Qt::FramelessWindowHint);
 }
 
 Register::~Register()
@@ -71,6 +71,12 @@ void Register::setStyle()
         this->setStyleSheet(qss);
         qssFile.close();
     }
+    this->setWindowFlags(Qt::FramelessWindowHint);
+    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
+    shadow->setBlurRadius(5);   //边框圆角
+    shadow->setColor(Qt::black);//边框颜色
+    shadow->setOffset(0);       //不偏移
+    this->setGraphicsEffect(shadow);
 }
 
 void Register::setLineEditValidator()

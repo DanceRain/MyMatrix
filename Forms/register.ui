@@ -267,21 +267,21 @@
     <item>
      <widget class="QLabel" name="label_statusUser">
       <property name="text">
-       <string>TextLabel</string>
+       <string/>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="label_statusPwd">
       <property name="text">
-       <string>TextLabel</string>
+       <string/>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="label_statusIdtiPwd">
       <property name="text">
-       <string>TextLabel</string>
+       <string/>
       </property>
      </widget>
     </item>

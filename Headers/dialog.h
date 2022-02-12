@@ -1,14 +1,14 @@
 ﻿#ifndef DIALOG_H
 #define DIALOG_H
 
-#include <QDialog>
+#include <QWidget>
 
 /*登录界面*/
 namespace Ui {
 class Dialog;
 }
 
-class Dialog : public QDialog
+class Dialog : public QWidget
 {
     Q_OBJECT
     Q_CLASSINFO ("author", "GuixinWang")

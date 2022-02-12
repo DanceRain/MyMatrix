@@ -31,15 +31,16 @@ private:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);
-
-    void setLog();
-    void setStyle();
-    void setLineEditValidator();
-
     QPoint mouseStartPoint;
     QPoint windowTopLeftPoint;
     bool IsMoving = false;
 
+private:
+    void setLog();
+    void setStyle();
+    void setLineEditValidator();
+
+private:
     QWidget* widget_lastWindow;
     Ui::Register *ui;
 

@@ -13,12 +13,35 @@ public:
     {
 
     }
+
+public:
     QString getSNickName() const;
+    void setSNickName(const QString& value);
+
     QPixmap getPixUserIcon() const;
-    QVector<QString> getVRecentMessage() const;
+    void setPixUserIcon(const QPixmap& value);
+
+    QString getSUserArea() const;
+    void setSUserArea(const QString& value);
+
+    QString getSUserNote() const;
+    void setSUserNote(const QString& value);
+
+    QString getSUserNumber() const;
+    void setSUserNumber(const QString& value);
+
+    QPixmap getPixUserGender() const;
+    void setPixUserGender(const QPixmap& value);
+
+     QVector<QString> getVRecentMessage() const;
+
 
 private:
-    QString sNickName;
+     QString sNickName;
+     QString sUserArea;
+     QString sUserNote;
+    QString sUserNumber;
+    QPixmap pixUserGender;
     QPixmap pixUserIcon;
     QVector<QString> vRecentMessage;
 };

@@ -2,6 +2,7 @@
 {
 	background-color:white
 }
+
 QPushButton{
 	border: none;
 }
