@@ -18,7 +18,8 @@ QCheckBox:indicator{
 
 #Dialog
 {
-	background:white;
+	background: white;
+	border: black;
 }
 #pushButton_login
 {

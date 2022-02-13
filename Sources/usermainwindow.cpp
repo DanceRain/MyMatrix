@@ -10,7 +10,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <QSortFilterProxyModel>
-#include <QGraphicsDropShadowEffect>
+
 
 
 UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentm_UserData) :
@@ -19,10 +19,12 @@ UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentm_Use
     m_UserData(currentm_UserData),
     m_UserDataModel(new QStandardItemModel(this)),
     m_UserDataProxyModel(new QSortFilterProxyModel(this)),
+    m_ItemDelegate(new MuItemDelegate(this)),
     ui(new Ui::UserMainWindow)
 {
     ui->setupUi(this);
-    initFriendView();
+    initFriendsView();
+    initContactsView();
     setStyle();
 }
 
@@ -79,7 +81,7 @@ void UserMainWindow::setStyle()
     this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
-void UserMainWindow::initFriendView()
+void UserMainWindow::initContactsView()
 {
     for(int i = 0; i < m_UserData->size(); ++i)
     {
@@ -96,8 +98,17 @@ void UserMainWindow::initFriendView()
 
     m_UserDataProxyModel->setSourceModel(m_UserDataModel);
     m_UserDataProxyModel->setFilterRole(Qt::UserRole);
-    ui->listView_matrix->setItemDelegate(pItemDelegate);
-    ui->listView_matrix->setModel(m_UserDataProxyModel);
+    ui->listView_recentContacts->setItemDelegate(pItemDelegate);
+    ui->listView_recentContacts->setModel(m_UserDataProxyModel);
+    ui->treeView_friendsList->hide();
+}
+
+void UserMainWindow::initFriendsView()
+{
+
+    MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
+    ui->treeView_friendsList->setItemDelegate(pItemDelegate);
+    ui->treeView_friendsList->setModel(m_UserDataProxyModel);
 }
 
 void UserMainWindow::on_pushButton_maxmize_clicked()
@@ -134,4 +145,16 @@ void UserMainWindow::on_lineEdit_search_textChanged(const QString &arg1)
     qDebug() << arg1;
     QRegExp regExp(arg1, Qt::CaseInsensitive, QRegExp::RegExp);
     m_UserDataProxyModel->setFilterRegExp(regExp);
+}
+
+void UserMainWindow::on_ptn_friendList_clicked()
+{
+    ui->treeView_friendsList->show();
+    ui->listView_recentContacts->hide();
+}
+
+void UserMainWindow::on_ptn_message_clicked()
+{
+    ui->listView_recentContacts->show();
+    ui->treeView_friendsList->hide();
 }

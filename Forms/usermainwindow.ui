@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>913</width>
+    <width>1000</width>
     <height>602</height>
    </rect>
   </property>
@@ -263,9 +263,14 @@
         </layout>
        </item>
        <item>
-        <widget class="QListView" name="listView_matrix"/>
+        <widget class="QTreeView" name="treeView_friendsList"/>
+       </item>
+       <item>
+        <widget class="QListView" name="listView_recentContacts"/>
        </item>
       </layout>
+      <zorder>treeView_friendsList</zorder>
+      <zorder>listView_recentContacts</zorder>
      </widget>
     </item>
     <item>

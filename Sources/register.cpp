@@ -6,7 +6,6 @@
 #include <QFile>
 #include <QMouseEvent>
 #include <QRegExpValidator>
-#include <QGraphicsDropShadowEffect>
 
 Register::Register(QWidget *parent, QWidget *lastWindow) :
     QDialog(parent),
@@ -72,11 +71,6 @@ void Register::setStyle()
         qssFile.close();
     }
     this->setWindowFlags(Qt::FramelessWindowHint);
-    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
-    shadow->setBlurRadius(5);   //边框圆角
-    shadow->setColor(Qt::black);//边框颜色
-    shadow->setOffset(0);       //不偏移
-    this->setGraphicsEffect(shadow);
 }
 
 void Register::setLineEditValidator()
@@ -105,56 +99,44 @@ void Register::on_pushButton_back_clicked()
 
 void Register::on_lineEdit_pwdIdentify_textChanged(const QString &arg1)
 {
-    Q_UNUSED(arg1);
-    QImage img_Judge;
-    if(ui->lineEdit_password->text().size() < 8)
+    if(arg1 != ui->lineEdit_password->text())
     {
-        img_Judge = QImage(":/ui/image/icon/wrong.png");
-    }
-    else if(ui->lineEdit_pwdIdentify->text() != ui->lineEdit_password->text())
-    {
-        img_Judge = QImage(":/ui/image/icon/wrong.png");
-
+        ui->label_statusIdtiPwd->setPixmap(QPixmap(":/ui/image/icon/wrong.png").
+                                       scaled(ui->label_statusPwd->size(),
+                                       Qt::KeepAspectRatio,
+                                       Qt::SmoothTransformation));
     }
     else
     {
-        img_Judge = QImage(":/ui/image/icon/right.png");
-    }
-    QPixmap pm_Wrong = QPixmap::fromImage(img_Judge);
-    ui->label_statusIdtiPwd->setPixmap(pm_Wrong.scaled(ui->label_log->size(),
+        ui->label_statusIdtiPwd->setPixmap(QPixmap(":/ui/image/icon/right.png").
+                                       scaled(ui->label_statusPwd->size(),
                                        Qt::KeepAspectRatio,
                                        Qt::SmoothTransformation));
+    }
+    if(arg1.compare(""))
+    {
+        ui->lineEdit_password->setEnabled(false);
+    }
+    else
+    {
+        ui->lineEdit_password->setEnabled(true);
+    }
 }
 
 void Register::on_lineEdit_password_textChanged(const QString &arg1)
 {
-    Q_UNUSED(arg1);
-    QImage img_JudgeSelfStatus;
-    QImage img_JudgeIdtiStatus;
-    if(ui->lineEdit_password->text().size() < 8)
+    if(arg1.size() < 8)
     {
-        img_JudgeSelfStatus = QImage(":/ui/image/icon/wrong.png");
+        ui->label_statusPwd->setPixmap(QPixmap(":/ui/image/icon/wrong.png").
+                                       scaled(ui->label_statusPwd->size(),
+                                       Qt::KeepAspectRatio,
+                                       Qt::SmoothTransformation));
     }
     else
     {
-        img_JudgeSelfStatus = QImage(":/ui/image/icon/right.png");
-    }
-
-    if(ui->lineEdit_password->text() != ui->lineEdit_pwdIdentify->text())
-    {
-        img_JudgeIdtiStatus = QImage(":/ui/image/icon/wrong.png");
-    }
-    else
-    {
-        img_JudgeIdtiStatus = QImage(":/ui/image/icon/right.png");
-    }
-
-    QPixmap pm_JudgeSelfStatus = QPixmap::fromImage(img_JudgeSelfStatus);
-    ui->label_statusPwd->setPixmap(pm_JudgeSelfStatus.scaled(ui->label_log->size(),
+        ui->label_statusPwd->setPixmap(QPixmap(":/ui/image/icon/right.png").
+                                       scaled(ui->label_statusPwd->size(),
                                        Qt::KeepAspectRatio,
                                        Qt::SmoothTransformation));
-    QPixmap pm_JudgeIdtiStatus = QPixmap::fromImage(img_JudgeIdtiStatus);
-    ui->label_statusIdtiPwd->setPixmap(pm_JudgeIdtiStatus.scaled(ui->label_log->size(),
-                                       Qt::KeepAspectRatio,
-                                       Qt::SmoothTransformation));
+    }
 }

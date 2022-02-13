@@ -7,6 +7,7 @@ class UserInfor;
 class UserDetailDlg;
 class QStandardItemModel;
 class QSortFilterProxyModel;
+class MuItemDelegate;
 
 namespace Ui {
 class UserMainWindow;
@@ -29,9 +30,14 @@ private slots:
     void on_ptn_userIcon_clicked();
     void on_lineEdit_search_textChanged(const QString &arg1);
 
+    void on_ptn_friendList_clicked();
+
+    void on_ptn_message_clicked();
+
 private:
     void setStyle();
-    void initFriendView();
+    void initContactsView();
+    void initFriendsView();
 //    void initFriendList();
     void findFriend();
 private:
@@ -46,6 +52,7 @@ private:
     QVector<UserInfor>* m_UserData;
     QStandardItemModel* m_UserDataModel;
     QSortFilterProxyModel* m_UserDataProxyModel;
+    MuItemDelegate* m_ItemDelegate;
 private:
     Ui::UserMainWindow* ui;
 };

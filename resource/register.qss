@@ -1,6 +1,7 @@
 #Register
 {
-	background-color:white
+	background: white;
+	border: black;
 }
 
 QLineEdit{

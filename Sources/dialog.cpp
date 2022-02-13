@@ -7,7 +7,6 @@
 #include "Headers/register.h"
 #include "Headers/usermainwindow.h"
 #include "Headers/userinfor.h"
-#include <QGraphicsDropShadowEffect>
 #include <QPainter>
 
 Dialog::Dialog(QWidget *parent) :
@@ -18,6 +17,7 @@ Dialog::Dialog(QWidget *parent) :
     setStyle();
     setLog();
     this->setAttribute(Qt::WA_DeleteOnClose);
+    setAttribute(Qt::WA_StyledBackground);
 }
 
 Dialog::~Dialog()
@@ -73,6 +73,7 @@ void Dialog::setStyle()
         qssFile.close();
     }
     this->setWindowFlags(Qt::FramelessWindowHint);
+
 }
 
 void Dialog::on_pushButton_register_clicked()
