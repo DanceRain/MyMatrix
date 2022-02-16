@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/root/MyGitProject/MyMatrix/Server/main.cpp
+cppconn/connection.h
+-
+cppconn/driver.h
+-
+cppconn/statement.h
+-
+mysql_driver.h
+/root/MyGitProject/MyMatrix/Server/mysql_driver.h
+mysql_driver.h
+-
+exception
+-
+iostream
+-
+string
+-
+utility
+-
+

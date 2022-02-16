@@ -1,0 +1,3 @@
+/root/MyGitProject/MyMatrix/Server/CMakeFiles/rebuild_cache.dir
+/root/MyGitProject/MyMatrix/Server/CMakeFiles/CallNumber.dir
+/root/MyGitProject/MyMatrix/Server/CMakeFiles/edit_cache.dir
