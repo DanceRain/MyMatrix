@@ -11,7 +11,7 @@ const string g_sdefaultUser = "neo";
 const string g_sdefaultPass = "123456";
 const int g_imaxSize = 20;
 
-
+unique_ptr<ConnectionPool> ConnectionPool::onlyInstance;
 ConnectionPool::ConnectionPool(const std::string& host, 
         const std::string& userName, 
         const std::string& pwd, int maxSize):
@@ -21,9 +21,9 @@ ConnectionPool::ConnectionPool(const std::string& host,
     {
         m_pDriver = get_driver_instance();
     }
-    catch
+    catch(SQLException& e)
     {
-        
+        cerr << e.what() << endl;
     }
     this->InitConnectionPool(maxSize / 2);
 }
@@ -150,3 +150,7 @@ unsigned ConnectionPool::getCurrentSize()
     return _CURRENTSIZE_;
 }
 
+ConnectionPool::~ConnectionPool()
+{
+    TerminateConnectionPool();
+}

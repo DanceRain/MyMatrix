@@ -22,11 +22,10 @@ public:
     ConnectionPool(const ConnectionPool&) = delete;
     ConnectionPool& operator=(const ConnectionPool&) = delete;
     ConnectionPool& operator=(const ConnectionPool&&) = delete;
-
+    ~ConnectionPool();
 private:
     ConnectionPool(const string& host, const string& userName, const string& pwd, int maxSize);
-    ~ConnectionPool() = default;
-    void InitConncetionPool(unsigned connectionSize);
+    void InitConnectionPool(unsigned connectionSize);
     void TerminateConnectionPool();
     void TerminateConnectionFromPool(Connection* p);
     Connection* CreateOneConnection();

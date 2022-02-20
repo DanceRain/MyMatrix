@@ -2,3 +2,4 @@
 *~
 build-MyMatrix-Desktop_Qt_5_13_0_MinGW_64_bit-Debug/
 Server/build
+*.swp

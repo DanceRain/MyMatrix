@@ -3,8 +3,11 @@ PROJECT(MyMatrix_Server)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_COMPILER "g++")
 include_directories(~/usr/local/lib/)
-
-add_executable(CallNumber main.cpp)
+include_directories("./src")
+aux_source_directory(./ main_src)
+add_subdirectory(src)
+add_executable(CallNumber ${main_src})
+target_link_libraries(CallNumber src)
 target_link_libraries(CallNumber mysqlcppconn)
 
 #target_link_libraries(CallNumber /usr/local/lib/libodb-mysql.so)
