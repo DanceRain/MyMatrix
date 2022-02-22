@@ -27,6 +27,8 @@ private slots:
 
     void on_lineEdit_password_textChanged(const QString &arg1);
 
+    void on_pushButton_finReg_clicked();
+
 private:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
@@ -43,7 +45,6 @@ private:
 private:
     QWidget* widget_lastWindow;
     Ui::Register *ui;
-
 };
 
 #endif // REGISTER_H

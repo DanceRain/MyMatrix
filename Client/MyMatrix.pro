@@ -28,6 +28,7 @@ SOURCES += \
 		Sources/dialog.cpp \
 		Sources/main.cpp \
 		Sources/register.cpp \
+		Sources/talk_to_server.cpp \
 		Sources/usermainwindow.cpp \
 		Sources/userdetaildlg.cpp \
 		Sources/userinfor.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
 		Headers/userinfor.h \
 		Headers/MuItemDelegate.h \
 		Headers/MuListItemData.h \
+		Headers/talk_to_server.h
 
 FORMS += \
 		Forms/dialog.ui \
@@ -57,4 +59,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
 	resource/qss.qrc \
 	resource/ui.qrc \
+
+LIBS += -lwsock32
 

@@ -37,9 +37,9 @@ public:
 
 
 private:
-     QString sNickName;
-     QString sUserArea;
-     QString sUserNote;
+    QString sNickName;
+    QString sUserArea;
+    QString sUserNote;
     QString sUserNumber;
     QPixmap pixUserGender;
     QPixmap pixUserIcon;

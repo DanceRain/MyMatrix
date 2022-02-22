@@ -140,3 +140,8 @@ void Register::on_lineEdit_password_textChanged(const QString &arg1)
                                        Qt::SmoothTransformation));
     }
 }
+
+void Register::on_pushButton_finReg_clicked()
+{
+
+}
