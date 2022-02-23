@@ -1,32 +1,36 @@
 ﻿#ifndef TALK_TO_SERVER_H
 #define TALK_TO_SERVER_H
 
-#include <boost/bind/bind.hpp>
-#include <boost/asio.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/utility.hpp>
-#include <boost/thread.hpp>
-#include <string>
+#include <QtCore/QObject>
+#include <QtWebSockets/QWebSocket>
+#include <QtNetwork/QSslError>
+#include <QtCore/QList>
+#include <QtCore/QString>
+#include <QtCore/QUrl>
 
-static boost::asio::io_service IOSERVICE;
-static const unsigned _max_msg = 1024;
-
-class Talk_To_Server :
-        public boost::enable_shared_from_this<Talk_To_Server>,
-        boost::noncopyable
+class Talk_To_Server : public QObject
 {
-private:
-    Talk_To_Server(const std::string& user_name, const std::string& pwd) : {
-
-    }
+    Q_OBJECT
 public:
+    explicit Talk_To_Server(const QUrl &url, QObject *parent = nullptr);
+public:
+    void m_register(const QString& user_name, const QString& pwd);
+    void m_login(const QString& user_id, const QString& pwd);
+
+Q_SIGNALS:
+    void closed();
+
+private Q_SLOTS:
+    void onConnected();
+    void onTextMessageReceived(QString message);
 
 private:
-    boost::asio::ip::tcp::socket _sock;
-    char _read_buffer[_max_msg];
-    char _write_buffe[_max_msg];
-    bool _is_online;
+    bool _is_connected = false;
 
+    QUrl m_url;
+
+private:
+    QWebSocket m_webSocket;
 };
 
 #endif // TALK_TO_SERVER_H
