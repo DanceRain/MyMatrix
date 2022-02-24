@@ -7,6 +7,11 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 #include <QtCore/QUrl>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QList>
+#include <QByteArray>
 
 class Talk_To_Server : public QObject
 {
@@ -16,11 +21,12 @@ public:
 public:
     void m_register(const QString& user_name, const QString& pwd);
     void m_login(const QString& user_id, const QString& pwd);
-
 Q_SIGNALS:
     void closed();
+    void writeMessageList();
 
 private Q_SLOTS:
+    void sendMessageList();
     void onConnected();
     void onTextMessageReceived(QString message);
 
@@ -31,6 +37,7 @@ private:
 
 private:
     QWebSocket m_webSocket;
+    QList<QByteArray> m_messageList;
 };
 
 #endif // TALK_TO_SERVER_H

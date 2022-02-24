@@ -9,8 +9,9 @@
 #include "Headers/userinfor.h"
 #include <QPainter>
 
-Dialog::Dialog(QWidget *parent) :
+Dialog::Dialog(Talk_To_Server* _deliver, QWidget *parent) :
     QWidget(parent),
+    m_deliver(_deliver),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
@@ -78,7 +79,7 @@ void Dialog::setStyle()
 
 void Dialog::on_pushButton_register_clicked()
 {
-    Register* qdlog_Register = new Register(nullptr, this);
+    Register* qdlog_Register = new Register(m_deliver, this);
     qdlog_Register->show();
     this->setVisible(false);
 }

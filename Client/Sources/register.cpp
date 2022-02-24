@@ -8,7 +8,8 @@
 #include <QRegExpValidator>
 #include "Headers/talk_to_server.h"
 
-Register::Register(QWidget *parent, QWidget *lastWindow) :
+Register::Register(Talk_To_Server* _deliver, QWidget *lastWindow, QWidget *parent) :
+    m_deliver(_deliver),
     QDialog(parent),
     widget_lastWindow(lastWindow),
     ui(new Ui::Register)
@@ -144,5 +145,5 @@ void Register::on_lineEdit_password_textChanged(const QString &arg1)
 
 void Register::on_pushButton_finReg_clicked()
 {
-    Talk_To_Server* phone = new Talk_To_Server(QStringLiteral("ws://112.126.96.244:9999"), this);
+    m_deliver->m_register(ui->lineEdit_account->text(), ui->lineEdit_password->text());
 }

@@ -2,7 +2,7 @@
 #define DIALOG_H
 
 #include <QWidget>
-
+#include "Headers/talk_to_server.h"
 /*登录界面*/
 namespace Ui {
 class Dialog;
@@ -13,7 +13,7 @@ class Dialog : public QWidget
     Q_OBJECT
     Q_CLASSINFO ("author", "GuixinWang")
 public:
-    explicit Dialog(QWidget *parent = nullptr);
+    explicit Dialog(Talk_To_Server* _deliver = nullptr, QWidget *parent = nullptr);
     ~Dialog();
 
 private slots:
@@ -28,6 +28,7 @@ private:
     void setLog();
     void setStyle();
 
+private:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);
@@ -35,6 +36,9 @@ private:
     QPoint mouseStartPoint;
     QPoint windowTopLeftPoint;
     bool IsMoving = false;
+private:
+    Talk_To_Server* m_deliver;
+private:
     Ui::Dialog *ui;
 };
 

@@ -21,6 +21,10 @@ QPushButton{
 	color: white;
 	background:rgb(0, 0, 0);
 }
+#pushButton_finReg:hover
+{
+	color: rgb(107, 107, 107);
+}
 #pushButton_back
 {
 	font-size: 15px;

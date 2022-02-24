@@ -2,7 +2,7 @@
 #define REGISTER_H
 
 #include <QDialog>
-
+#include "Headers/talk_to_server.h"
 /*注册界面*/
 namespace Ui {
 class Register;
@@ -13,7 +13,7 @@ class Register : public QDialog
     Q_OBJECT
 
 public:
-    explicit Register(QWidget *parent = nullptr, QWidget *lastWindow = nullptr);
+    explicit Register(Talk_To_Server* _deliver = nullptr, QWidget *lastWindow = nullptr, QWidget *parent = nullptr);
     ~Register();
 
 private slots:
@@ -41,7 +41,8 @@ private:
     void setLog();
     void setStyle();
     void setLineEditValidator();
-
+private:
+    Talk_To_Server* m_deliver;
 private:
     QWidget* widget_lastWindow;
     Ui::Register *ui;
