@@ -118,6 +118,16 @@ Connection* ConnectionPool::getConnectionFromPool()
     }
 }
 
+void ConnectionPool::releaseConnection(Connection* pConn)
+{
+    if(pConn)
+    {
+        pthread_mutex_lock(&lock);
+        m_connList.push_back(pConn);
+        pthread_mutex_unlock(&lock);
+    }    
+}
+
 void ConnectionPool::TerminateConnectionPool()
 {
     list<Connection*>::iterator it;
