@@ -37,6 +37,7 @@ public:
 
 
 private:
+
     QString sNickName;
     QString sUserArea;
     QString sUserNote;
