@@ -1,6 +1,11 @@
 ﻿#include "Headers/talk_to_server.h"
 #include <boost/uuid/detail/md5.hpp>
 
+struct RegisterInfor
+{
+
+};
+
 Talk_To_Server::Talk_To_Server(const QUrl &url, QObject *parent):
     QObject (parent),
     m_url(url)
@@ -15,6 +20,7 @@ Talk_To_Server::Talk_To_Server(const QUrl &url, QObject *parent):
 void Talk_To_Server::m_register(const QString& user_name, const QString& pwd)
 {
     QJsonObject user_register_infor_obj;
+    user_register_infor_obj.insert("content_type", 1);
     user_register_infor_obj.insert("user_name", user_name);
     user_register_infor_obj.insert("user_pwd", pwd);
 
@@ -44,10 +50,12 @@ void Talk_To_Server::sendMessageList()
 void Talk_To_Server::onConnected()
 {
     _is_connected = true;
+    connect(&m_webSocket, &QWebSocket::textMessageReceived,
+            this, &Talk_To_Server::onTextMessageReceived);
     qDebug() << "connected" << endl;
 }
 
-void Talk_To_Server::onTextMessageReceived(QString message)
+void Talk_To_Server::onTextMessageReceived(const QString& message)
 {
 
 }

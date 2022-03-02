@@ -15,6 +15,7 @@ Register::Register(Talk_To_Server* _deliver, QWidget *lastWindow, QWidget *paren
     ui(new Ui::Register)
 {
     ui->setupUi(this);
+    ui->lineEdit_pwdIdentify->setEnabled(false);
     this->setAttribute(Qt::WA_DeleteOnClose);
     setStyle();
     setLog();
@@ -133,6 +134,7 @@ void Register::on_lineEdit_password_textChanged(const QString &arg1)
                                        scaled(ui->label_statusPwd->size(),
                                        Qt::KeepAspectRatio,
                                        Qt::SmoothTransformation));
+        ui->lineEdit_pwdIdentify->setEnabled(false);
     }
     else
     {
@@ -140,10 +142,35 @@ void Register::on_lineEdit_password_textChanged(const QString &arg1)
                                        scaled(ui->label_statusPwd->size(),
                                        Qt::KeepAspectRatio,
                                        Qt::SmoothTransformation));
+        ui->lineEdit_pwdIdentify->setEnabled(true);
     }
 }
 
 void Register::on_pushButton_finReg_clicked()
 {
+    if(!(ui->lineEdit_account->text().compare(""))
+            || ui->lineEdit_pwdIdentify->text().compare(ui->lineEdit_password->text())
+            || ui->lineEdit_password->text().size() < 8)
+    {
+        return;
+    }
     m_deliver->m_register(ui->lineEdit_account->text(), ui->lineEdit_password->text());
+}
+
+void Register::on_lineEdit_account_textChanged(const QString &arg1)
+{
+    if(ui->lineEdit_account->text().compare(""))
+    {
+        ui->label_statusUser->setPixmap(QPixmap(":/ui/image/icon/right.png").
+                                       scaled(ui->label_statusPwd->size(),
+                                       Qt::KeepAspectRatio,
+                                       Qt::SmoothTransformation));
+    }
+    else
+    {
+        ui->label_statusUser->setPixmap(QPixmap(":/ui/image/icon/wrong.png").
+                                       scaled(ui->label_statusPwd->size(),
+                                       Qt::KeepAspectRatio,
+                                       Qt::SmoothTransformation));
+    }
 }

@@ -28,7 +28,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void sendMessageList();
     void onConnected();
-    void onTextMessageReceived(QString message);
+    void onTextMessageReceived(const QString& message);
 
 private:
     bool _is_connected = false;

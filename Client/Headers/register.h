@@ -29,6 +29,8 @@ private slots:
 
     void on_pushButton_finReg_clicked();
 
+    void on_lineEdit_account_textChanged(const QString &arg1);
+
 private:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
