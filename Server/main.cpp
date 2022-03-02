@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <boost/property_tree/ptree_fwd.hpp>
 #include <cppconn/connection.h>
+#include <cppconn/exception.h>
+#include <cppconn/prepared_statement.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include <iostream>
@@ -26,24 +28,37 @@ using namespace sql;
 const string DataBase = "MatrixDB";
 
 typedef websocketpp::server<websocketpp::config::asio> server;
+#define CPPCONN_LIB_BUILD 1
 
 string userRegister(const string& _user_name, const string& _user_pwd)
 {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
-    cout << ConnectionPool::getConnectionPool().getCurrentSize() << endl;
+    pConn->setSchema(DataBase);
+    string newId;
     if(pConn != nullptr)
     {
-        cout << "start register" << endl;
-        unique_ptr<Statement> pStmt(pConn->createStatement());
-        pStmt->execute("use " + DataBase + ";");
-        unique_ptr<ResultSet> pRes(pStmt->executeQuery("call userRegister(\"" + _user_name + "\"," + "\"" + _user_pwd + "\")"));
-        while(pRes->next())
+        try
         {
-            return pRes->getString("new_id");
-        } 
+            cout << "start register" << endl;
+            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("CALL userRegister(?, ?)"));
+            unique_ptr<ResultSet> pRes;
+            pStmt->setString(1, _user_name);
+            pStmt->setString(2, _user_pwd);
+            pStmt->execute();
+            pRes.reset(pStmt->getResultSet());
+            pRes->next();
+            cout << "the new id:";
+            cout << pRes->getString("_user_account") << endl;
+            newId = pRes->getString("_user_account");
+        }
+        catch(SQLException& e)
+        {
+            cerr << e.what() << endl;
+        }
+        ConnectionPool::getConnectionPool().releaseConnection(pConn);
     }
-    ConnectionPool::getConnectionPool().releaseConnection(pConn);
-    return "";
+
+    return newId;
 }
 
 void on_message(websocketpp::connection_hdl, server::message_ptr msg)
@@ -81,6 +96,7 @@ int main()
     try
     {
         server print_server;
+        print_server.set_reuse_addr(true);
         print_server.set_message_handler(&on_message);
         print_server.set_access_channels(websocketpp::log::alevel::all);
         print_server.set_error_channels(websocketpp::log::elevel::all);

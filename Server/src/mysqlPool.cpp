@@ -10,6 +10,7 @@ const string g_sdefaultHost = "localhost";
 const string g_sdefaultUser = "neo";
 const string g_sdefaultPass = "123456";
 const int g_imaxSize = 20;
+//pthread_mutex_t poolLock;
 
 unique_ptr<ConnectionPool> ConnectionPool::onlyInstance;
 ConnectionPool::ConnectionPool(const std::string& host, 
@@ -32,8 +33,9 @@ ConnectionPool& ConnectionPool::getConnectionPool()
 {
     if(onlyInstance.get() == 0)
     {
-        onlyInstance.reset(new ConnectionPool(g_sdefaultHost, g_sdefaultUser,
-                    g_sdefaultPass, g_imaxSize));
+  //      pthread_mutex_lock(&poolLock);
+        onlyInstance.reset(new ConnectionPool(g_sdefaultHost, g_sdefaultUser, g_sdefaultPass, g_imaxSize));
+    //    pthread_mutex_unlock(&poolLock);
     }
     return *(onlyInstance.get());
 }

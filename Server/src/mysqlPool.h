@@ -50,8 +50,7 @@ private:
     friend class unique_ptr<ConnectionPool>;
     static unique_ptr<ConnectionPool> onlyInstance;
 private:
-    pthread_mutex_t lock;
-    
+    pthread_mutex_t lock; 
 };
 
 
