@@ -5,8 +5,11 @@
 #include <QImage>
 #include <QFile>
 #include <QMouseEvent>
-#include <QRegExpValidator>
+#include <QMessageBox>
 #include "Headers/talk_to_server.h"
+#include <QRegExpValidator>
+#include <QPainter>
+#include <QtMath>
 
 Register::Register(Talk_To_Server* _deliver, QWidget *lastWindow, QWidget *parent) :
     m_deliver(_deliver),
@@ -15,11 +18,14 @@ Register::Register(Talk_To_Server* _deliver, QWidget *lastWindow, QWidget *paren
     ui(new Ui::Register)
 {
     ui->setupUi(this);
-    ui->lineEdit_pwdIdentify->setEnabled(false);
     this->setAttribute(Qt::WA_DeleteOnClose);
+    ui->lineEdit_pwdIdentify->setEnabled(false);
+
     setStyle();
     setLog();
     setLineEditValidator();
+
+    connect(m_deliver, &Talk_To_Server::receivedNewId, this, &Register::inforUserNewId);
 }
 
 Register::~Register()
@@ -149,12 +155,15 @@ void Register::on_lineEdit_password_textChanged(const QString &arg1)
 void Register::on_pushButton_finReg_clicked()
 {
     if(!(ui->lineEdit_account->text().compare(""))
-            || ui->lineEdit_pwdIdentify->text().compare(ui->lineEdit_password->text())
-            || ui->lineEdit_password->text().size() < 8)
+            || (ui->lineEdit_pwdIdentify->text().compare(ui->lineEdit_password->text()))
+            || (ui->lineEdit_password->text().size() < 8))
     {
         return;
     }
-    m_deliver->m_register(ui->lineEdit_account->text(), ui->lineEdit_password->text());
+    else
+    {
+        m_deliver->m_register(ui->lineEdit_account->text(), ui->lineEdit_password->text());
+    }
 }
 
 void Register::on_lineEdit_account_textChanged(const QString &arg1)
@@ -173,4 +182,39 @@ void Register::on_lineEdit_account_textChanged(const QString &arg1)
                                        Qt::KeepAspectRatio,
                                        Qt::SmoothTransformation));
     }
+}
+
+void Register::inforUserNewId(const QString& new_id)
+{
+    QString addZeroPrefixId(new_id);
+    while(addZeroPrefixId.size() < 8)
+    {
+        addZeroPrefixId.push_front('0');
+    }
+    QMessageBox::information(nullptr, "Your Account",
+                             "YOUR MATRIX CALL NUMBER IS " + addZeroPrefixId +
+                             ", PLEASE KEEP FIRMLY IN MIND!");
+}
+
+void Register::paintEvent(QPaintEvent* event)
+{
+    QPainterPath path;
+    path.setFillRule(Qt::WindingFill);
+    path.addRect(0, 0, this->width(), this->height());
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.fillPath(path, QBrush(Qt::white));
+
+    QColor color(0, 0, 0, 50);
+    for(int i=0; i<1; i++)
+    {
+        QPainterPath path;
+        path.setFillRule(Qt::WindingFill);
+        path.addRect(1-i, 1-i, this->width()-(1-i)*2, this->height()-(1-i)*2);
+        color.setAlpha(150 - qSqrt(i)*50);
+        painter.setPen(color);
+        painter.drawPath(path);
+    }
+    //仍然要设置主窗体的背景透明
 }

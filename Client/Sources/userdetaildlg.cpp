@@ -61,11 +61,4 @@ void UserDetailDlg::setStyle()
         this->setStyleSheet(qss);
         qssFile.close();
     }
-    this->setWindowFlags(Qt::FramelessWindowHint);
-    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
-
-    shadow->setBlurRadius(5);   //边框圆角
-    shadow->setColor(Qt::black);//边框颜色
-    shadow->setOffset(0);       //不偏移
-    this->setGraphicsEffect(shadow);
 }

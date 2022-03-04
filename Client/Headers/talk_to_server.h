@@ -24,15 +24,17 @@ public:
 Q_SIGNALS:
     void closed();
     void writeMessageList();
+    void receivedNewId(const QString& new_id);
 
 private Q_SLOTS:
     void sendMessageList();
     void onConnected();
-    void onTextMessageReceived(const QString& message);
+    void onTextMessageReceived(const QByteArray& message);
 
 private:
+    QJsonObject getJsonFromByteArray(const QByteArray& receivedData);
+private:
     bool _is_connected = false;
-
     QUrl m_url;
 
 private:

@@ -31,6 +31,9 @@ private slots:
 
     void on_lineEdit_account_textChanged(const QString &arg1);
 
+    void inforUserNewId(const QString& new_id);
+private:
+    void paintEvent(QPaintEvent* event);
 private:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
