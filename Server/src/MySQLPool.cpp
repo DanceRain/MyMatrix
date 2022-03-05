@@ -1,22 +1,25 @@
-#include "mysqlPool.h"
+#include "MySQLPool.h"
 #include <cppconn/connection.h>
 #include <cppconn/exception.h>
 #include <exception>
 #include <memory>
 #include <pthread.h>
 #include <iostream>
+#include <utility>
 
-const string g_sdefaultHost = "localhost";
-const string g_sdefaultUser = "neo";
-const string g_sdefaultPass = "123456";
-const int g_imaxSize = 20;
-//pthread_mutex_t poolLock;
+const string defaultHost = "localhost";
+const string defaultUser = "neo";
+const string defaultPass = "123456";
+const unsigned maxsize = 20;
+pthread_mutex_t poolLock;
+
 
 unique_ptr<ConnectionPool> ConnectionPool::onlyInstance;
-ConnectionPool::ConnectionPool(const std::string& host, 
-        const std::string& userName, 
-        const std::string& pwd, int maxSize):
-    m_host(host), m_userName(userName), m_pwd(pwd), _MAXSIZE_(maxSize)
+
+ConnectionPool::ConnectionPool(std::string  host,
+        std::string  userName,
+        std::string  pwd, unsigned maxSize):
+    m_host(std::move(host)), m_userName(std::move(userName)), m_pwd(std::move(pwd)), MAXSIZE(maxSize)
 {
     try
     {
@@ -31,13 +34,13 @@ ConnectionPool::ConnectionPool(const std::string& host,
 
 ConnectionPool& ConnectionPool::getConnectionPool()
 {
-    if(onlyInstance.get() == 0)
+    if(onlyInstance == nullptr)
     {
-  //      pthread_mutex_lock(&poolLock);
-        onlyInstance.reset(new ConnectionPool(g_sdefaultHost, g_sdefaultUser, g_sdefaultPass, g_imaxSize));
-    //    pthread_mutex_unlock(&poolLock);
+        pthread_mutex_lock(&poolLock);
+        onlyInstance.reset(new ConnectionPool(defaultHost, defaultUser, defaultPass, maxsize));
+        pthread_mutex_unlock(&poolLock);
     }
-    return *(onlyInstance.get());
+    return *(onlyInstance);
 }
 
 void ConnectionPool::InitConnectionPool(unsigned ConnectionSize)
@@ -50,7 +53,7 @@ void ConnectionPool::InitConnectionPool(unsigned ConnectionSize)
         if(pConn)
         {
             m_connList.push_back(pConn);
-            ++(_CURRENTSIZE_);
+            ++CURRENTSIZE;
         }
         else
         {
@@ -73,12 +76,11 @@ Connection* ConnectionPool::CreateOneConnection()
     }
 }
 
-
 Connection* ConnectionPool::getConnectionFromPool()
 {
     Connection* pConn;
     pthread_mutex_lock(&lock);
-    if(m_connList.size() > 0)
+    if(!m_connList.empty())
     {
         pConn = m_connList.front();
         m_connList.pop_front();
@@ -90,19 +92,19 @@ Connection* ConnectionPool::getConnectionFromPool()
         if(nullptr == pConn)
         {
             //新连接创建错误，当前连接池剩余连接 -1
-            --_CURRENTSIZE_;
+            --CURRENTSIZE;
         }
         pthread_mutex_unlock(&lock);
         return pConn;
     }
     else
     {
-        if(_CURRENTSIZE_ < _MAXSIZE_)
+        if(CURRENTSIZE < MAXSIZE)
         {
             pConn = this->CreateOneConnection();
             if(pConn)
             {
-                ++_CURRENTSIZE_;
+                ++CURRENTSIZE;
                 pthread_mutex_unlock(&lock);
                 return pConn;
             }
@@ -136,9 +138,9 @@ void ConnectionPool::TerminateConnectionPool()
     pthread_mutex_lock(&lock);
     for(it = m_connList.begin(); it != m_connList.end(); ++it)
     {
-        this->TerminateConnectionFromPool(*it);
+        TerminateConnectionFromPool(*it);
     }
-    _CURRENTSIZE_ = 0;
+    CURRENTSIZE = 0;
     m_connList.clear();
     pthread_mutex_unlock(&lock);
 }
@@ -159,7 +161,7 @@ void ConnectionPool::TerminateConnectionFromPool(Connection* pConn)
 
 unsigned ConnectionPool::getCurrentSize()
 {
-    return _CURRENTSIZE_;
+    return CURRENTSIZE;
 }
 
 ConnectionPool::~ConnectionPool()

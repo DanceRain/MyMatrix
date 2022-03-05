@@ -24,10 +24,10 @@ public:
     ConnectionPool& operator=(const ConnectionPool&&) = delete;
     ~ConnectionPool();
 private:
-    ConnectionPool(const string& host, const string& userName, const string& pwd, int maxSize);
+    ConnectionPool(string  host, string  userName, string  pwd, unsigned maxSize);
     void InitConnectionPool(unsigned connectionSize);
     void TerminateConnectionPool();
-    void TerminateConnectionFromPool(Connection* p);
+    static void TerminateConnectionFromPool(Connection* p);
     Connection* CreateOneConnection();
     
 public:
@@ -35,10 +35,10 @@ public:
     Connection* getConnectionFromPool();
     void releaseConnection(Connection* pConn);
     unsigned getCurrentSize();
-    
+
 private:
-    const unsigned _MAXSIZE_;
-    unsigned _CURRENTSIZE_ = 0;
+    const unsigned MAXSIZE = 0;
+    unsigned CURRENTSIZE = 0;
 
 private:
     string m_userName;
@@ -50,7 +50,7 @@ private:
     friend class unique_ptr<ConnectionPool>;
     static unique_ptr<ConnectionPool> onlyInstance;
 private:
-    pthread_mutex_t lock; 
+    pthread_mutex_t lock{};
 };
 
 
