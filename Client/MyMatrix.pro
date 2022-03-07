@@ -34,6 +34,8 @@ SOURCES += \
 		Sources/userdetaildlg.cpp \
 		Sources/userinfor.cpp \
 		Sources/MuItemDelegate.cpp\
+		Sources/BubbleFrame.cpp \
+		Sources/TextBubble.cpp
 
 
 HEADERS += \
@@ -44,7 +46,10 @@ HEADERS += \
 		Headers/userinfor.h \
 		Headers/MuItemDelegate.h \
 		Headers/MuListItemData.h \
-		Headers/talk_to_server.h
+		Headers/talk_to_server.h \
+		Headers/BubbleFrame.h \
+		Headers/ChatRole.h \
+		Headers/TextBubble.h
 
 FORMS += \
 		Forms/dialog.ui \

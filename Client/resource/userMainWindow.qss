@@ -13,7 +13,7 @@ QPushButton{
 	background-color: gray;
 }
 
-/*ptn*/
+/*导航栏*/
 #ptn_userIcon:hover{
 	background-color:blue;
 }
@@ -42,9 +42,7 @@ QPushButton{
 	image:url(:/ui/image/icon/message.png)
 }
 
-
-
-
+/*主窗口控制按钮*/
 #pushButton_minimize{
 	image:url(:ui/image/icon/minimize.png);
 }
@@ -67,4 +65,22 @@ QPushButton{
 #pushButton_maxmize:hover
 {
 	image:url(:/ui/image/icon/maxmize anti.png);
+}
+
+/*聊天功能区*/
+#ptn_emoji
+{
+	image:url(:/ui/image/icon/emoji.png);
+}
+#ptn_screenshot
+{
+	image:url(:/ui/image/icon/screenshot.png);
+}
+#ptn_videoCall
+{
+	image:url(:/ui/image/icon/vedioCall.png);
+}
+#ptn_voiceCall
+{
+	image:url(:/ui/image/icon/voiceCall.png);
 }

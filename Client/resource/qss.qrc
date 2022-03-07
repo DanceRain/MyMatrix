@@ -15,5 +15,9 @@
         <file>image/icon/maxmize anti.png</file>
         <file>image/icon/famale.jpg</file>
         <file>image/icon/male.jpg</file>
+        <file>image/icon/emoji.png</file>
+        <file>image/icon/screenshot.png</file>
+        <file>image/icon/vedioCall.png</file>
+        <file>image/icon/voiceCall.png</file>
     </qresource>
 </RCC>
