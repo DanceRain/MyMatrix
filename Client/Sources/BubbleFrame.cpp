@@ -1,7 +1,7 @@
 ﻿#include "Headers/BubbleFrame.h"
 #include <QPainter>
 #include <QDebug>
-const int WIDTH_SANJIAO  = 100;  //三角宽
+const int WIDTH_SANJIAO  = 8;  //三角宽
 BubbleFrame::BubbleFrame(ChatRole role, QWidget *parent)
     :QFrame(parent)
     ,m_role(role)

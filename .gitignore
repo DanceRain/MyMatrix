@@ -1,6 +1,7 @@
 *.[oa]
 *~
 build-MyMatrix-Desktop_Qt_5_13_0_MinGW_64_bit-Debug/
+client/build
 Server/build
 *.swp
 Server/.clion.source.upload.marker

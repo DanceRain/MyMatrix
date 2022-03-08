@@ -3,6 +3,7 @@
 	background-color:white
 }
 
+
 QPushButton{
 	border: none;
 }
@@ -84,3 +85,15 @@ QPushButton{
 {
 	image:url(:/ui/image/icon/voiceCall.png);
 }
+
+QPushButton#ptn_sendMessage
+{
+	border:1px solid black;
+	margin-top: 2px;
+	margin-right: 2px;
+}
+QPushButton#ptn_sendMessage:hover
+{
+	background-color: gray;
+}
+

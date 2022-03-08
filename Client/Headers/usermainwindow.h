@@ -34,6 +34,8 @@ private slots:
 
     void on_ptn_message_clicked();
 
+    void on_ptn_sendMessage_clicked();
+
 private:
     void setStyle();
     void initContactsView();

@@ -35,7 +35,10 @@ SOURCES += \
 		Sources/userinfor.cpp \
 		Sources/MuItemDelegate.cpp\
 		Sources/BubbleFrame.cpp \
-		Sources/TextBubble.cpp
+		Sources/TextBubble.cpp \
+		Sources/ChatItemBase.cpp \
+		Sources/ChatView.cpp \
+		Sources/MessageTextEdit.cpp
 
 
 HEADERS += \
@@ -49,7 +52,10 @@ HEADERS += \
 		Headers/talk_to_server.h \
 		Headers/BubbleFrame.h \
 		Headers/ChatRole.h \
-		Headers/TextBubble.h
+		Headers/TextBubble.h \
+		Headers/ChatItemBase.h \
+		Headers/ChatView.h \
+		Headers/MessageTextEdit.h
 
 FORMS += \
 		Forms/dialog.ui \

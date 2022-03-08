@@ -3,7 +3,9 @@
 #include "Headers/MuItemDelegate.h"
 #include "Headers/MuListItemData.h"
 #include "Headers/usermainwindow.h"
-
+#include "Headers/ChatItemBase.h"
+#include "Headers/TextBubble.h"
+#include "Headers/ChatView.h"
 #include "ui_usermainwindow.h"
 #include <QStandardItem>
 #include <QStandardItemModel>
@@ -105,7 +107,6 @@ void UserMainWindow::initContactsView()
 
 void UserMainWindow::initFriendsView()
 {
-
     MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
     ui->treeView_friendsList->setItemDelegate(pItemDelegate);
     ui->treeView_friendsList->setModel(m_UserDataProxyModel);
@@ -135,7 +136,6 @@ void UserMainWindow::on_ptn_userIcon_clicked()
     m_UserDetailDlg->setUserGender(m_UserData->at(0).getPixUserGender());
     m_UserDetailDlg->setUserNote(m_UserData->at(0).getSUserNote());
     m_UserDetailDlg->setUserCallNumber(m_UserData->at(0).getSUserNumber());
-
     m_UserDetailDlg->move(QCursor::pos() - this->pos());
     m_UserDetailDlg->show();
 }
@@ -157,4 +157,38 @@ void UserMainWindow::on_ptn_message_clicked()
 {
     ui->listView_recentContacts->show();
     ui->treeView_friendsList->hide();
+}
+
+void UserMainWindow::on_ptn_sendMessage_clicked()
+{
+    MessageTextEdit *pTextEdit = ui->ted_editArea;
+    ChatRole role = ChatRole::Self;
+    QString userName = QStringLiteral("张荆");
+
+    const QVector<MsgInfo>& msgList = pTextEdit->getMsgList();
+    for(int i=0; i<msgList.size(); ++i)
+    {
+        QString type = msgList[i].msgFlag;
+        ChatItemBase *pChatItem = new ChatItemBase(role);
+        pChatItem->setUserName(userName);
+        pChatItem->setUserIcon(QPixmap(":/ui/image/icon/log.png"));
+        QWidget *pBubble = nullptr;
+        if(type == "text")
+        {
+            pBubble = new TextBubble(role, msgList[i].content);
+        }
+        else if(type == "image")
+        {
+//            pBubble = new PictureBubble(QPixmap(msgList[i].content) , role);
+        }
+        else if(type == "file")
+        {
+
+        }
+        if(pBubble != nullptr)
+        {
+            pChatItem->setWidget(pBubble);
+            ui->wdt_inforArea->appendChatItem(pChatItem);
+        }
+    }
 }
