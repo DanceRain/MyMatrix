@@ -62,13 +62,13 @@ void AccountDAO::updateTable(const AccountData &userData)
                     pConn->prepareStatement("UPDATE ? SET user_account = ?, user_pwd = ?, user_name = ?"
                                             "user_icon_path = ?, user_gender = ?, user_area = ? WHERE user_account = ?"));
             pStmt->setString(1, getUserAccountTableName());
-            pStmt->setString(2,  userData.getUserAccount());
+            pStmt->setInt(2,  userData.getUserAccount());
             pStmt->setString(3,  userData.getUserPwd());
             pStmt->setString(4,  userData.getUserName());
             pStmt->setString(5,  userData.getUserIconPath());
             pStmt->setUInt(6,  userData.getGender());
             pStmt->setString(7,  userData.getArea());
-            pStmt->setString(8,  userData.getUserAccount());
+            pStmt->setInt(8,  userData.getUserAccount());
             pStmt->execute();
         }
         catch (SQLException &e) {
@@ -78,37 +78,26 @@ void AccountDAO::updateTable(const AccountData &userData)
     }
 }
 
-AccountData AccountDAO::selectData(const string& userAccount) {
+AccountData AccountDAO::selectData(int userAccount) {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
     AccountData userData;
     if(nullptr != pConn) {
         try {
             pConn->setSchema(getMatrixDBName());
             unique_ptr <PreparedStatement> pStmt(
-                    pConn->prepareStatement("SELECT * FROM ? WHERE user_account = ?"));
+                    pConn->prepareStatement("CALL selectUserDetail(?)"));
             unique_ptr <ResultSet> pRes;
-            pStmt->setString(1,  getUserAccountTableName());
-            pStmt->setString(2,  userAccount);
-            pStmt->execute();
+            pStmt->setInt(1,  userAccount);
+            pStmt->executeUpdate();
             pRes.reset(pStmt->getResultSet());
-
+            if(pRes->next())
             {
-                pRes->next();
-                userData.setUserAccount(userAccount);
-                pRes->next();
+                userData.setUserAccount(pRes->getInt("user_account"));
                 userData.setUserPwd(pRes->getString("user_pwd"));
-                pRes->next();
                 userData.setUserName(pRes->getString("user_name"));
-                pRes->next();
                 userData.setUserIconPath(pRes->getString("user_icon_path"));
-                pRes->next();
                 userData.setGender(pRes->getInt("user_gender"));
-                pRes->next();
                 userData.setArea(pRes->getString("user_area"));
-            }
-            for(int i = 0; pRes->next() && i < getAccountTableColName().size(); ++i)
-            {
-
             }
         }
         catch (SQLException &e) {
@@ -119,7 +108,7 @@ AccountData AccountDAO::selectData(const string& userAccount) {
     return userData;
 }
 
-void AccountDAO::deleteData(const string &userAccount) {
+void AccountDAO::deleteData(int userAccount) {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
     if(nullptr != pConn) {
         try {
@@ -127,7 +116,7 @@ void AccountDAO::deleteData(const string &userAccount) {
             unique_ptr <PreparedStatement> pStmt(
                     pConn->prepareStatement("DELETE FROM ? WHERE user_account = ?"));
             pStmt->setString(1,  getUserAccountTableName());
-            pStmt->setString(2,  userAccount);
+            pStmt->setInt(2,  userAccount);
             pStmt->execute();
         }
         catch (SQLException &e) {

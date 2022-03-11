@@ -8,11 +8,11 @@
 #include <string>
 class AccountData {
 public:
-    explicit AccountData(std::string userAccount = "", std::string userPwd = "", std::string userName = "",
+    explicit AccountData(int userAccount = -1, std::string userPwd = "", std::string userName = "",
                 std::string userIconPath = "", unsigned int gender = 0, std::string area = "");
 
-    const std::string &getUserAccount() const;
-    void setUserAccount(const std::string &userAccount);
+    int getUserAccount() const;
+    void setUserAccount(int userAccount);
 
     const std::string &getUserPwd() const;
     void setUserPwd(const std::string &userPwd);
@@ -30,7 +30,7 @@ public:
     void setArea(const std::string &area);
 
 private:
-    std::string user_account;
+    int user_account;
     std::string user_pwd;
     std::string user_name;
     std::string user_icon_path;
