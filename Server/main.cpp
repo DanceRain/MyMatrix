@@ -5,25 +5,19 @@
  */
 #include <boost/json/serialize.hpp>
 #include <boost/property_tree/ptree_fwd.hpp>
-#include <cppconn/connection.h>
-#include <cppconn/exception.h>
-#include <cppconn/prepared_statement.h>
-#include <cppconn/resultset.h>
 #include <iostream>
-#include <memory>
 #include <websocketpp/common/connection_hdl.hpp>
-#include <websocketpp/connection_base.hpp>
 #include <websocketpp/error.hpp>
 #include <websocketpp/logger/levels.hpp>
 #include <websocketpp/roles/server_endpoint.hpp>
-#include <websocketpp/server.hpp>
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <string>
 #include <boost/json.hpp>
 #include "MatrixUtility.h"
+#include <httplib.h>
+#include <stdlib.h>
 
 using namespace std;
-using namespace sql;
 
 typedef websocketpp::server<websocketpp::config::asio> server;
 using websocketpp::lib::placeholders::_1;
@@ -75,7 +69,35 @@ void on_message(server* s, websocketpp::connection_hdl hdl, server::message_ptr 
 
 int main()
 {
-    try
+    httplib::Server svr;
+    svr.Post("/register", [](const httplib::Request& req, httplib::Response& res)
+    {
+        cout << req.body << endl;
+        auto decode_infor = boost::json::parse(req.body);
+        string user_name = decode_infor.as_object()["user_name"].as_string().data();
+        string user_pwd = decode_infor.as_object()["user_pwd"].as_string().data();
+        string newId = userRegister(user_name, user_pwd);
+        boost::json::value response = {
+                {"content_type", 1},
+                { "new_id", newId}
+        };
+       res.set_content(boost::json::serialize(response), "text/plain");
+    });
+    svr.Post("/login", [](const httplib::Request& req, httplib::Response& res)
+    {
+        cout << req.body << endl;
+        auto decode_infor = boost::json::parse(req.body.c_str());
+        string user_id = decode_infor.as_object()["user_id"].as_string().data();
+        string user_pwd = decode_infor.as_object()["user_pwd"].as_string().data();
+        bool  IsRight = userLogin(atoi(user_id.c_str()), user_pwd);
+        boost::json::value response = {
+                {"content_type", 2},
+                { "is_right", IsRight}
+        };
+        res.set_content(boost::json::serialize(response), "text/plain");
+    });
+    svr.listen("0.0.0.0", 9999);
+/*    try
     {
         server matrix_server;
         matrix_server.set_reuse_addr(true);
@@ -90,6 +112,6 @@ int main()
     }catch(const websocketpp::exception& e)
     {
         cerr << e.what() << endl;
-    }
+    }*/
     return 0;
 }

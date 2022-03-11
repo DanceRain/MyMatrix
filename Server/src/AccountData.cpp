@@ -5,11 +5,11 @@
 #include "AccountData.h"
 #include <utility>
 
-const std::string &AccountData::getUserAccount() const {
+int AccountData::getUserAccount() const {
     return user_account;
 }
 
-void AccountData::setUserAccount(const std::string &userAccount) {
+void AccountData::setUserAccount(int userAccount) {
     user_account = userAccount;
 }
 
@@ -53,9 +53,9 @@ void AccountData::setArea(const std::string &area) {
     AccountData::area = area;
 }
 
-AccountData::AccountData(std::string userAccount,std::string userPwd,std::string userName,
+AccountData::AccountData(int userAccount,std::string userPwd,std::string userName,
                          std::string userIconPath,unsigned int gender,std::string area) :
-                         user_account(std::move(userAccount)),
+                         user_account(userAccount),
                          user_pwd(std::move(userPwd)),
                          user_name(std::move(userName)),
                          user_icon_path(std::move(userIconPath)),
