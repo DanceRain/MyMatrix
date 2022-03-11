@@ -9,7 +9,10 @@
 #include "Headers/talk_to_server.h"
 #include <QRegExpValidator>
 #include <QPainter>
-#include <QtMath>
+#include "Headers/Matrix_Call.h"
+#include "Headers/httplib.h"
+#include <iostream>
+#include <string>
 
 Register::Register(Talk_To_Server* _deliver, QWidget *lastWindow, QWidget *parent) :
     m_deliver(_deliver),
@@ -24,8 +27,6 @@ Register::Register(Talk_To_Server* _deliver, QWidget *lastWindow, QWidget *paren
     setStyle();
     setLog();
     setLineEditValidator();
-
-    connect(m_deliver, &Talk_To_Server::receivedNewId, this, &Register::inforUserNewId);
 }
 
 Register::~Register()
@@ -162,7 +163,21 @@ void Register::on_pushButton_finReg_clicked()
     }
     else
     {
-        m_deliver->m_register(ui->lineEdit_account->text(), ui->lineEdit_password->text());
+        QJsonObject user_register_infor_obj;
+        user_register_infor_obj.insert("content_type", 1);
+        user_register_infor_obj.insert("user_name", ui->lineEdit_account->text());
+        user_register_infor_obj.insert("user_pwd", ui->lineEdit_password->text());
+        QJsonDocument user_register_infor_doc;
+        user_register_infor_doc.setObject(user_register_infor_obj);
+        QByteArray user_register_infor_str = user_register_infor_doc.toJson(QJsonDocument::Compact);
+
+        httplib::Client cli("112.126.96.244", 9999);
+        auto res = cli.Post("/register", user_register_infor_str.toStdString(), "application/json");
+
+        QJsonParseError jsonPraseError;
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(res->body.c_str(), &jsonPraseError);
+
+        inforUserNewId(jsonDoc.object()["new_id"].toString());
     }
 }
 
@@ -212,9 +227,8 @@ void Register::paintEvent(QPaintEvent* event)
         QPainterPath path;
         path.setFillRule(Qt::WindingFill);
         path.addRect(1-i, 1-i, this->width()-(1-i)*2, this->height()-(1-i)*2);
-        color.setAlpha(150 - qSqrt(i)*50);
+        color.setAlpha(150);
         painter.setPen(color);
         painter.drawPath(path);
     }
-    //仍然要设置主窗体的背景透明
 }

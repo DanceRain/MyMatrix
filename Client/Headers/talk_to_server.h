@@ -33,6 +33,7 @@ private Q_SLOTS:
 
 private:
     QJsonObject getJsonFromByteArray(const QByteArray& receivedData);
+
 private:
     bool _is_connected = false;
     QUrl m_url;

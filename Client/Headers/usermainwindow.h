@@ -21,6 +21,7 @@ public:
     explicit UserMainWindow(QWidget *parent = nullptr, QVector<UserInfor>* currentUserData = nullptr);
     ~UserMainWindow();
 protected:
+    void paintEvent(QPaintEvent* event);
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);

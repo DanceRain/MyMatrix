@@ -38,7 +38,8 @@ SOURCES += \
 		Sources/TextBubble.cpp \
 		Sources/ChatItemBase.cpp \
 		Sources/ChatView.cpp \
-		Sources/MessageTextEdit.cpp
+		Sources/MessageTextEdit.cpp \
+		Sources/Matrix_Call.cpp
 
 
 HEADERS += \
@@ -55,7 +56,9 @@ HEADERS += \
 		Headers/TextBubble.h \
 		Headers/ChatItemBase.h \
 		Headers/ChatView.h \
-		Headers/MessageTextEdit.h
+		Headers/MessageTextEdit.h \
+		Headers/Matrix_Call.h \
+		Headers/httplib.h
 
 FORMS += \
 		Forms/dialog.ui \
@@ -73,4 +76,5 @@ RESOURCES += \
 	resource/ui.qrc \
 
 LIBS += -lwsock32
+LIBS += -lws2_32
 

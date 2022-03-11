@@ -7,6 +7,7 @@
 #include "Headers/register.h"
 #include "Headers/usermainwindow.h"
 #include "Headers/userinfor.h"
+#include "Headers/httplib.h"
 #include <QPainter>
 
 Dialog::Dialog(Talk_To_Server* _deliver, QWidget *parent) :
@@ -86,20 +87,64 @@ void Dialog::on_pushButton_register_clicked()
 
 void Dialog::on_pushButton_login_clicked()
 {
-    QVector<UserInfor>* userData = new QVector<UserInfor>();
-    QVector<QString>* message = new QVector<QString>();
-    message->push_back("这是句测试");
-    for(int i = 0; i < 100; ++i)
+    if(!(ui->lineEdit_account->text().isEmpty()) && ui->lineEdit_password->text().size() >= 5)
     {
-        userData->push_back(UserInfor(QString("王桂鑫%1").arg(i), QPixmap(":/ui/image/icon/log.png"), *message));
+       QJsonObject user_register_infor_obj;
+       user_register_infor_obj.insert("content_type", 2);
+       user_register_infor_obj.insert("user_id", ui->lineEdit_account->text());
+       user_register_infor_obj.insert("user_pwd", ui->lineEdit_password->text());
+       QJsonDocument user_register_infor_doc;
+       user_register_infor_doc.setObject(user_register_infor_obj);
+       QByteArray user_register_infor_str = user_register_infor_doc.toJson(QJsonDocument::Compact);
+
+       qDebug() << user_register_infor_str << endl;
+       httplib::Client cli("112.126.96.244", 9999);
+       auto res = cli.Post("/login", user_register_infor_str.toStdString(), "application/json");
+
+       QJsonParseError jsonPraseError;
+       QJsonDocument jsonDoc = QJsonDocument::fromJson(res->body.c_str(), &jsonPraseError);
+       if(jsonDoc["is_right"].toBool())
+       {
+           QVector<UserInfor>* userData = new QVector<UserInfor>();
+           QVector<QString>* message = new QVector<QString>();
+           message->push_back("这是句测试");
+           for(int i = 0; i < 100; ++i)
+           {
+               userData->push_back(UserInfor(QString("王桂鑫%1").arg(i), QPixmap(":/ui/image/icon/log.png"), *message));
+           }
+           (*userData)[0].setSUserArea("中国 湖北");
+           (*userData)[0].setSUserNumber("000001");
+           (*userData)[0].setSUserNote("这是我自己");
+           (*userData)[0].setPixUserGender(QPixmap(":/ui/image/icon/famale.jpg"));
+           (*userData)[0].setSUserNote("这是我自己");
+           UserMainWindow* userWindow = new UserMainWindow(nullptr, userData);
+           userWindow->show();
+        //   this->hide();
+           this->close();
+       }
     }
-    (*userData)[0].setSUserArea("中国 湖北");
-    (*userData)[0].setSUserNumber("000001");
-    (*userData)[0].setSUserNote("这是我自己");
-    (*userData)[0].setPixUserGender(QPixmap(":/ui/image/icon/famale.jpg"));
-    (*userData)[0].setSUserNote("这是我自己");
-    UserMainWindow* userWindow = new UserMainWindow(nullptr, userData);
-    userWindow->show();
-//    this->hide();
-    this->close();
+
+}
+
+void Dialog::paintEvent(QPaintEvent *event)
+{
+    QPainterPath path;
+    path.setFillRule(Qt::WindingFill);
+    path.addRect(0, 0, this->width(), this->height());
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.fillPath(path, QBrush(Qt::white));
+
+    QColor color(0, 0, 0, 50);
+    for(int i=0; i<1; i++)
+    {
+        QPainterPath path;
+        path.setFillRule(Qt::WindingFill);
+        path.addRect(1-i, 1-i, this->width()-(1-i)*2, this->height()-(1-i)*2);
+        color.setAlpha(150);
+        painter.setPen(color);
+        painter.drawPath(path);
+    }
+    //仍然要设置主窗体的背景透明
 }

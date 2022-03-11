@@ -69,6 +69,29 @@ void UserMainWindow::mouseReleaseEvent(QMouseEvent* e)
     }
 }
 
+void UserMainWindow::paintEvent(QPaintEvent* event)
+{
+    QPainterPath path;
+    path.setFillRule(Qt::WindingFill);
+    path.addRect(0, 0, this->width(), this->height());
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.fillPath(path, QBrush(Qt::white));
+
+    QColor color(0, 0, 0, 50);
+    for(int i=0; i<1; i++)
+    {
+        QPainterPath path;
+        path.setFillRule(Qt::WindingFill);
+        path.addRect(1-i, 1-i, this->width()-(1-i)*2, this->height()-(1-i)*2);
+        color.setAlpha(150);
+        painter.setPen(color);
+        painter.drawPath(path);
+    }
+}
+
+
 void UserMainWindow::setStyle()
 {
     QString qss;
