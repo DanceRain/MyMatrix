@@ -1,5 +1,5 @@
-﻿#ifndef MULISTITEMDATA_H
-#define MULISTITEMDATA_H
+﻿#ifndef MULT_ITEM_DATA_H
+#define MULT_ITEM_DATA_H
 
 #include <QMetaType>
 #include <QString>
@@ -13,4 +13,4 @@ typedef struct {
 
 Q_DECLARE_METATYPE(MuItemData)
 
-#endif // MULISTITEMDATA_H
+#endif // MULT_ITEM_DATA_H

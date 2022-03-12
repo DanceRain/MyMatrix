@@ -14,8 +14,7 @@
 #include <iostream>
 #include <string>
 
-Register::Register(Talk_To_Server* _deliver, QWidget *lastWindow, QWidget *parent) :
-    m_deliver(_deliver),
+Register::Register(QWidget *lastWindow, QWidget *parent) :
     QDialog(parent),
     widget_lastWindow(lastWindow),
     ui(new Ui::Register)

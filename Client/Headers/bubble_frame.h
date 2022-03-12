@@ -1,8 +1,8 @@
-﻿#ifndef BUBBLE_H
-#define BUBBLE_H
+﻿#ifndef BUBBLE_FRAME_H
+#define BUBBLE_FRAME_H
 
 #include <QFrame>
-#include "Headers/ChatRole.h"
+#include "Headers/chat_role.h"
 #include <QHBoxLayout>
 
 class BubbleFrame : public QFrame
@@ -21,4 +21,4 @@ private:
     QHBoxLayout *m_pHLayout;
 };
 
-#endif // BUBBLE_H
+#endif

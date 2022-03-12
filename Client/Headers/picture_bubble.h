@@ -1,7 +1,7 @@
-﻿#ifndef PICTUREBUBBLE_H
-#define PICTUREBUBBLE_H
+﻿#ifndef PICTURE_BUBBLE_H
+#define PICTURE_BUBBLE_H
 
-#include "BubbleFrame.h"
+#include "bubble_frame.h"
 #include <QHBoxLayout>
 #include <QPixmap>
 class PictureBubble : public BubbleFrame

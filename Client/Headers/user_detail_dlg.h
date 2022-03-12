@@ -1,5 +1,5 @@
-﻿#ifndef USERDETAILDLG_H
-#define USERDETAILDLG_H
+﻿#ifndef USER_DETAIL_DLG_H
+#define USER_DETAIL_DLG_H
 
 #include <QWidget>
 
@@ -29,4 +29,4 @@ private:
     Ui::UserDetailDlg *ui;
 };
 
-#endif // USERDETAILDLG_H
+#endif // USER_DETAIL_DLG_H

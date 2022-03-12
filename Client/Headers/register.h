@@ -13,7 +13,7 @@ class Register : public QDialog
     Q_OBJECT
 
 public:
-    explicit Register(Talk_To_Server* _deliver = nullptr, QWidget *lastWindow = nullptr, QWidget *parent = nullptr);
+    explicit Register(QWidget *lastWindow = nullptr, QWidget *parent = nullptr);
     ~Register();
 
 private slots:

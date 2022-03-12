@@ -1,8 +1,8 @@
-﻿#include "Headers/TextBubble.h"
+﻿#include "Headers/text_bubble.h"
 #include <QFontMetricsF>
 #include <QDebug>
 #include <QFont>
-#include "Headers/BubbleFrame.h"
+#include "Headers/bubble_frame.h"
 #include <QTimer>
 #include <QTextDocument>
 #include <QTextBlock>

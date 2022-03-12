@@ -1,7 +1,7 @@
 ﻿#include <QPainter>
 #include <QDebug>
-#include "Headers/MuItemDelegate.h"
-#include "Headers/MuListItemData.h"
+#include "Headers/mult_item_delegate.h"
+#include "Headers/mult_item_data.h"
 
 MuItemDelegate::MuItemDelegate(QObject *parent) :
     QStyledItemDelegate(parent)

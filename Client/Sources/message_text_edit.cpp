@@ -1,4 +1,4 @@
-﻿#include "Headers/MessageTextEdit.h"
+﻿#include "Headers/message_text_edit.h"
 #include <QDebug>
 #include <QMessageBox>
 

@@ -1,5 +1,5 @@
-﻿#ifndef COMMON_H
-#define COMMON_H
+﻿#ifndef CHAT_ROLE_H
+#define CHAT_ROLE_H
 
 enum class ChatRole
 {

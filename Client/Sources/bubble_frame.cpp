@@ -1,4 +1,4 @@
-﻿#include "Headers/BubbleFrame.h"
+﻿#include "Headers/bubble_frame.h"
 #include <QPainter>
 #include <QDebug>
 const int WIDTH_SANJIAO  = 8;  //三角宽

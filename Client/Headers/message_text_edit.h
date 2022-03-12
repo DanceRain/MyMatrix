@@ -1,5 +1,5 @@
-﻿#ifndef MESSAGETEXTEDIT_H
-#define MESSAGETEXTEDIT_H
+﻿#ifndef MESSAGE_TEXT_EDIT_H
+#define MESSAGE_TEXT_EDIT_H
 
 #include <QObject>
 #include <QTextEdit>

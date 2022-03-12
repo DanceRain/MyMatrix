@@ -3,16 +3,16 @@
 #include <QMouseEvent>
 
 #include "ui_dialog.h"
-#include "Headers/dialog.h"
+#include "Headers/login.h"
 #include "Headers/register.h"
-#include "Headers/usermainwindow.h"
+#include "Headers/user_main_window.h"
 #include "Headers/userinfor.h"
 #include "Headers/httplib.h"
 #include <QPainter>
+#include <qdebug.h>
 
-Dialog::Dialog(Talk_To_Server* _deliver, QWidget *parent) :
+Dialog::Dialog(QWidget *parent) :
     QWidget(parent),
-    m_deliver(_deliver),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
@@ -80,7 +80,7 @@ void Dialog::setStyle()
 
 void Dialog::on_pushButton_register_clicked()
 {
-    Register* qdlog_Register = new Register(m_deliver, this);
+    Register* qdlog_Register = new Register(this);
     qdlog_Register->show();
     this->setVisible(false);
 }
@@ -98,7 +98,9 @@ void Dialog::on_pushButton_login_clicked()
        QByteArray user_register_infor_str = user_register_infor_doc.toJson(QJsonDocument::Compact);
 
        qDebug() << user_register_infor_str << endl;
-       httplib::Client cli("112.126.96.244", 9999);
+
+       unsigned port = 9999;
+       httplib::Client cli("112.126.96.244", port);
        auto res = cli.Post("/login", user_register_infor_str.toStdString(), "application/json");
 
        QJsonParseError jsonPraseError;

@@ -1,5 +1,5 @@
-﻿#ifndef USERMAINWINDOW_H
-#define USERMAINWINDOW_H
+﻿#ifndef USER_MAINWINDOW_H
+#define USER_MAINWINDOW_H
 
 #include <QMainWindow>
 
@@ -60,4 +60,4 @@ private:
     Ui::UserMainWindow* ui;
 };
 
-#endif // USERMAINWINDOW_H
+#endif //USER_MAINWINDOW_H

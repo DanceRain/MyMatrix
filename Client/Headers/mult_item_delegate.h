@@ -1,5 +1,5 @@
-#ifndef MUITEMDELEGATE_H
-#define MUITEMDELEGATE_H
+﻿#ifndef MULT_ITEM_DELEGATE_H
+#define MULT_ITEM_DELEGATE_H
 
 #include <QStyledItemDelegate>
 
