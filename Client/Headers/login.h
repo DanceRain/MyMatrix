@@ -1,5 +1,5 @@
-﻿#ifndef DIALOG_H
-#define DIALOG_H
+﻿#ifndef LOGIN_H
+#define LOGIN_H
 
 #include <QWidget>
 #include "Headers/talk_to_server.h"
@@ -13,7 +13,7 @@ class Dialog : public QWidget
     Q_OBJECT
     Q_CLASSINFO ("author", "GuixinWang")
 public:
-    explicit Dialog(Talk_To_Server* _deliver = nullptr, QWidget *parent = nullptr);
+    explicit Dialog(QWidget *parent = nullptr);
     ~Dialog();
 
 private slots:
@@ -27,12 +27,13 @@ signals:
 private:
     void setLog();
     void setStyle();
-
-private:
+protected:
+    void paintEvent(QPaintEvent* event);
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);
 
+private:
     QPoint mouseStartPoint;
     QPoint windowTopLeftPoint;
     bool IsMoving = false;

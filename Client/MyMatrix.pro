@@ -26,36 +26,39 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-		Sources/dialog.cpp \
+		Sources/bubble_frame.cpp \
+		Sources/chat_item_base.cpp \
+		Sources/chat_view.cpp \
+		Sources/login.cpp \
 		Sources/main.cpp \
+		Sources/message_text_edit.cpp \
+		Sources/mult_item_delegate.cpp \
+		Sources/picture_bubble.cpp \
 		Sources/register.cpp \
 		Sources/talk_to_server.cpp \
-		Sources/usermainwindow.cpp \
-		Sources/userdetaildlg.cpp \
-		Sources/userinfor.cpp \
-		Sources/MuItemDelegate.cpp\
-		Sources/BubbleFrame.cpp \
-		Sources/TextBubble.cpp \
-		Sources/ChatItemBase.cpp \
-		Sources/ChatView.cpp \
-		Sources/MessageTextEdit.cpp
+		Sources/text_bubble.cpp \
+		Sources/user_detail_dlg.cpp \
+		Sources/user_main_window.cpp \
+		Sources/userinfor.cpp
 
 
 HEADERS += \
-		Headers/dialog.h \
+		Headers/bubble_frame.h \
+		Headers/chat_item_base.h \
+		Headers/chat_role.h \
+		Headers/chat_view.h \
+		Headers/login.h \
+		Headers/message_text_edit.h \
+		Headers/mult_item_data.h \
+		Headers/mult_item_delegate.h \
+		Headers/picture_bubble.h \
 		Headers/register.h \
-		Headers/usermainwindow.h \
-		Headers/userdetaildlg.h \
+		Headers/text_bubble.h \
+		Headers/user_detail_dlg.h \
+		Headers/user_main_window.h \
 		Headers/userinfor.h \
-		Headers/MuItemDelegate.h \
-		Headers/MuListItemData.h \
 		Headers/talk_to_server.h \
-		Headers/BubbleFrame.h \
-		Headers/ChatRole.h \
-		Headers/TextBubble.h \
-		Headers/ChatItemBase.h \
-		Headers/ChatView.h \
-		Headers/MessageTextEdit.h
+		Headers/httplib.h
 
 FORMS += \
 		Forms/dialog.ui \
@@ -73,4 +76,5 @@ RESOURCES += \
 	resource/ui.qrc \
 
 LIBS += -lwsock32
+LIBS += -lws2_32
 

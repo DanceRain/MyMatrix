@@ -1,5 +1,5 @@
-﻿#ifndef USERMAINWINDOW_H
-#define USERMAINWINDOW_H
+﻿#ifndef USER_MAINWINDOW_H
+#define USER_MAINWINDOW_H
 
 #include <QMainWindow>
 
@@ -21,6 +21,7 @@ public:
     explicit UserMainWindow(QWidget *parent = nullptr, QVector<UserInfor>* currentUserData = nullptr);
     ~UserMainWindow();
 protected:
+    void paintEvent(QPaintEvent* event);
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);
@@ -59,4 +60,4 @@ private:
     Ui::UserMainWindow* ui;
 };
 
-#endif // USERMAINWINDOW_H
+#endif //USER_MAINWINDOW_H

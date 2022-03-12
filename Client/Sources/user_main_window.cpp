@@ -1,11 +1,12 @@
 ﻿#include "Headers/userinfor.h"
-#include "Headers/userdetaildlg.h"
-#include "Headers/MuItemDelegate.h"
-#include "Headers/MuListItemData.h"
-#include "Headers/usermainwindow.h"
-#include "Headers/ChatItemBase.h"
-#include "Headers/TextBubble.h"
-#include "Headers/ChatView.h"
+#include "Headers/user_detail_dlg.h"
+#include "Headers/mult_item_delegate.h"
+#include "Headers/mult_item_data.h"
+#include "Headers/user_main_window.h"
+#include "Headers/chat_item_base.h"
+#include "Headers/text_bubble.h"
+#include "Headers/chat_view.h"
+#include "Headers/picture_bubble.h"
 #include "ui_usermainwindow.h"
 #include <QStandardItem>
 #include <QStandardItemModel>
@@ -68,6 +69,29 @@ void UserMainWindow::mouseReleaseEvent(QMouseEvent* e)
         IsMoving = false;
     }
 }
+
+void UserMainWindow::paintEvent(QPaintEvent* event)
+{
+    QPainterPath path;
+    path.setFillRule(Qt::WindingFill);
+    path.addRect(0, 0, this->width(), this->height());
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.fillPath(path, QBrush(Qt::white));
+
+    QColor color(0, 0, 0, 50);
+    for(int i=0; i<1; i++)
+    {
+        QPainterPath path;
+        path.setFillRule(Qt::WindingFill);
+        path.addRect(1-i, 1-i, this->width()-(1-i)*2, this->height()-(1-i)*2);
+        color.setAlpha(150);
+        painter.setPen(color);
+        painter.drawPath(path);
+    }
+}
+
 
 void UserMainWindow::setStyle()
 {
@@ -179,7 +203,7 @@ void UserMainWindow::on_ptn_sendMessage_clicked()
         }
         else if(type == "image")
         {
-//            pBubble = new PictureBubble(QPixmap(msgList[i].content) , role);
+            pBubble = new PictureBubble(QPixmap(msgList[i].content) , role);
         }
         else if(type == "file")
         {

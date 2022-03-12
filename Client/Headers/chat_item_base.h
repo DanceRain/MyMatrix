@@ -1,10 +1,10 @@
-﻿#ifndef CHATITEMBASE_H
-#define CHATITEMBASE_H
+﻿#ifndef CHAT_ITEM_BASE_H
+#define CHAT_ITEM_BASE_H
 
 #include <QWidget>
 #include <QGridLayout>
 #include <QLabel>
-#include "Headers/ChatRole.h"
+#include "Headers/chat_role.h"
 class BubbleFrame;
 
 class ChatItemBase : public QWidget

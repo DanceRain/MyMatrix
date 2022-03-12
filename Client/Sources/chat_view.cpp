@@ -1,4 +1,4 @@
-﻿#include "Headers/ChatView.h"
+﻿#include "Headers/chat_view.h"
 #include <QScrollBar>
 #include <QVBoxLayout>
 #include <QEvent>

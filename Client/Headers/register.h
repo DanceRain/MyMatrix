@@ -13,31 +13,26 @@ class Register : public QDialog
     Q_OBJECT
 
 public:
-    explicit Register(Talk_To_Server* _deliver = nullptr, QWidget *lastWindow = nullptr, QWidget *parent = nullptr);
+    explicit Register(QWidget *lastWindow = nullptr, QWidget *parent = nullptr);
     ~Register();
 
 private slots:
     void on_pushButton_shutdown_clicked();
-
     void on_pushButton_minimize_clicked();
-
     void on_pushButton_back_clicked();
-
     void on_lineEdit_pwdIdentify_textChanged(const QString &arg1);
-
     void on_lineEdit_password_textChanged(const QString &arg1);
-
     void on_pushButton_finReg_clicked();
-
     void on_lineEdit_account_textChanged(const QString &arg1);
-
     void inforUserNewId(const QString& new_id);
-private:
+
+protected:
     void paintEvent(QPaintEvent* event);
-private:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);
+
+private:
     QPoint mouseStartPoint;
     QPoint windowTopLeftPoint;
     bool IsMoving = false;

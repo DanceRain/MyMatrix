@@ -1,7 +1,7 @@
-﻿#include "Headers/ChatItemBase.h"
+﻿#include "Headers/chat_item_base.h"
 #include <QFont>
 #include <QVBoxLayout>
-#include "Headers/BubbleFrame.h"
+#include "Headers/bubble_frame.h"
 ChatItemBase::ChatItemBase(ChatRole role, QWidget *parent)
     : QWidget(parent)
     , m_role(role)

@@ -1,4 +1,4 @@
-﻿#include "Headers/userdetaildlg.h"
+﻿#include "Headers/user_detail_dlg.h"
 #include "ui_userdetaildlg.h"
 #include <QFile>
 #include <QMouseEvent>
