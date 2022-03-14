@@ -13,7 +13,7 @@ class Dialog : public QWidget
     Q_OBJECT
     Q_CLASSINFO ("author", "GuixinWang")
 public:
-    explicit Dialog(QWidget *parent = nullptr);
+    explicit Dialog(QWidget *parent = nullptr, Talk_To_Server* _Morpheus = nullptr);
     ~Dialog();
 
 private slots:
@@ -38,8 +38,7 @@ private:
     QPoint windowTopLeftPoint;
     bool IsMoving = false;
 private:
-    Talk_To_Server* m_deliver;
-private:
+    Talk_To_Server* Morpheus;
     Ui::Dialog *ui;
 };
 

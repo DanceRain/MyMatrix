@@ -1,4 +1,6 @@
 ﻿#include "Headers/register.h"
+#include "Headers/httplib.h"
+#include "Headers/talk_to_server.h"
 #include "ui_register.h"
 
 #include <QPixmap>
@@ -6,16 +8,15 @@
 #include <QFile>
 #include <QMouseEvent>
 #include <QMessageBox>
-#include "Headers/talk_to_server.h"
 #include <QRegExpValidator>
 #include <QPainter>
-#include "Headers/Matrix_Call.h"
-#include "Headers/httplib.h"
 #include <iostream>
 #include <string>
+#include <QJsonObject>
 
-Register::Register(QWidget *lastWindow, QWidget *parent) :
+Register::Register(QWidget *lastWindow, QWidget *parent, Talk_To_Server* _Morpheus) :
     QDialog(parent),
+    Morpheus(_Morpheus),
     widget_lastWindow(lastWindow),
     ui(new Ui::Register)
 {
@@ -86,7 +87,7 @@ void Register::setLineEditValidator()
 {
     QRegExp rx("[a-zA-Z0-9\u4e00-\u9fa5]+");
     QRegExpValidator* validator = new QRegExpValidator(rx, this);
-    ui->lineEdit_account->setValidator(validator);
+    ui->lineEdit_userName->setValidator(validator);
 }
 
 void Register::on_pushButton_shutdown_clicked()
@@ -154,7 +155,7 @@ void Register::on_lineEdit_password_textChanged(const QString &arg1)
 
 void Register::on_pushButton_finReg_clicked()
 {
-    if(!(ui->lineEdit_account->text().compare(""))
+    if(!(ui->lineEdit_userName->text().compare(""))
             || (ui->lineEdit_pwdIdentify->text().compare(ui->lineEdit_password->text()))
             || (ui->lineEdit_password->text().size() < 8))
     {
@@ -162,27 +163,14 @@ void Register::on_pushButton_finReg_clicked()
     }
     else
     {
-        QJsonObject user_register_infor_obj;
-        user_register_infor_obj.insert("content_type", 1);
-        user_register_infor_obj.insert("user_name", ui->lineEdit_account->text());
-        user_register_infor_obj.insert("user_pwd", ui->lineEdit_password->text());
-        QJsonDocument user_register_infor_doc;
-        user_register_infor_doc.setObject(user_register_infor_obj);
-        QByteArray user_register_infor_str = user_register_infor_doc.toJson(QJsonDocument::Compact);
-
-        httplib::Client cli("112.126.96.244", 9999);
-        auto res = cli.Post("/register", user_register_infor_str.toStdString(), "application/json");
-
-        QJsonParseError jsonPraseError;
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(res->body.c_str(), &jsonPraseError);
-
-        inforUserNewId(jsonDoc.object()["new_id"].toString());
+        QJsonObject ret = Morpheus->m_register(ui->lineEdit_userName->text(), ui->lineEdit_password->text());
+        inforUserNewId(ret["new_id"].toString());
     }
 }
 
-void Register::on_lineEdit_account_textChanged(const QString &arg1)
+void Register::on_lineEdit_userName_textChanged(const QString &arg1)
 {
-    if(ui->lineEdit_account->text().compare(""))
+    if(ui->lineEdit_userName->text().compare(""))
     {
         ui->label_statusUser->setPixmap(QPixmap(":/ui/image/icon/right.png").
                                        scaled(ui->label_statusPwd->size(),
@@ -231,3 +219,5 @@ void Register::paintEvent(QPaintEvent* event)
         painter.drawPath(path);
     }
 }
+
+

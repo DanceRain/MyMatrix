@@ -17,7 +17,9 @@ class Talk_To_Server : public QObject
     Q_OBJECT
 public:
     explicit Talk_To_Server(QObject *parent = nullptr);
-    QJsonObject login(const QString& user_id, const QString& user_pwd);
+    QJsonObject m_login(const QString& user_id, const QString& user_pwd);
+    QJsonObject m_register(const QString& user_name, const QString& user_pwd);
+    QJsonObject m_requestUserInfor(const QString& user_id);
 private:
     std::string server_url;
     int server_port;

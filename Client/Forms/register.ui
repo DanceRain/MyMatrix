@@ -28,7 +28,7 @@
    </property>
    <layout class="QVBoxLayout" name="hla_register">
     <item>
-     <widget class="QLineEdit" name="lineEdit_account">
+     <widget class="QLineEdit" name="lineEdit_userName">
       <property name="minimumSize">
        <size>
         <width>0</width>

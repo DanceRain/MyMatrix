@@ -7,33 +7,36 @@
 #include "Headers/text_bubble.h"
 #include "Headers/chat_view.h"
 #include "Headers/picture_bubble.h"
+#include "Headers/talk_to_server.h"
 #include "ui_usermainwindow.h"
+
+#include <QJsonObject>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QMouseEvent>
 #include <QDebug>
 #include <QSortFilterProxyModel>
 
-
-
-UserMainWindow::UserMainWindow(QWidget *parent, QVector<UserInfor>* currentm_UserData) :
+UserMainWindow::UserMainWindow(QString _user_account, QWidget* parent, Talk_To_Server* _Morpheus) :
     QMainWindow(parent),
     m_UserDetailDlg(nullptr),
-    m_UserData(currentm_UserData),
     m_UserDataModel(new QStandardItemModel(this)),
     m_UserDataProxyModel(new QSortFilterProxyModel(this)),
     m_ItemDelegate(new MuItemDelegate(this)),
+    userAccount(std::move(_user_account)),
+    Morpheus(_Morpheus),
     ui(new Ui::UserMainWindow)
 {
     ui->setupUi(this);
-    initFriendsView();
-    initContactsView();
+    initMainWindowLayout();
+    initUserDetail();
+    //initFriendsView();
+    //initContactsView();
     setStyle();
 }
 
 UserMainWindow::~UserMainWindow()
 {
-    delete m_UserData;
     delete ui;
 }
 
@@ -46,10 +49,9 @@ void UserMainWindow::mousePressEvent(QMouseEvent* e)
         qDebug() << mouseStartPoint;
         windowTopLeftPoint = this->frameGeometry().topLeft();
     }
-    if(m_UserDetailDlg != nullptr)
+    if(!m_UserDetailDlg->isHidden())
     {
-        delete m_UserDetailDlg;
-        m_UserDetailDlg = nullptr;
+        m_UserDetailDlg->hide();
     }
 }
 
@@ -92,7 +94,6 @@ void UserMainWindow::paintEvent(QPaintEvent* event)
     }
 }
 
-
 void UserMainWindow::setStyle()
 {
     QString qss;
@@ -109,24 +110,23 @@ void UserMainWindow::setStyle()
 
 void UserMainWindow::initContactsView()
 {
-    for(int i = 0; i < m_UserData->size(); ++i)
-    {
-        QStandardItem *pItem = new QStandardItem;
-        MuItemData itemData;
-        itemData.userName = m_UserData->at(i).getSNickName();
-        itemData.icon = m_UserData->at(i).getPixUserIcon();
-        itemData.recentMessage = m_UserData->at(i).getVRecentMessage()[0];
-        pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
-        pItem->setData(m_UserData->at(i).getSNickName(), Qt::UserRole);
-        m_UserDataModel->appendRow(pItem);
-    }
-    MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
-
-    m_UserDataProxyModel->setSourceModel(m_UserDataModel);
-    m_UserDataProxyModel->setFilterRole(Qt::UserRole);
-    ui->listView_recentContacts->setItemDelegate(pItemDelegate);
-    ui->listView_recentContacts->setModel(m_UserDataProxyModel);
-    ui->treeView_friendsList->hide();
+//    for(int i = 0; i < m_UserData->size(); ++i)
+//    {
+//        QStandardItem *pItem = new QStandardItem;
+//        MuItemData itemData;
+//        itemData.userName = m_UserData->at(i).getSNickName();
+//        itemData.icon = m_UserData->at(i).getPixUserIcon();
+//        itemData.recentMessage = m_UserData->at(i).getVRecentMessage()[0];
+//        pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
+//        pItem->setData(m_UserData->at(i).getSNickName(), Qt::UserRole);
+//        m_UserDataModel->appendRow(pItem);
+//    }
+//    MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
+//    m_UserDataProxyModel->setSourceModel(m_UserDataModel);
+//    m_UserDataProxyModel->setFilterRole(Qt::UserRole);
+//    ui->listView_recentContacts->setItemDelegate(pItemDelegate);
+//    ui->listView_recentContacts->setModel(m_UserDataProxyModel);
+//    ui->treeView_friendsList->hide();
 }
 
 void UserMainWindow::initFriendsView()
@@ -134,6 +134,20 @@ void UserMainWindow::initFriendsView()
     MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
     ui->treeView_friendsList->setItemDelegate(pItemDelegate);
     ui->treeView_friendsList->setModel(m_UserDataProxyModel);
+}
+
+void UserMainWindow::initMainWindowLayout()
+{
+    ui->wdt_userDetail->hide();
+}
+
+void UserMainWindow::initUserDetail()
+{
+    QJsonObject ret = Morpheus->m_requestUserInfor(userAccount);
+    qDebug() << ret["user_name"].toString();
+    m_UserDetailDlg = new UserDetailDlg(this);
+    m_UserDetailDlg->setUserCallNumber(ret["user_name"].toString());
+    m_UserDetailDlg->hide();
 }
 
 void UserMainWindow::on_pushButton_maxmize_clicked()
@@ -153,13 +167,6 @@ void UserMainWindow::on_pushButton_maxmize_clicked()
 
 void UserMainWindow::on_ptn_userIcon_clicked()
 {
-    m_UserDetailDlg = new UserDetailDlg(this);
-    m_UserDetailDlg->setUseIcon(m_UserData->at(0).getPixUserIcon());
-    m_UserDetailDlg->setUserName(m_UserData->at(0).getSNickName());
-    m_UserDetailDlg->setUserArea(m_UserData->at(0).getSUserArea());
-    m_UserDetailDlg->setUserGender(m_UserData->at(0).getPixUserGender());
-    m_UserDetailDlg->setUserNote(m_UserData->at(0).getSUserNote());
-    m_UserDetailDlg->setUserCallNumber(m_UserData->at(0).getSUserNumber());
     m_UserDetailDlg->move(QCursor::pos() - this->pos());
     m_UserDetailDlg->show();
 }
