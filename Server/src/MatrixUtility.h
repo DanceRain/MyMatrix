@@ -24,4 +24,9 @@ bool userLogin(int user_id, std::string& user_pwd)
     return false;
 }
 
+AccountData getUserInfor(int user_id)
+{
+    AccountData userInfor = AccountDAO::selectData(user_id);
+    return userInfor;
+}
 #endif //MYMATRIX_SERVER_MATRIXUTILITY_H
