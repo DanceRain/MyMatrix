@@ -1,11 +1,5 @@
 #include "MySQLPool.h"
-#include <cppconn/connection.h>
-#include <cppconn/exception.h>
-#include <exception>
-#include <memory>
-#include <pthread.h>
-#include <iostream>
-#include <utility>
+
 
 const string defaultHost = "localhost";
 const string defaultUser = "neo";

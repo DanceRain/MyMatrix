@@ -4,28 +4,9 @@
 
 #include "AccountDAO.h"
 #include "MySQLPool.h"
-#include <vector>
+#include "DatabaseUtility.h"
 
 using namespace std;
-
-const string& getUserAccountTableName()
-{
-    static string talbeName = "user_detail_table";
-    return talbeName;
-}
-
-const string& getMatrixDBName()
-{
-    static string matrixDBName = "MatrixDB";
-    return matrixDBName;
-}
-
-const vector<string>& getAccountTableColName()
-{
-    static vector<string> colNames = {"user_account", "user_pwd", "user_name", "user_icon_path", "user_gender",
-                                      "user_area"};
-    return colNames;
-}
 
 string AccountDAO::insertIntoTable(const AccountData& userData)
 {

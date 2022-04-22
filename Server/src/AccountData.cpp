@@ -41,16 +41,16 @@ unsigned int AccountData::getGender() const {
     return gender;
 }
 
-void AccountData::setGender(unsigned int gender) {
-    AccountData::gender = gender;
+void AccountData::setGender(unsigned int _gender) {
+    AccountData::gender = _gender;
 }
 
 const std::string &AccountData::getArea() const {
     return area;
 }
 
-void AccountData::setArea(const std::string &area) {
-    AccountData::area = area;
+void AccountData::setArea(const std::string& _area) {
+    AccountData::area = _area;
 }
 
 AccountData::AccountData(int userAccount,std::string userPwd,std::string userName,
