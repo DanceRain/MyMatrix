@@ -513,6 +513,16 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="UserDetailDlg" name="wdt_userDetail" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>500</height>
+          </size>
+         </property>
+        </widget>
+       </item>
        <item alignment="Qt::AlignRight|Qt::AlignTop">
         <widget class="QPushButton" name="ptn_sendMessage">
          <property name="minimumSize">
@@ -591,6 +601,12 @@
    <class>MessageTextEdit</class>
    <extends>QTextEdit</extends>
    <header location="global">Headers/message_text_edit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UserDetailDlg</class>
+   <extends>QWidget</extends>
+   <header location="global">Headers/user_detail_dlg.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

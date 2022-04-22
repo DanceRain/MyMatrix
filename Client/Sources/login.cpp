@@ -8,11 +8,13 @@
 #include "Headers/user_main_window.h"
 #include "Headers/userinfor.h"
 #include "Headers/httplib.h"
+#include "Headers/talk_to_server.h"
 #include <QPainter>
 #include <qdebug.h>
 
-Dialog::Dialog(QWidget *parent) :
+Dialog::Dialog(QWidget *parent, Talk_To_Server* _Morpheus) :
     QWidget(parent),
+    Morpheus(_Morpheus),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
@@ -80,7 +82,7 @@ void Dialog::setStyle()
 
 void Dialog::on_pushButton_register_clicked()
 {
-    Register* qdlog_Register = new Register(this);
+    Register* qdlog_Register = new Register(this, nullptr, Morpheus);
     qdlog_Register->show();
     this->setVisible(false);
 }
@@ -89,41 +91,13 @@ void Dialog::on_pushButton_login_clicked()
 {
     if(!(ui->lineEdit_account->text().isEmpty()) && ui->lineEdit_password->text().size() >= 5)
     {
-       QJsonObject user_register_infor_obj;
-       user_register_infor_obj.insert("content_type", 2);
-       user_register_infor_obj.insert("user_id", ui->lineEdit_account->text());
-       user_register_infor_obj.insert("user_pwd", ui->lineEdit_password->text());
-       QJsonDocument user_register_infor_doc;
-       user_register_infor_doc.setObject(user_register_infor_obj);
-       QByteArray user_register_infor_str = user_register_infor_doc.toJson(QJsonDocument::Compact);
-
-       qDebug() << user_register_infor_str << endl;
-
-       unsigned port = 9999;
-       httplib::Client cli("112.126.96.244", port);
-       auto res = cli.Post("/login", user_register_infor_str.toStdString(), "application/json");
-
-       QJsonParseError jsonPraseError;
-       QJsonDocument jsonDoc = QJsonDocument::fromJson(res->body.c_str(), &jsonPraseError);
-       if(jsonDoc["is_right"].toBool())
-       {
-           QVector<UserInfor>* userData = new QVector<UserInfor>();
-           QVector<QString>* message = new QVector<QString>();
-           message->push_back("这是句测试");
-           for(int i = 0; i < 100; ++i)
-           {
-               userData->push_back(UserInfor(QString("王桂鑫%1").arg(i), QPixmap(":/ui/image/icon/log.png"), *message));
-           }
-           (*userData)[0].setSUserArea("中国 湖北");
-           (*userData)[0].setSUserNumber("000001");
-           (*userData)[0].setSUserNote("这是我自己");
-           (*userData)[0].setPixUserGender(QPixmap(":/ui/image/icon/famale.jpg"));
-           (*userData)[0].setSUserNote("这是我自己");
-           UserMainWindow* userWindow = new UserMainWindow(nullptr, userData);
-           userWindow->show();
-        //   this->hide();
-           this->close();
-       }
+        QJsonObject ret = Morpheus->m_login(ui->lineEdit_account->text(), ui->lineEdit_password->text());
+        if(ret["is_right"].toBool())
+        {
+            UserMainWindow* matrixMainWindow = new UserMainWindow(ui->lineEdit_account->text(), nullptr, Morpheus);
+            matrixMainWindow->show();
+            this->close();
+        }
     }
 
 }

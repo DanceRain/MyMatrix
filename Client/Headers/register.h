@@ -2,18 +2,20 @@
 #define REGISTER_H
 
 #include <QDialog>
-#include "Headers/talk_to_server.h"
+
 /*注册界面*/
 namespace Ui {
 class Register;
 }
+
+class Talk_To_Server;
 
 class Register : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Register(QWidget *lastWindow = nullptr, QWidget *parent = nullptr);
+    explicit Register(QWidget *lastWindow = nullptr, QWidget *parent = nullptr, Talk_To_Server* _Morpheus = nullptr);
     ~Register();
 
 private slots:
@@ -25,6 +27,8 @@ private slots:
     void on_pushButton_finReg_clicked();
     void on_lineEdit_account_textChanged(const QString &arg1);
     void inforUserNewId(const QString& new_id);
+
+    void on_lineEdit_userName_textChanged(const QString &arg1);
 
 protected:
     void paintEvent(QPaintEvent* event);
@@ -41,9 +45,9 @@ private:
     void setLog();
     void setStyle();
     void setLineEditValidator();
+
 private:
-    Talk_To_Server* m_deliver;
-private:
+    Talk_To_Server* Morpheus;
     QWidget* widget_lastWindow;
     Ui::Register *ui;
 };
