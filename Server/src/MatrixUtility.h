@@ -5,28 +5,21 @@
 #ifndef MYMATRIX_SERVER_MATRIXUTILITY_H
 #define MYMATRIX_SERVER_MATRIXUTILITY_H
 #include <string>
-#include <utility>
-#include "AccountDAO.h"
+#include <vector>
+#include "AccountData.h"
+#include "UserInforData.h"
 
-std::string userRegister(const std::string& user_name, const std::string& user_pwd)
-{
-    AccountData userInfor(-1, user_pwd, user_name, "", 0, "");
-    return AccountDAO::insertIntoTable(userInfor);
-}
 
-bool userLogin(int user_id, std::string& user_pwd)
-{
-    AccountData userInfor = AccountDAO::selectData(user_id);
-    if(userInfor.getUserAccount() != -1 && userInfor.getUserPwd() == user_pwd)
-    {
-        return true;
-    }
-    return false;
-}
+//account表的操作
+std::string userRegister(const std::string& user_name, const std::string& user_pwd);
 
-AccountData getUserInfor(int user_id)
-{
-    AccountData userInfor = AccountDAO::selectData(user_id);
-    return userInfor;
-}
+bool userLogin(int user_id, std::string& user_pwd);
+
+AccountData getUserInfor(int user_id);
+
+//message表的操作
+void insertMessage(const UserInforData& _data);
+
+void getMessage(std::vector<UserInforData>& vecMessage);
+
 #endif //MYMATRIX_SERVER_MATRIXUTILITY_H

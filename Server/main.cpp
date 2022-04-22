@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <list>
 #include <algorithm>
+#include <UserInforDAO.h>
 
 #include "MatrixUtility.h"
 
@@ -81,6 +82,8 @@ int main()
         cout << req.body << endl;
         auto decode_infor = boost::json::parse(req.body.c_str());
         string friend_id = decode_infor.as_object()["friend_id"].as_string().data();
+        string user_id = decode_infor.as_object()["user_id"].as_string().data();
+
 
         AccountData userInfor = getUserInfor(atoi(friend_id.c_str()));
 
@@ -88,7 +91,7 @@ int main()
         if(-1 == userInfor.getUserAccount())
         {
             boost::json::value response = {
-                    {"content_type", 5},
+                    {"content_type", 4},
                     {"is_exist", false}
             };
             cout << boost::json::serialize(response) << " this is response" << endl;
@@ -97,8 +100,8 @@ int main()
         else
         {
             boost::json::value response = {
-                    {"content_type", 5},
-                    {"is_exist", true},
+                    {"content_type", 4},
+                    {"is_exist", true}
             };
             cout << boost::json::serialize(response) << " this is response" << endl;
             res.set_content(boost::json::serialize(response), "application/json");
@@ -109,30 +112,36 @@ int main()
             }
             else
             {
-
+                UserInforData data(atoi(user_id.c_str()), atoi(friend_id.c_str()), 5);
+                insertMessage(data);
             }
         }
     });
 
+    svr.Post("/getMessage", [](const httplib::Request& req, httplib::Response& res)
+    {
+        cout << req.body << endl;
+        auto decode_infor = boost::json::parse(req.body.c_str());
+        string user_id = decode_infor.as_object()["user_id"].as_string().data();
+
+        vector<UserInforData> vec;
+        getMessage(vec);
+        boost::json::object response;
+        for(auto it = vec.begin(); it != vec.end(); ++it)
+        {
+            boost::json::value message = {
+                    {"content_type", it->getContentType()},
+                    {"infor_sender", it->getInforSender()},
+                    {"infor_receiver", it->getInforReceiver()},
+                    {"infor_content", it->getInforContent()}
+            };
+            response["message " + to_string(it - vec.begin())] = message;
+        }
+        cout << "response: " << boost::json::serialize(response) << endl;
+        res.set_content(boost::json::serialize(response), "application/json");
+    });
+
     svr.listen("0.0.0.0", 9999);
 
-
-
-/*    try
-    {
-        server matrix_server;
-        matrix_server.set_reuse_addr(true);
-        matrix_server.set_message_handler(bind(&on_message, &matrix_server, ::_1, ::_2));
-        matrix_server.set_access_channels(websocketpp::log::alevel::all);
-        matrix_server.set_error_channels(websocketpp::log::elevel::all);
-
-        matrix_server.init_asio();
-        matrix_server.listen(9999);
-        matrix_server.start_accept();
-        matrix_server.run();
-    }catch(const websocketpp::exception& e)
-    {
-        cerr << e.what() << endl;
-    }*/
     return 0;
 }
