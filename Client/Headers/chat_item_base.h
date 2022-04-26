@@ -5,7 +5,6 @@
 #include <QGridLayout>
 #include <QLabel>
 #include "Headers/chat_role.h"
-class BubbleFrame;
 
 class ChatItemBase : public QWidget
 {

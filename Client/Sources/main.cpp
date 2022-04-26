@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QDebug>
 #include "Headers/talk_to_server.h"
-
+#include "Headers/httplib.h"
 
 int main(int argc, char *argv[])
 {

@@ -97,3 +97,12 @@ QPushButton#ptn_sendMessage:hover
 	background-color: gray;
 }
 
+#pushButton_addFriend
+{
+	color: white;
+	background-color: black;
+}
+#pushButton_addFriend:hover
+{
+	background-color: gray;
+}

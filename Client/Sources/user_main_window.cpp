@@ -10,12 +10,15 @@
 #include "Headers/talk_to_server.h"
 #include "ui_usermainwindow.h"
 
-#include <QJsonObject>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QMouseEvent>
 #include <QDebug>
 #include <QSortFilterProxyModel>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QTimer>
+#include <iostream>
 
 UserMainWindow::UserMainWindow(QString _user_account, QWidget* parent, Talk_To_Server* _Morpheus) :
     QMainWindow(parent),
@@ -31,8 +34,10 @@ UserMainWindow::UserMainWindow(QString _user_account, QWidget* parent, Talk_To_S
     initMainWindowLayout();
     initUserDetail();
     //initFriendsView();
-    //initContactsView();
+    initContactsView();
     setStyle();
+    Morpheus->startTalkInWs(this->userAccount);
+    connect(Morpheus, &Talk_To_Server::receivedMessage, this, &UserMainWindow::getMessage);
 }
 
 UserMainWindow::~UserMainWindow()
@@ -110,23 +115,22 @@ void UserMainWindow::setStyle()
 
 void UserMainWindow::initContactsView()
 {
-//    for(int i = 0; i < m_UserData->size(); ++i)
-//    {
-//        QStandardItem *pItem = new QStandardItem;
-//        MuItemData itemData;
-//        itemData.userName = m_UserData->at(i).getSNickName();
-//        itemData.icon = m_UserData->at(i).getPixUserIcon();
-//        itemData.recentMessage = m_UserData->at(i).getVRecentMessage()[0];
-//        pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
-//        pItem->setData(m_UserData->at(i).getSNickName(), Qt::UserRole);
-//        m_UserDataModel->appendRow(pItem);
-//    }
-//    MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
-//    m_UserDataProxyModel->setSourceModel(m_UserDataModel);
-//    m_UserDataProxyModel->setFilterRole(Qt::UserRole);
-//    ui->listView_recentContacts->setItemDelegate(pItemDelegate);
-//    ui->listView_recentContacts->setModel(m_UserDataProxyModel);
-//    ui->treeView_friendsList->hide();
+    {
+        QStandardItem *pItem = new QStandardItem;
+        MuItemData itemData;
+        itemData.userName = "Neo";
+        itemData.icon = QPixmap(":/ui/image/icon/log.png");
+        itemData.recentMessage = "";
+        pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
+        pItem->setData("Neo", Qt::UserRole);
+        m_UserDataModel->appendRow(pItem);
+    }
+    MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
+    m_UserDataProxyModel->setSourceModel(m_UserDataModel);
+    m_UserDataProxyModel->setFilterRole(Qt::UserRole);
+    ui->listView_recentContacts->setItemDelegate(pItemDelegate);
+    ui->listView_recentContacts->setModel(m_UserDataProxyModel);
+    ui->treeView_friendsList->hide();
 }
 
 void UserMainWindow::initFriendsView()
@@ -139,12 +143,12 @@ void UserMainWindow::initFriendsView()
 void UserMainWindow::initMainWindowLayout()
 {
     ui->wdt_userDetail->hide();
+    ui->treeView_friendsList->hide();
 }
 
 void UserMainWindow::initUserDetail()
 {
     QJsonObject ret = Morpheus->m_requestUserInfor(userAccount);
-    qDebug() << ret["user_name"].toString();
     m_UserDetailDlg = new UserDetailDlg(this);
     m_UserDetailDlg->setUserCallNumber(ret["user_name"].toString());
     m_UserDetailDlg->hide();
@@ -220,6 +224,61 @@ void UserMainWindow::on_ptn_sendMessage_clicked()
         {
             pChatItem->setWidget(pBubble);
             ui->wdt_inforArea->appendChatItem(pChatItem);
+        }
+    }
+}
+
+void UserMainWindow::on_pushButton_addFriend_clicked()
+{
+    bool isOk;
+    QString friend_id = QInputDialog::getText(nullptr, "Find friend",
+                                         "Please input your friend's ID.",
+                                         QLineEdit::Normal, "Id", &isOk);
+    if(isOk)
+    {
+        Morpheus->m_addFriend(friend_id, userAccount);
+    }
+}
+
+/*content-type:
+ * 1 注册
+ * 2 登录
+ * 3 获取用户个人信息，包括好友列表初始化信息
+ * 4 请求添加好友信息
+ * 5 请求添加好友信息回复(判断请求账号是否有效)
+ * 6 用户消息
+ */
+void UserMainWindow::getMessage(QJsonObject& message)
+{
+    switch (message["content_type"].toInt())
+    {
+        case 4:
+        {
+            break;
+        }
+        case 5:
+        {
+            if(message["is_exist"].toBool())
+            {
+                QMessageBox::information(nullptr, "Information", "Your request has been sent.");
+            }
+            else
+            {
+                QMessageBox::information(nullptr, "Information", "The account is not exist, please check.");
+            }
+            break;
+        }
+        case 6:
+        {
+            break;
+        }
+        case 7:
+        {
+            break;
+        }
+        default:
+        {
+
         }
     }
 }

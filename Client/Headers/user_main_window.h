@@ -2,6 +2,7 @@
 #define USER_MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QJsonObject>
 
 class UserInfor;
 class UserDetailDlg;
@@ -34,6 +35,9 @@ private slots:
     void on_ptn_friendList_clicked();
     void on_ptn_message_clicked();
     void on_ptn_sendMessage_clicked();
+    void on_pushButton_addFriend_clicked();
+private slots:
+    void getMessage(QJsonObject& message);
 
 private:
     void setStyle();
