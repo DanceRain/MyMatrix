@@ -2,9 +2,9 @@
 // Created by 14773 on 2022/4/5.
 //
 
-#include "RelationDAO.h"
-#include "MySQLPool.h"
-#include "DatabaseUtility.h"
+#include "../include/RelationDAO.h"
+#include "../include/MySQLPool.h"
+#include "../include/DatabaseUtility.h"
 
 std::string RelationDAO::insertIntoTable(const RelationData &_relation_data)
 {

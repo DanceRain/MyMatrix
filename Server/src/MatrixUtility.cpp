@@ -1,9 +1,9 @@
 //
 // Created by 14773 on 2022/4/21.
 //
-#include "MatrixUtility.h"
-#include "AccountDAO.h"
-#include "UserInforDAO.h"
+#include "../include/MatrixUtility.h"
+#include "../include/AccountDAO.h"
+#include "../include/UserInforDAO.h"
 
 
 std::string userRegister(const std::string& user_name, const std::string& user_pwd)
@@ -34,9 +34,9 @@ void insertMessage(const UserInforData& _data)
     UserInforDAO::insertIntoTable(_data);
 }
 
-void getMessage(std::vector<UserInforData> &vecMessage)
+void getMessage(int _receive_id, std::vector<UserInforData>& vecMessage)
 {
-
+    UserInforDAO::selectData(_receive_id, vecMessage);
 }
 
 

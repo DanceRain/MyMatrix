@@ -2,7 +2,7 @@
 // Created by 14773 on 2022/4/6.
 //
 
-#include "RelationData.h"
+#include "../include/RelationData.h"
 
 int RelationData::getRelationNum() const {
     return relation_num;
