@@ -65,7 +65,6 @@ void BubbleFrame::paintEvent(QPaintEvent *e)
             QPointF(bk_rect.x()+bk_rect.width()+WIDTH_SANJIAO, 10+WIDTH_SANJIAO-WIDTH_SANJIAO/2),
         };
         painter.drawPolygon(points, 3);
-
     }
 
     return QFrame::paintEvent(e);

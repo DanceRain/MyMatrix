@@ -11,6 +11,7 @@
 #include "Headers/talk_to_server.h"
 #include <QPainter>
 #include <qdebug.h>
+#include <QMessageBox>
 
 Dialog::Dialog(QWidget *parent, Talk_To_Server* _Morpheus) :
     QWidget(parent),
@@ -97,6 +98,11 @@ void Dialog::on_pushButton_login_clicked()
             UserMainWindow* matrixMainWindow = new UserMainWindow(ui->lineEdit_account->text(), nullptr, Morpheus);
             matrixMainWindow->show();
             this->close();
+        }
+        else
+        {
+            QMessageBox::information(nullptr, "Login failed",
+                                     "Please check your account or password");
         }
     }
 
