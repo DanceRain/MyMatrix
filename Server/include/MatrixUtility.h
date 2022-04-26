@@ -20,6 +20,6 @@ AccountData getUserInfor(int user_id);
 //message表的操作
 void insertMessage(const UserInforData& _data);
 
-void getMessage(std::vector<UserInforData>& vecMessage);
+void getMessage(int _receive_id, std::vector<UserInforData>& vecMessage);
 
 #endif //MYMATRIX_SERVER_MATRIXUTILITY_H

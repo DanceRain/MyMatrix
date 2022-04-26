@@ -2,9 +2,9 @@
 // Created by 14773 on 2022/3/5.
 //
 
-#include "AccountDAO.h"
-#include "MySQLPool.h"
-#include "DatabaseUtility.h"
+#include "../include/AccountDAO.h"
+#include "../include/MySQLPool.h"
+#include "../include/DatabaseUtility.h"
 
 using namespace std;
 
@@ -66,11 +66,11 @@ AccountData AccountDAO::selectData(int userAccount) {
         try {
             pConn->setSchema(getMatrixDBName());
             unique_ptr <PreparedStatement> pStmt(
-                    pConn->prepareStatement("CALL selectUserDetail(?)"));
+                    pConn->prepareStatement("SELECT * FROM user_detail_table WHERE user_account = ?"));
             unique_ptr <ResultSet> pRes;
             pStmt->setInt(1,  userAccount);
             pStmt->executeUpdate();
-            pRes.reset(pStmt->getResultSet());
+            pRes.reset(pStmt->executeQuery());
             if(pRes->next())
             {
                 userData.setUserAccount(pRes->getInt("user_account"));

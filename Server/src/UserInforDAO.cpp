@@ -2,18 +2,19 @@
 // Created by 14773 on 2022/4/17.
 //
 
-#include "UserInforDAO.h"
-#include "DatabaseUtility.h"
-#include "MySQLPool.h"
+#include "../include/UserInforDAO.h"
+#include "../include/DatabaseUtility.h"
+#include "../include/MySQLPool.h"
 
 void UserInforDAO::insertIntoTable(const UserInforData &userData)
 {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
+    pConn->rollback();
     if(nullptr != pConn) {
         try {
             pConn->setSchema(getMatrixDBName());
-            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("CALL insertUserInforTable(?, ?, ?, ?)"));
-            unique_ptr<ResultSet> pRes;
+            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("INSERT INTO user_infor_table (infor_sender, infor_receiver, content_type, infor_content) "
+                                                                        "VALUES(?, ?, ?, ?)"));
             pStmt->setInt(1, userData.getInforSender());
             pStmt->setInt(2, userData.getInforReceiver());
             pStmt->setInt(3, userData.getContentType());
@@ -30,15 +31,12 @@ void UserInforDAO::insertIntoTable(const UserInforData &userData)
 void UserInforDAO::selectData(int infro_receiver, vector<UserInforData>& vecInfor)
 {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
-
     if(nullptr != pConn) {
-        try {
             pConn->setSchema(getMatrixDBName());
-            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("CALL selectUserInforTable(?)"));
+            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("SELECT * FROM user_infor_table WHERE infor_receiver = ?"));
             unique_ptr<ResultSet> pRes;
             pStmt->setInt(1, infro_receiver);
-            pStmt->execute();
-            pRes.reset(pStmt->getResultSet());
+            pRes.reset(pStmt->executeQuery());
             while(pRes->next())
             {
                 UserInforData userInforData = UserInforData(0, 0, 0);
@@ -49,11 +47,7 @@ void UserInforDAO::selectData(int infro_receiver, vector<UserInforData>& vecInfo
                 userInforData.setInforContent(pRes->getString("infor_content"));
                 vecInfor.push_back(userInforData);
             }
-        }
-        catch (SQLException &e) {
-            cerr << e.what() << endl;
-        }
-        ConnectionPool::getConnectionPool().releaseConnection(pConn);
+            ConnectionPool::getConnectionPool().releaseConnection(pConn);
     }
 }
 

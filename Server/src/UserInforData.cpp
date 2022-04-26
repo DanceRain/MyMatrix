@@ -2,7 +2,7 @@
 // Created by 14773 on 2022/4/17.
 //
 
-#include "UserInforData.h"
+#include "../include/UserInforData.h"
 
 
 int UserInforData::getInforNum() const {
