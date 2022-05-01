@@ -8,7 +8,7 @@
 
 using namespace std;
 
-string AccountDAO::insertIntoTable(const AccountData& userData)
+string AccountDAO::insert(const AccountData& userData)
 {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
     string newId;
@@ -20,10 +20,14 @@ string AccountDAO::insertIntoTable(const AccountData& userData)
             unique_ptr<ResultSet> pRes;
             pStmt->setString(1,  userData.getUserPwd());
             pStmt->setString(2, userData.getUserName());
-            pStmt->execute();
-            pRes.reset(pStmt->getResultSet());
-            pRes->next();
-            newId = pRes->getString("_userId");
+            if(pStmt->execute())
+            {
+                pRes.reset(pStmt->getResultSet());
+            }
+            while(pRes->next())
+            {
+                newId = pRes->getString("_userId");
+            }
         }
         catch (SQLException &e) {
             cerr << e.what() << endl;
@@ -33,7 +37,7 @@ string AccountDAO::insertIntoTable(const AccountData& userData)
     return newId;
 }
 
-void AccountDAO::updateTable(const AccountData &userData)
+void AccountDAO::update(const AccountData &userData)
 {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
     if(nullptr != pConn) {
@@ -50,6 +54,7 @@ void AccountDAO::updateTable(const AccountData &userData)
             pStmt->setUInt(6,  userData.getGender());
             pStmt->setString(7,  userData.getArea());
             pStmt->setInt(8,  userData.getUserAccount());
+
             pStmt->execute();
         }
         catch (SQLException &e) {
@@ -59,19 +64,21 @@ void AccountDAO::updateTable(const AccountData &userData)
     }
 }
 
-AccountData AccountDAO::selectData(int userAccount) {
+AccountData AccountDAO::select(int userAccount) {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
     AccountData userData;
     if(nullptr != pConn) {
         try {
             pConn->setSchema(getMatrixDBName());
-            unique_ptr <PreparedStatement> pStmt(
-                    pConn->prepareStatement("SELECT * FROM user_detail_table WHERE user_account = ?"));
+            unique_ptr <PreparedStatement> pStmt(pConn->prepareStatement("SELECT * FROM user_detail_table WHERE user_account = ?"));
             unique_ptr <ResultSet> pRes;
             pStmt->setInt(1,  userAccount);
-            pStmt->executeUpdate();
-            pRes.reset(pStmt->executeQuery());
-            if(pRes->next())
+
+            if(pStmt->execute())
+            {
+                pRes.reset(pStmt->getResultSet());
+            }
+            while(pRes->next())
             {
                 userData.setUserAccount(pRes->getInt("user_account"));
                 userData.setUserPwd(pRes->getString("user_pwd"));
@@ -89,7 +96,7 @@ AccountData AccountDAO::selectData(int userAccount) {
     return userData;
 }
 
-void AccountDAO::deleteData(int userAccount) {
+void AccountDAO::deleteAccount(int userAccount) {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
     if(nullptr != pConn) {
         try {

@@ -4,6 +4,15 @@
 
 #include "../include/RelationData.h"
 
+
+RelationData::RelationData(int _user_account, int _friend_account) :
+    user_account(_user_account),
+    friend_account(_friend_account)
+{
+
+}
+
+
 int RelationData::getRelationNum() const {
     return relation_num;
 }
@@ -27,3 +36,8 @@ int RelationData::getFriendAccount() const {
 void RelationData::setFriendAccount(int friendAccount) {
     friend_account = friendAccount;
 }
+
+
+
+
+

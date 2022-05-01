@@ -8,6 +8,7 @@
 #include <vector>
 #include "AccountData.h"
 #include "UserInforData.h"
+#include "RelationData.h"
 
 
 //account表的操作
@@ -21,5 +22,10 @@ AccountData getUserInfor(int user_id);
 void insertMessage(const UserInforData& _data);
 
 void getMessage(int _receive_id, std::vector<UserInforData>& vecMessage);
+
+//relation表的操作
+void insertRelation(const RelationData& _data);
+
+std::vector<int> getRelation(int _user_id);
 
 #endif //MYMATRIX_SERVER_MATRIXUTILITY_H
