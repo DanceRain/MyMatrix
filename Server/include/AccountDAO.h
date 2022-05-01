@@ -11,10 +11,10 @@
 
 class AccountDAO{
 public:
-    static std::string insertIntoTable(const AccountData& userData);
-    static void updateTable(const AccountData& userData);
-    static AccountData selectData(int userAccount);
-    static void deleteData(int userAccount);
+    static std::string insert(const AccountData& userData);
+    static void update(const AccountData& userData);
+    static AccountData select(int userAccount);
+    static void deleteAccount(int userAccount);
 };
 
 

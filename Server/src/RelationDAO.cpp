@@ -6,42 +6,53 @@
 #include "../include/MySQLPool.h"
 #include "../include/DatabaseUtility.h"
 
-std::string RelationDAO::insertIntoTable(const RelationData &_relation_data)
-{
+void RelationDAO::insert(const RelationData &relation_data) {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
-    string relationId;
     if(nullptr != pConn) {
         try {
-            cout << "start prepareStatement 1" << endl;
             pConn->setSchema(getMatrixDBName());
-            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("CALL insertUserRelationTable(?, ?)"));
-            unique_ptr<ResultSet> pRes;
-            pStmt->setInt(1,  _relation_data.getUserAccount());
-            pStmt->setInt(2, _relation_data.getFriendAccount());
+            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("INSERT INTO user_relation_table (user_account, friend_account) VALUES(?, ?)"));
+            pStmt->setInt(1,  relation_data.getUserAccount());
+            pStmt->setInt(2, relation_data.getFriendAccount());
             pStmt->execute();
-            pRes.reset(pStmt->getResultSet());
-            pRes->next();
-            relationId = pRes->getString("_relationId");
         }
         catch (SQLException &e) {
             cerr << e.what() << endl;
         }
         ConnectionPool::getConnectionPool().releaseConnection(pConn);
     }
-    return relationId;
 }
 
-void RelationDAO::updateTable(const RelationData &userData)
-{
-
+vector<int> RelationDAO::select(int userAccount) {
+    Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
+    vector<int> friend_id_vec;
+    if(nullptr != pConn) {
+        try {
+            pConn->setSchema(getMatrixDBName());
+            unique_ptr<PreparedStatement> pStmt(
+                    pConn->prepareStatement("SELECT user_account as friend_account FROM user_relation_table WHERE friend_account = ?\n"
+                                            "UNION\n"
+                                            "SELECT friend_account FROM user_relation_table WHERE user_account = ?"));
+            unique_ptr<ResultSet> pRes;
+            pStmt->setInt(1, userAccount);
+            pStmt->setInt(2, userAccount);
+            if(pStmt->execute())
+            {
+                pRes.reset(pStmt->getResultSet());
+            }
+            while (pRes->next()) {
+                friend_id_vec.push_back(pRes->getInt("friend_account"));
+            }
+        }
+        catch (SQLException &e) {
+            cerr << e.what() << endl;
+        }
+        ConnectionPool::getConnectionPool().releaseConnection(pConn);
+    }
+    return friend_id_vec;
 }
 
-RelationData RelationDAO::selectData(int userAccount)
-{
-    return RelationData();
-}
-
-void RelationDAO::deleteData(int userAccount)
+void RelationDAO::deleteRelation(int user_account, int frined_account)
 {
 
 }

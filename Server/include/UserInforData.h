@@ -31,10 +31,10 @@ public:
     void setInforContent(const std::string &inforContent);
 
 private:
-    int infor_num{};
-    int infor_sender{};
-    int infor_receiver{};
-    short content_type{};
+    int infor_num = -1;
+    int infor_sender;
+    int infor_receiver;
+    short content_type;
     std::string infor_content;
 };
 

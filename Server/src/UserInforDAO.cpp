@@ -6,7 +6,7 @@
 #include "../include/DatabaseUtility.h"
 #include "../include/MySQLPool.h"
 
-void UserInforDAO::insertIntoTable(const UserInforData &userData)
+void UserInforDAO::insert(const UserInforData &userData)
 {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
     pConn->rollback();
@@ -28,17 +28,21 @@ void UserInforDAO::insertIntoTable(const UserInforData &userData)
     }
 }
 
-void UserInforDAO::selectData(int infro_receiver, vector<UserInforData>& vecInfor)
+void UserInforDAO::select(int infro_receiver, vector<UserInforData>& vecInfor)
 {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
     if(nullptr != pConn) {
+        try {
             pConn->setSchema(getMatrixDBName());
-            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("SELECT * FROM user_infor_table WHERE infor_receiver = ?"));
+            unique_ptr<PreparedStatement> pStmt(
+                    pConn->prepareStatement("SELECT * FROM user_infor_table WHERE infor_receiver = ?"));
             unique_ptr<ResultSet> pRes;
             pStmt->setInt(1, infro_receiver);
-            pRes.reset(pStmt->executeQuery());
-            while(pRes->next())
+            if(pStmt->execute())
             {
+                pRes.reset(pStmt->getResultSet());
+            }
+            while (pRes->next()) {
                 UserInforData userInforData = UserInforData(0, 0, 0);
                 userInforData.setInforNum(pRes->getInt("infor_num"));
                 userInforData.setInforSender(pRes->getInt("infor_sender"));
@@ -47,17 +51,21 @@ void UserInforDAO::selectData(int infro_receiver, vector<UserInforData>& vecInfo
                 userInforData.setInforContent(pRes->getString("infor_content"));
                 vecInfor.push_back(userInforData);
             }
-            ConnectionPool::getConnectionPool().releaseConnection(pConn);
+        }
+        catch (SQLException &e) {
+            cerr << e.what() << endl;
+        }
+        ConnectionPool::getConnectionPool().releaseConnection(pConn);
     }
 }
 
-void UserInforDAO::deleteData(int _infor_num)
+void UserInforDAO::deleteInfor(int _infor_num)
 {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
     if(nullptr != pConn) {
         try {
             pConn->setSchema(getMatrixDBName());
-            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("CALL deleteUserInforTable(?)"));
+            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("DELETE FROM user_infor_table WHERE infor_num = ?"));
             unique_ptr<ResultSet> pRes;
             pStmt->setInt(1, _infor_num);
             pStmt->execute();
@@ -69,10 +77,6 @@ void UserInforDAO::deleteData(int _infor_num)
     }
 }
 
-void UserInforDAO::updateTable(const UserInforData &userData)
-{
-
-}
 
 
 

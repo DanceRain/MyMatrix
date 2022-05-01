@@ -5,9 +5,12 @@
 #ifndef MYMATRIX_SERVER_RELATIONDATA_H
 #define MYMATRIX_SERVER_RELATIONDATA_H
 
+#include <string>
+
 class RelationData {
 
 public:
+    explicit RelationData(int _user_account, int _friend_account);
     int getRelationNum() const;
     void setRelationNum(int relationNum);
 
@@ -18,7 +21,7 @@ public:
     void setFriendAccount(int friendAccount);
 
 private:
-    int relation_num;
+    int relation_num = -1;
     int user_account;
     int friend_account;
 };

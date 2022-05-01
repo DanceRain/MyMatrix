@@ -11,10 +11,9 @@
 
 class UserInforDAO {
 public:
-    static void insertIntoTable(const UserInforData& userData);
-    static void updateTable(const UserInforData& userData);
-    static void selectData(int infro_receiver, std::vector<UserInforData>& vecInfor);
-    static void deleteData(int userAccount);
+    static void insert(const UserInforData& userData);
+    static void select(int infro_receiver, std::vector<UserInforData>& vecInfor);
+    static void deleteInfor(int userAccount);
 };
 
 

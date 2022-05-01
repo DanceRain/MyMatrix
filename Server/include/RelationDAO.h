@@ -7,12 +7,13 @@
 
 #include "RelationData.h"
 #include <string>
+#include <vector>
 
 class RelationDAO {
-    static std::string insertIntoTable(const RelationData& userData);
-    static void updateTable(const RelationData& userData);
-    static RelationData selectData(int userAccount);
-    static void deleteData(int userAccount);
+public:
+    static void insert(const RelationData& relation_data);
+    static std::vector<int> select(int userAccount);
+    static void deleteRelation(int user_account, int frined_account);
 };
 
 
