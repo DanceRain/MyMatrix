@@ -11,22 +11,19 @@ QPushButton{
 /*vla*/
 #widget_nav
 {
-	background-color: gray;
+	background-color:rgb(46,46,46);
 }
 
 /*导航栏*/
-#ptn_userIcon:hover{
-	background-color:blue;
-}
 
 #ptn_friendList:hover{
-	background-color:blue;
+	image:url(:/ui/image/icon/user anti.png)
 }
 #ptn_file:hover{
-	background-color:blue;
+	image:url(:/ui/image/icon/file anti.png)
 }
 #ptn_message:hover{
-	background-color:blue;
+	image:url(:/ui/image/icon/message anti.png)
 }
 
 #ptn_userIcon{

@@ -18,15 +18,18 @@ class Talk_To_Server : public QObject
     Q_OBJECT
 public:
     explicit Talk_To_Server(QObject *parent = nullptr);
+    void startTalkInWs(const QString& user_id);
+
     QJsonObject m_login(const QString& user_id, const QString& user_pwd);
     QJsonObject m_register(const QString& user_name, const QString& user_pwd);
     QJsonObject m_requestUserInfor(const QString& user_id);
     void m_addFriend(const QString& friend_id, const QString& user_id);
     void m_requestMessage(const QString& user_id, QJsonObject& message);
-    void startTalkInWs(const QString& user_id);
+    void m_responseAddFriend(bool IsAgreed, const QString& infor_receiver);
+    void m_quit();
+    void closeWs();
 
 Q_SIGNALS:
-    void closed();
     void writeMessageList();
 
 Q_SIGNALS:

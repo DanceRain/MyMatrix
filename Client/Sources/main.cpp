@@ -8,8 +8,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Talk_To_Server cli;
-    Dialog* dlg = new Dialog(nullptr, &cli);
+    Talk_To_Server* cli = new Talk_To_Server;
+    Dialog* dlg = new Dialog(nullptr, cli);
     dlg->show();
     return a.exec();
 }

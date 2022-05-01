@@ -144,13 +144,21 @@ void UserMainWindow::initMainWindowLayout()
 {
     ui->wdt_userDetail->hide();
     ui->treeView_friendsList->hide();
-}
+    this->resize(1000, 610);
+};
 
 void UserMainWindow::initUserDetail()
 {
     QJsonObject ret = Morpheus->m_requestUserInfor(userAccount);
     m_UserDetailDlg = new UserDetailDlg(this);
-    m_UserDetailDlg->setUserCallNumber(ret["user_name"].toString());
+    m_UserDetailDlg->setUserCallNumber(QString::number(ret["user_detail"].toObject()["user_account"].toInt()));
+    m_UserDetailDlg->setUseIcon(QPixmap(":/ui/image/icon/log.png"));
+    m_UserDetailDlg->setUserName(ret["user_detail"].toObject()["user_name"].toString());
+    m_UserDetailDlg->setUserArea(ret["user_detail"].toObject()["user_area"].toString());
+    if(ret["user_detail"].toObject()["user_gender"].toInt() == 0)
+    {
+        m_UserDetailDlg->setUserGender(QPixmap(":/ui/image/icon/famale.jpg"));
+    }
     m_UserDetailDlg->hide();
 }
 
@@ -246,7 +254,10 @@ void UserMainWindow::on_pushButton_addFriend_clicked()
  * 3 获取用户个人信息，包括好友列表初始化信息
  * 4 请求添加好友信息
  * 5 请求添加好友信息回复(判断请求账号是否有效)
- * 6 用户消息
+ * 6 接受成为好友请求
+ * 7 拒绝成为好友请求
+ * 8 用户消息
+ * 9 用户登录确认
  */
 void UserMainWindow::getMessage(QJsonObject& message)
 {
@@ -254,6 +265,18 @@ void UserMainWindow::getMessage(QJsonObject& message)
     {
         case 4:
         {
+            QMessageBox::StandardButton box;
+            box = QMessageBox::question(this, "A new friend request.",
+                            QString::number(message["infor_sender"].toInt()) + " want to be your friend.",
+                    QMessageBox::Yes | QMessageBox::No);
+            if(box == QMessageBox::No)
+            {
+                Morpheus->m_responseAddFriend(false, QString::number(message["infor_sender"].toInt()));
+            }
+            else
+            {
+                Morpheus->m_responseAddFriend(true, QString::number(message["infor_sender"].toInt()));
+            }
             break;
         }
         case 5:
@@ -270,10 +293,18 @@ void UserMainWindow::getMessage(QJsonObject& message)
         }
         case 6:
         {
+            QMessageBox::information(nullptr, "A new friend", QString::number(message["infor_sender"].toInt()) + " agree to be your friend.");
             break;
         }
         case 7:
         {
+            QMessageBox::information(nullptr, "Request response", QString::number(message["infor_sender"].toInt()) + " don't agree to be your friend.");
+            break;
+        }
+        case 10:
+        {
+            Morpheus->closeWs();
+            this->close();
             break;
         }
         default:
@@ -281,4 +312,9 @@ void UserMainWindow::getMessage(QJsonObject& message)
 
         }
     }
+}
+
+void UserMainWindow::on_pushButton_shutdown_clicked()
+{
+    Morpheus->m_quit();
 }
