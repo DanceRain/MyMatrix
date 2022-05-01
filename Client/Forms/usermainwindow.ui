@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>610</height>
+    <height>1108</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -245,7 +245,7 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>60</width>
              <height>0</height>
             </size>
            </property>
@@ -255,8 +255,14 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="text">
-            <string>searc</string>
+            <string>Friend</string>
            </property>
           </widget>
          </item>
@@ -308,6 +314,12 @@
          </property>
          <item>
           <widget class="QLabel" name="label_inforAreaName">
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>TextLabel</string>
            </property>
@@ -613,22 +625,6 @@
   <include location="../resource/qss.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>pushButton_shutdown</sender>
-   <signal>clicked()</signal>
-   <receiver>UserMainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>860</x>
-     <y>27</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>456</x>
-     <y>300</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pushButton_minimize</sender>
    <signal>clicked()</signal>

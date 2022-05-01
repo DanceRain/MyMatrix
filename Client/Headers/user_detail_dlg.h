@@ -22,6 +22,8 @@ public:
     void setUserNote(const QString& s_UserNote);
     void setUserCallNumber(const QString& s_UserCallNumber);
     void setUserArea(const QString& s_UserArea);
+protected:
+    void paintEvent(QPaintEvent* event);
 
 
 private:

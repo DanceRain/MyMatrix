@@ -39,6 +39,8 @@ private slots:
 private slots:
     void getMessage(QJsonObject& message);
 
+    void on_pushButton_shutdown_clicked();
+
 private:
     void setStyle();
     void initContactsView();

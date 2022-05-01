@@ -6,8 +6,11 @@
 #include <QPixmap>
 
 typedef struct {
-    QPixmap icon;
+    int userAccount;
     QString userName;
+    QPixmap icon;
+    short userGender;
+    QString userArea;
     QString recentMessage;
 } MuItemData;
 

@@ -19,5 +19,8 @@
         <file>image/icon/screenshot.png</file>
         <file>image/icon/vedioCall.png</file>
         <file>image/icon/voiceCall.png</file>
+        <file>image/icon/user anti.png</file>
+        <file>image/icon/message anti.png</file>
+        <file>image/icon/file anti.png</file>
     </qresource>
 </RCC>
