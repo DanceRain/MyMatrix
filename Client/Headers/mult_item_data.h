@@ -9,7 +9,7 @@ typedef struct {
     int userAccount;
     QString userName;
     QPixmap icon;
-    short userGender;
+    int userGender;
     QString userArea;
     QString recentMessage;
 } MuItemData;

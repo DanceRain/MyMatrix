@@ -34,7 +34,7 @@ UserMainWindow::UserMainWindow(QString _user_account, QWidget* parent, Talk_To_S
     initMainWindowLayout();
     initUserDetail();
     //initFriendsView();
-    initContactsView();
+    //initContactsView();
     setStyle();
     Morpheus->startTalkInWs(this->userAccount);
     connect(Morpheus, &Talk_To_Server::receivedMessage, this, &UserMainWindow::getMessage);
@@ -130,7 +130,6 @@ void UserMainWindow::initContactsView()
     m_UserDataProxyModel->setFilterRole(Qt::UserRole);
     ui->listView_recentContacts->setItemDelegate(pItemDelegate);
     ui->listView_recentContacts->setModel(m_UserDataProxyModel);
-    ui->treeView_friendsList->hide();
 }
 
 void UserMainWindow::initFriendsView()
@@ -159,7 +158,30 @@ void UserMainWindow::initUserDetail()
     {
         m_UserDetailDlg->setUserGender(QPixmap(":/ui/image/icon/famale.jpg"));
     }
+    else
+    {
+        m_UserDetailDlg->setUserGender(QPixmap(":/ui/image/icon/male.jpg"));
+    }
     m_UserDetailDlg->hide();
+
+    for(int i = 1; i < ret.count(); ++i)
+    {
+        QStandardItem *pItem = new QStandardItem;
+        MuItemData itemData;
+        itemData.userName = ret["friend " + QString::number(i)].toObject()["user_name"].toString();
+        itemData.icon = QPixmap(":/ui/image/icon/log.png");
+        itemData.recentMessage = "Hello, I'm " + itemData.userName;
+        itemData.userGender = ret["friend " + QString::number(i)].toObject()["user_name"].toInt();
+        itemData.userArea = ret["friend " + QString::number(i)].toObject()["user_area"].toString();
+        pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
+        pItem->setData(itemData.userName, Qt::UserRole);
+        m_UserDataModel->appendRow(pItem);
+    }
+    MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
+    m_UserDataProxyModel->setSourceModel(m_UserDataModel);
+    m_UserDataProxyModel->setFilterRole(Qt::UserRole);
+    ui->listView_recentContacts->setItemDelegate(pItemDelegate);
+    ui->listView_recentContacts->setModel(m_UserDataProxyModel);
 }
 
 void UserMainWindow::on_pushButton_maxmize_clicked()
