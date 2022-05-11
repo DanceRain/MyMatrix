@@ -19,15 +19,25 @@ UserDetailDlg::~UserDetailDlg()
     delete ui;
 }
 
-void UserDetailDlg::setUseIcon(const QPixmap& pix_UserIcon)
+void UserDetailDlg::setUserIcon(const QPixmap& pix_UserIcon)
 {
     ui->label_userIcon->setPixmap(pix_UserIcon.scaled(ui->label_userIcon->size(),
                                                       Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
+QPixmap UserDetailDlg::getUserIcon() const
+{
+    return *(ui->label_userIcon->pixmap());
+}
+
 void UserDetailDlg::setUserName(const QString& s_UserName)
 {
     ui->label_userName->setText(s_UserName);
+}
+
+QString UserDetailDlg::getUserName() const
+{
+    return ui->label_userName->text();
 }
 
 void UserDetailDlg::setUserGender(const QPixmap& pix_UserGender)

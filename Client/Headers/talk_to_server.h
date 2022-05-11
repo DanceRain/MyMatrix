@@ -27,6 +27,7 @@ public:
     void m_requestMessage(const QString& user_id, QJsonObject& message);
     void m_responseAddFriend(bool IsAgreed, const QString& infor_receiver);
     void m_quit();
+    void m_sendMessage(const QString& infor_sender, const QString& infor_receiver, const QString& message);
     void closeWs();
 
 Q_SIGNALS:

@@ -8,6 +8,7 @@
 #include "Headers/chat_view.h"
 #include "Headers/picture_bubble.h"
 #include "Headers/talk_to_server.h"
+#include "Headers/local_msg.h"
 #include "ui_usermainwindow.h"
 
 #include <QStandardItem>
@@ -19,8 +20,9 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <iostream>
+#include <QModelIndex>
 
-UserMainWindow::UserMainWindow(QString _user_account, QWidget* parent, Talk_To_Server* _Morpheus) :
+UserMainWindow::UserMainWindow(const QString& _user_account, QWidget* parent, Talk_To_Server* _Morpheus) :
     QMainWindow(parent),
     m_UserDetailDlg(nullptr),
     m_UserDataModel(new QStandardItemModel(this)),
@@ -28,8 +30,10 @@ UserMainWindow::UserMainWindow(QString _user_account, QWidget* parent, Talk_To_S
     m_ItemDelegate(new MuItemDelegate(this)),
     userAccount(std::move(_user_account)),
     Morpheus(_Morpheus),
+    dbController(_user_account, "123456"),
     ui(new Ui::UserMainWindow)
 {
+    qDebug() << "this is _use_account" << _user_account << endl;
     ui->setupUi(this);
     initMainWindowLayout();
     initUserDetail();
@@ -38,10 +42,13 @@ UserMainWindow::UserMainWindow(QString _user_account, QWidget* parent, Talk_To_S
     setStyle();
     Morpheus->startTalkInWs(this->userAccount);
     connect(Morpheus, &Talk_To_Server::receivedMessage, this, &UserMainWindow::getMessage);
+    connect(ui->listView_recentContacts, &QListView::clicked, this, &UserMainWindow::on_listViewitem_clicked);
+    connect(ui->ted_editArea, &MessageTextEdit::send, this, &UserMainWindow::on_ptn_sendMessage_clicked);
 }
 
 UserMainWindow::~UserMainWindow()
 {
+    Morpheus = nullptr;
     delete ui;
 }
 
@@ -79,6 +86,7 @@ void UserMainWindow::mouseReleaseEvent(QMouseEvent* e)
 
 void UserMainWindow::paintEvent(QPaintEvent* event)
 {
+
     QPainterPath path;
     path.setFillRule(Qt::WindingFill);
     path.addRect(0, 0, this->width(), this->height());
@@ -151,7 +159,7 @@ void UserMainWindow::initUserDetail()
     QJsonObject ret = Morpheus->m_requestUserInfor(userAccount);
     m_UserDetailDlg = new UserDetailDlg(this);
     m_UserDetailDlg->setUserCallNumber(QString::number(ret["user_detail"].toObject()["user_account"].toInt()));
-    m_UserDetailDlg->setUseIcon(QPixmap(":/ui/image/icon/log.png"));
+    m_UserDetailDlg->setUserIcon(QPixmap(":/ui/image/icon/log.png"));
     m_UserDetailDlg->setUserName(ret["user_detail"].toObject()["user_name"].toString());
     m_UserDetailDlg->setUserArea(ret["user_detail"].toObject()["user_area"].toString());
     if(ret["user_detail"].toObject()["user_gender"].toInt() == 0)
@@ -168,20 +176,28 @@ void UserMainWindow::initUserDetail()
     {
         QStandardItem *pItem = new QStandardItem;
         MuItemData itemData;
+        itemData.userAccount = ret["friend " + QString::number(i)].toObject()["user_account"].toInt();
         itemData.userName = ret["friend " + QString::number(i)].toObject()["user_name"].toString();
         itemData.icon = QPixmap(":/ui/image/icon/log.png");
         itemData.recentMessage = "Hello, I'm " + itemData.userName;
-        itemData.userGender = ret["friend " + QString::number(i)].toObject()["user_name"].toInt();
+        itemData.userGender = ret["friend " + QString::number(i)].toObject()["user_gender"].toInt();
         itemData.userArea = ret["friend " + QString::number(i)].toObject()["user_area"].toString();
         pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
         pItem->setData(itemData.userName, Qt::UserRole);
         m_UserDataModel->appendRow(pItem);
     }
-    MuItemDelegate *pItemDelegate = new MuItemDelegate(this);
+    MuItemDelegate* pItemDelegate = new MuItemDelegate(this);
     m_UserDataProxyModel->setSourceModel(m_UserDataModel);
     m_UserDataProxyModel->setFilterRole(Qt::UserRole);
     ui->listView_recentContacts->setItemDelegate(pItemDelegate);
     ui->listView_recentContacts->setModel(m_UserDataProxyModel);
+}
+
+void UserMainWindow::initUserdMessage(int friend_id)
+{
+    auto ret = dbController.selectMessage(friend_id);
+    ui->wdt_inforArea->clearItem();
+    on_read_chatRecord(ret);
 }
 
 void UserMainWindow::on_pushButton_maxmize_clicked()
@@ -226,21 +242,23 @@ void UserMainWindow::on_ptn_message_clicked()
 
 void UserMainWindow::on_ptn_sendMessage_clicked()
 {
-    MessageTextEdit *pTextEdit = ui->ted_editArea;
     ChatRole role = ChatRole::Self;
-    QString userName = QStringLiteral("张荆");
+    MessageTextEdit* pTextEdit = ui->ted_editArea;
+    QString userName;
 
     const QVector<MsgInfo>& msgList = pTextEdit->getMsgList();
     for(int i=0; i<msgList.size(); ++i)
     {
         QString type = msgList[i].msgFlag;
-        ChatItemBase *pChatItem = new ChatItemBase(role);
+        ChatItemBase* pChatItem = new ChatItemBase(role);
         pChatItem->setUserName(userName);
-        pChatItem->setUserIcon(QPixmap(":/ui/image/icon/log.png"));
-        QWidget *pBubble = nullptr;
+        pChatItem->setUserIcon(m_UserDetailDlg->getUserIcon());
+        QWidget* pBubble = nullptr;
         if(type == "text")
         {
             pBubble = new TextBubble(role, msgList[i].content);
+            dbController.insertMessage(curSelectFriendIdx.data(Qt::UserRole + 1).value<MuItemData>().userAccount, msgList[i].content, 0);
+            Morpheus->m_sendMessage(userAccount, QString::number(curSelectFriendIdx.data(Qt::UserRole + 1).value<MuItemData>().userAccount), msgList[i].content);
         }
         else if(type == "image")
         {
@@ -315,12 +333,31 @@ void UserMainWindow::getMessage(QJsonObject& message)
         }
         case 6:
         {
-            QMessageBox::information(nullptr, "A new friend", QString::number(message["infor_sender"].toInt()) + " agree to be your friend.");
+            QMessageBox::information(nullptr, "A new friend", QString::number(message["infor_sender"].toString().toInt()) + " agree to be your friend.");
             break;
         }
         case 7:
         {
-            QMessageBox::information(nullptr, "Request response", QString::number(message["infor_sender"].toInt()) + " don't agree to be your friend.");
+            QMessageBox::information(nullptr, "Request response", QString::number(message["infor_sender"].toString().toInt()) + " don't agree to be your friend.");
+            break;
+        }
+        case 8:
+        {
+            if(curSelectFriendIdx.data(Qt::UserRole + 1).value<MuItemData>().userAccount == message["infor_sender"].toString().toInt())
+            {
+                ChatItemBase* pChatItem;
+                QWidget* pBubble;
+                pChatItem = new ChatItemBase(ChatRole::Other);
+                pChatItem->setUserName(ui->label_inforAreaName->text());
+                pChatItem->setUserIcon(curSelectFriendIdx.data(Qt::UserRole + 1).value<MuItemData>().icon);
+                pBubble = new TextBubble(ChatRole::Other, message["infor_content"].toString());
+                if(pBubble != nullptr)
+                {
+                    pChatItem->setWidget(pBubble);
+                    ui->wdt_inforArea->appendChatItem(pChatItem);
+                }
+            }
+            dbController.insertMessage(message["infor_sender"].toString().toInt(), message["infor_content"].toString(), 1);
             break;
         }
         case 10:
@@ -339,4 +376,46 @@ void UserMainWindow::getMessage(QJsonObject& message)
 void UserMainWindow::on_pushButton_shutdown_clicked()
 {
     Morpheus->m_quit();
+}
+
+void UserMainWindow::on_listViewitem_clicked(const QModelIndex& idx)
+{
+    curSelectFriendIdx = idx;
+    MuItemData data = idx.data(Qt::UserRole + 1).value<MuItemData>();
+    ui->label_inforAreaName->setText(data.userName);
+
+    initUserdMessage(data.userAccount);
+}
+
+void UserMainWindow::on_read_chatRecord(const QVector<LocalMsg>& vecMsg)
+{
+    if(vecMsg.empty())
+    {
+        return;
+    }
+    for(auto msg : vecMsg)
+    {
+        ChatItemBase* pChatItem;
+        QWidget* pBubble;
+        if(msg.getMsgType() == 0)
+        {
+            pChatItem = new ChatItemBase(ChatRole::Self);
+            pChatItem->setUserName(m_UserDetailDlg->getUserName());
+            pChatItem->setUserIcon(m_UserDetailDlg->getUserIcon());
+            pBubble = new TextBubble(ChatRole::Self, msg.getMsgContent());
+
+        }
+        else
+        {
+            pChatItem = new ChatItemBase(ChatRole::Other);
+            pChatItem->setUserName(ui->label_inforAreaName->text());
+            pChatItem->setUserIcon(curSelectFriendIdx.data(Qt::UserRole + 1).value<MuItemData>().icon);
+            pBubble = new TextBubble(ChatRole::Other, msg.getMsgContent());
+        }
+        if(pBubble != nullptr)
+        {
+            pChatItem->setWidget(pBubble);
+            ui->wdt_inforArea->appendChatItem(pChatItem);
+        }
+    }
 }

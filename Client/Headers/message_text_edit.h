@@ -12,11 +12,16 @@
 #include <QFileIconProvider>
 #include <QPainter>
 #include <QVector>
+#include "Headers/chat_role.h"
 
 struct MsgInfo{
     QString msgFlag;//"text,image,file"
     QString content;//表示文件和图像的url,文本信息
     QPixmap pixmap;//文件和图片的缩略图
+    QString getText()
+    {
+        return content;
+    }
 };
 
 
@@ -35,15 +40,15 @@ signals:
     void send();
 
 protected:
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
-    void keyPressEvent(QKeyEvent *e);
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+    void keyPressEvent(QKeyEvent *e) override;
 
 private:
     void insertImages(const QString &url);
     void insertTextFile(const QString &url);
-    bool canInsertFromMimeData(const QMimeData *source) const;
-    void insertFromMimeData(const QMimeData *source);
+    bool canInsertFromMimeData(const QMimeData *source) const override;
+    void insertFromMimeData(const QMimeData *source) override;
 
 private:
     bool isImage(QString url);//判断文件是否为图片
@@ -55,6 +60,7 @@ private:
 
 private slots:
     void textEditChanged();
+     bool eventFilter(QObject *target, QEvent *event) override;
 
 private:
     QVector<MsgInfo> mMsgList;

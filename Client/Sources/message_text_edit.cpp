@@ -38,7 +38,7 @@ QVector<MsgInfo> MessageTextEdit::getMsgList()
                 insertMsgList(mGetMsgList,"text",text,pix);
                 text.clear();
             }
-            while(indexUrl<count)
+            while(indexUrl < count)
             {
                 MsgInfo msg =  mMsgList[indexUrl];
                 if(this->document()->toHtml().contains(msg.content,Qt::CaseSensitive))
@@ -265,4 +265,18 @@ QString MessageTextEdit::getFileSize(qint64 size)
 void MessageTextEdit::textEditChanged()
 {
     //qDebug() << "text changed!" << endl;
+}
+
+bool MessageTextEdit::eventFilter(QObject* target, QEvent* event)
+{
+    if(target == this)
+    {
+        QKeyEvent *k = dynamic_cast<QKeyEvent*>(event);
+        if(k->key() == Qt::Key_Return)
+        {
+            emit send();
+            return true;
+        }
+    }
+    return false;
 }

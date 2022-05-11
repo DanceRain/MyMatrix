@@ -6,6 +6,7 @@
 
 QT += core gui
 QT += websockets
+QT += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -39,7 +40,8 @@ SOURCES += \
 		Sources/text_bubble.cpp \
 		Sources/user_detail_dlg.cpp \
 		Sources/user_main_window.cpp \
-		Sources/userinfor.cpp
+		Sources/userinfor.cpp \
+		Sources/database_controller.cpp
 
 
 HEADERS += \
@@ -47,6 +49,7 @@ HEADERS += \
 		Headers/chat_item_base.h \
 		Headers/chat_role.h \
 		Headers/chat_view.h \
+		Headers/local_msg.h \
 		Headers/login.h \
 		Headers/message_text_edit.h \
 		Headers/mult_item_data.h \
@@ -58,7 +61,8 @@ HEADERS += \
 		Headers/user_main_window.h \
 		Headers/userinfor.h \
 		Headers/talk_to_server.h \
-		Headers/httplib.h
+		Headers/httplib.h \
+		Headers/database_controller.h
 
 FORMS += \
 		Forms/dialog.ui \
