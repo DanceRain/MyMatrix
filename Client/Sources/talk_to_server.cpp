@@ -199,14 +199,30 @@ void Talk_To_Server::m_responseAddFriend(bool IsAgreed, const QString& infor_rec
 
 void Talk_To_Server::m_quit()
 {
-    QJsonObject user_add_friend_obj;
-    user_add_friend_obj.insert("content_type", 10);
-    user_add_friend_obj.insert("infor_sender", user_id);
+    QJsonObject user_quit_obj;
+    user_quit_obj.insert("content_type", 10);
+    user_quit_obj.insert("infor_sender", user_id);
 
 
-    QJsonDocument user_add_friend_doc(user_add_friend_obj);
-    QByteArray user_register_infor_str = user_add_friend_doc.toJson(QJsonDocument::Compact);
-    m_messageList.push_back(user_register_infor_str);
+    QJsonDocument user_quit_doc(user_quit_obj);
+    QByteArray user_quit_str = user_quit_doc.toJson(QJsonDocument::Compact);
+    m_messageList.push_back(user_quit_str);
+    emit writeMessageList();
+}
+
+void Talk_To_Server::m_sendMessage(const QString& infor_sender, const QString& infor_receiver, const QString& message)
+{
+    qDebug() << "this is infor sender" << infor_sender << endl;
+    qDebug() << "this is infor receiver" << infor_receiver << endl;
+    QJsonObject user_message_obj;
+    user_message_obj.insert("content_type", 8);
+    user_message_obj.insert("infor_sender", infor_sender);
+    user_message_obj.insert("infor_receiver", infor_receiver);
+    user_message_obj.insert("infor_content", message);
+
+    QJsonDocument user_message_doc(user_message_obj);
+    QByteArray user_message_str = user_message_doc.toJson(QJsonDocument::Compact);
+    m_messageList.push_back(user_message_str);
     emit writeMessageList();
 }
 

@@ -43,9 +43,7 @@ ChatView::ChatView(QWidget *parent)
 void ChatView::appendChatItem(QWidget *item)
 {
    QVBoxLayout *vl = qobject_cast<QVBoxLayout *>(m_pScrollArea->widget()->layout());
-   vl->insertWidget(vl->count()-1, item);   
-   isAppended = true;
-
+   vl->insertWidget(vl->count()-1, item);
 }
 
 void ChatView::prependChatItem(QWidget *item)
@@ -56,6 +54,17 @@ void ChatView::prependChatItem(QWidget *item)
 void ChatView::insertChatItem(QWidget *before, QWidget *item)
 {
 
+}
+
+void ChatView::clearItem()
+{
+    QWidget *w = new QWidget(this);
+    w->setPalette(QColor(215, 215, 215));
+    w->setAutoFillBackground(true);
+    QVBoxLayout *pHLayout_1 = new QVBoxLayout();
+    pHLayout_1->addWidget(new QWidget(), 100000);
+    w->setLayout(pHLayout_1);
+    m_pScrollArea->setWidget(w);
 }
 
 bool ChatView::eventFilter(QObject *o, QEvent *e)

@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QJsonObject>
+#include <QModelIndex>
+#include "Headers/database_controller.h"
+#include "Headers/chat_role.h"
 
 class UserInfor;
 class UserDetailDlg;
@@ -10,6 +13,7 @@ class QStandardItemModel;
 class QSortFilterProxyModel;
 class MuItemDelegate;
 class Talk_To_Server;
+
 
 namespace Ui {
 class UserMainWindow;
@@ -20,7 +24,7 @@ class UserMainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit UserMainWindow(QString _user_account, QWidget *parent = nullptr, Talk_To_Server* Morpheus = nullptr);
+    explicit UserMainWindow(const QString& _user_account, QWidget *parent = nullptr, Talk_To_Server* Morpheus = nullptr);
     ~UserMainWindow();
 protected:
     void paintEvent(QPaintEvent* event);
@@ -38,8 +42,9 @@ private slots:
     void on_pushButton_addFriend_clicked();
 private slots:
     void getMessage(QJsonObject& message);
-
     void on_pushButton_shutdown_clicked();
+    void on_listViewitem_clicked(const QModelIndex& idx);
+    void on_read_chatRecord(const QVector<LocalMsg>& vecMsg);
 
 private:
     void setStyle();
@@ -47,6 +52,7 @@ private:
     void initFriendsView();
     void initMainWindowLayout();
     void initUserDetail();
+    void initUserdMessage(int friend_id);
     void findFriend();
 private:
     //用于窗口移动和缩放
@@ -63,6 +69,12 @@ private:
 private:
     QString userAccount;
     Talk_To_Server* Morpheus;
+private:
+    QModelIndex curSelectFriendIdx;
+private:
+    DatabaseController dbController;
+private:
+    //ui
     Ui::UserMainWindow* ui;
 };
 

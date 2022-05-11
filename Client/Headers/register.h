@@ -25,7 +25,6 @@ private slots:
     void on_lineEdit_pwdIdentify_textChanged(const QString &arg1);
     void on_lineEdit_password_textChanged(const QString &arg1);
     void on_pushButton_finReg_clicked();
-    void on_lineEdit_account_textChanged(const QString &arg1);
     void inforUserNewId(const QString& new_id);
 
     void on_lineEdit_userName_textChanged(const QString &arg1);

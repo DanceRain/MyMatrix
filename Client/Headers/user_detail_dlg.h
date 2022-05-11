@@ -16,12 +16,18 @@ public:
     ~UserDetailDlg();
 
 public:
-    void setUseIcon(const QPixmap& pix_UserIcon);
     void setUserName(const QString& s_UserName);
+    QString getUserName() const;
+
+    void setUserIcon(const QPixmap& pix_UserIcon);
+    QPixmap getUserIcon() const;
+
     void setUserGender(const QPixmap& pix_UserGender);
+
     void setUserNote(const QString& s_UserNote);
     void setUserCallNumber(const QString& s_UserCallNumber);
     void setUserArea(const QString& s_UserArea);
+
 protected:
     void paintEvent(QPaintEvent* event);
 
