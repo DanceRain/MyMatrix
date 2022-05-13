@@ -11,7 +11,7 @@
 
 class AccountDAO{
 public:
-    static std::string insert(const AccountData& userData);
+    static int insert(const AccountData& userData);
     static void update(const AccountData& userData);
     static AccountData select(int userAccount);
     static void deleteAccount(int userAccount);

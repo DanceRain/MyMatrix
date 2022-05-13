@@ -24,7 +24,6 @@
 #include <vector>
 
 
-#include <openssl/conf.h>
 
 #include "include/MatrixUtility.h"
 
@@ -35,20 +34,25 @@ using namespace std;
 map<int, websocketpp::connection_hdl> online_user;
 mutex main_mutex;
 
+void print_message(const boost::json::value& decode_infor)
+{
+    cout << "the message is " << decode_infor << endl;
+}
+
 void on_message(server* s, const websocketpp::connection_hdl& hdl, const server::message_ptr& msg)
 {
     lock_guard<mutex> ws_guard(main_mutex);
-    cout << "on message" << endl;
     auto decode_infor = boost::json::parse(msg->get_payload());
+    print_message(decode_infor);
     switch(decode_infor.as_object()["content_type"].as_int64())
     {
         case 4:
         {
-            cout << decode_infor << endl;
             string infor_sender = decode_infor.as_object()["infor_sender"].as_string().data();
             string infor_receiver = decode_infor.as_object()["infor_receiver"].as_string().data();
 
             AccountData receiverAccount = getUserInfor(atoi(infor_receiver.c_str()));
+            AccountData senderAccount = getUserInfor(atoi(infor_sender.c_str()));
 
             //判断账户是否存在，若不存在则告知请求方；若存在则判断其是否在线；
             // 若在线，加入消息列表，等待下一次轮询发送；若不在线，存入数据库
@@ -63,17 +67,31 @@ void on_message(server* s, const websocketpp::connection_hdl& hdl, const server:
             }
             else
             {
-                boost::json::value response = {
+                //向请求好友方发送确认报文。
+                boost::json::object response_request = {
                         {"content_type", 5},
                         {"is_exist", true}
                 };
-                cout << "this is response " << boost::json::serialize(response) << endl;
-                s->send(hdl, boost::json::serialize(response), msg->get_opcode());
+                cout << "this is response " << boost::json::serialize(response_request) << endl;
+                s->send(hdl, boost::json::serialize(response_request), msg->get_opcode());
 
-                //请求的好友方在线，直接转发给好友;好友方不在线，则将请求消息存储起来。
-                if(0 != online_user.count(receiverAccount.getUserAccount()))
+                //请求的好友方在线，附加上请求方信息，直接转发给好友;好友方不在线，则将请求消息存储起来。
+                boost::json::object request = {
+                        {"content_type", 4},
+                        {"infor_sender", senderAccount.getUserAccount()},
+                        {"infor_receiver", receiverAccount.getUserAccount()}
+                };
+                boost::json::value sender_infor = {
+                        {"user_account", senderAccount.getUserAccount()},
+                        {"user_name", senderAccount.getUserName()},
+                        {"user_icon", senderAccount.getUserIconPath()},
+                        {"user_gender", senderAccount.getGender()},
+                        {"user_area", senderAccount.getArea()}
+                };
+                request["friend"] = sender_infor;
+                if(online_user.end() != online_user.find(receiverAccount.getUserAccount()))
                 {
-                    s->send(online_user[receiverAccount.getUserAccount()], msg->get_payload(), msg->get_opcode());
+                    s->send(online_user[receiverAccount.getUserAccount()], boost::json::serialize(request), msg->get_opcode());
                 }
                 else
                 {
@@ -86,13 +104,28 @@ void on_message(server* s, const websocketpp::connection_hdl& hdl, const server:
 
         case 6:
         {
-            cout << decode_infor << endl;
             string infor_sender = decode_infor.as_object()["infor_sender"].as_string().data();
             string infor_receiver = decode_infor.as_object()["infor_receiver"].as_string().data();
+            AccountData friendInfor = getUserInfor(atoi(infor_sender.c_str()));
+
+            boost::json::object response = {
+                    {"content_type", 6},
+                    {"infor_sender", infor_sender},
+                    {"infor_receiver", infor_receiver},
+            };
+            boost::json::value val = {
+                    {"content_type", 3},
+                    {"user_account", friendInfor.getUserAccount()},
+                    {"user_name", friendInfor.getUserName()},
+                    {"user_icon", friendInfor.getUserIconPath()},
+                    {"user_gender", friendInfor.getGender()},
+                    {"user_area", friendInfor.getArea()}
+            };
+            response["friend"] = val;
 
             if(online_user.find(atoi(infor_receiver.c_str())) != online_user.end())
             {
-                s->send(online_user[atoi(infor_receiver.c_str())], msg->get_payload(), msg->get_opcode());
+                s->send(online_user[atoi(infor_receiver.c_str())], boost::json::serialize(response), msg->get_opcode());
             }
             else
             {
@@ -102,9 +135,9 @@ void on_message(server* s, const websocketpp::connection_hdl& hdl, const server:
             insertRelation(RelationData(atoi(infor_sender.c_str()), atoi(infor_receiver.c_str())));
             break;
         }
+
         case 7:
         {
-            cout << decode_infor << endl;
             string infor_sender = decode_infor.as_object()["infor_sender"].as_string().data();
             string infor_receiver = decode_infor.as_object()["infor_receiver"].as_string().data();
 
@@ -120,9 +153,28 @@ void on_message(server* s, const websocketpp::connection_hdl& hdl, const server:
             }
             break;
         }
+
+        case 8:
+        {
+            string infor_sender = decode_infor.as_object()["infor_sender"].as_string().data();
+            string infor_receiver = decode_infor.as_object()["infor_receiver"].as_string().data();
+            string infor_content = decode_infor.as_object()["infor_content"].as_string().data();
+            cout << "this is infor_receiver" << infor_receiver << endl;
+            if(online_user.find(atoi(infor_receiver.c_str())) != online_user.end())
+            {
+                cout << "the infor_receiver is online" << endl;
+                s->send(online_user[atoi(infor_receiver.c_str())], msg->get_payload(), msg->get_opcode());
+            }
+            else
+            {
+                UserInforData data(atoi(infor_sender.c_str()), atoi(infor_receiver.c_str()), 8, infor_content);
+                insertMessage(data);
+            }
+            break;
+        }
+
         case 9:
         {
-            cout << decode_infor << endl;
             string user_id = decode_infor.as_object()["user_id"].as_string().data();
             if(online_user.find(atoi(user_id.c_str())) == online_user.end())
             {
@@ -134,8 +186,8 @@ void on_message(server* s, const websocketpp::connection_hdl& hdl, const server:
             {
                 boost::json::value response = {
                         {"content_type", it->getContentType()},
-                        {"infor_sender", it->getInforSender()},
-                        {"infor_receiver", it->getInforReceiver()},
+                        {"infor_sender", std::to_string(it->getInforSender())},
+                        {"infor_receiver", std::to_string(it->getInforReceiver())},
                         {"infor_content", it->getInforContent()}
                 };
                 cout << "this is response " << boost::json::serialize(response) << endl;
@@ -143,9 +195,9 @@ void on_message(server* s, const websocketpp::connection_hdl& hdl, const server:
             }
             break;
         }
+
         case 10:
         {
-            cout << decode_infor << endl;
             string infor_sender = decode_infor.as_object()["infor_sender"].as_string().data();
             boost::json::value response = {
                     {"content_type", 10},
@@ -158,6 +210,7 @@ void on_message(server* s, const websocketpp::connection_hdl& hdl, const server:
             }
             break;
         }
+
         default:
         {
             cerr << "content_type error" << endl;
@@ -178,7 +231,7 @@ void httpListener()
         auto decode_infor = boost::json::parse(req.body);
         string user_name = decode_infor.as_object()["user_name"].as_string().data();
         string user_pwd = decode_infor.as_object()["user_pwd"].as_string().data();
-        string newId = userRegister(user_name, user_pwd);
+        string newId = std::to_string(userRegister(user_name, user_pwd));
         boost::json::value response = {
                 {"content_type", 1},
                 { "new_id", newId}
@@ -203,7 +256,7 @@ void httpListener()
         res.set_content(boost::json::serialize(response), "application/json");
     });
 
-    //user request self data
+    //initial user and his(her) friends' detail.
     httpSvr.Post("/userInitialize", [](const httplib::Request& req, httplib::Response& res)
     {
         lock_guard<mutex> ws_guard(main_mutex);
@@ -249,7 +302,6 @@ void httpListener()
 
 void wsListener()
 {
-
     try
     {
         server matrix_server;
@@ -261,7 +313,6 @@ void wsListener()
         matrix_server.listen(10000);
         matrix_server.start_accept();
         matrix_server.run();
-
     }catch(const websocketpp::exception& e)
     {
         cerr << e.what() << endl;

@@ -5,7 +5,7 @@
 #include "../include/UserInforData.h"
 
 UserInforData::UserInforData(int _infor_sender, int _infor_receiver, short _content_type, const std::string& _infor_content)
-        : infor_sender(_infor_sender), infor_receiver(_infor_receiver), content_type(_content_type)
+        : infor_sender(_infor_sender), infor_receiver(_infor_receiver), content_type(_content_type), infor_content(_infor_content)
 {
 
 }

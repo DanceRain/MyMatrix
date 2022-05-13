@@ -7,7 +7,7 @@
 #include "../include/RelationDAO.h"
 
 
-std::string userRegister(const std::string& user_name, const std::string& user_pwd)
+int userRegister(const std::string& user_name, const std::string& user_pwd)
 {
     AccountData userInfor(-1, user_pwd, user_name, "", 0, "");
     return AccountDAO::insert(userInfor);

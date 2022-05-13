@@ -12,7 +12,7 @@
 
 
 //account表的操作
-std::string userRegister(const std::string& user_name, const std::string& user_pwd);
+int userRegister(const std::string& user_name, const std::string& user_pwd);
 
 bool userLogin(int user_id, std::string& user_pwd);
 
