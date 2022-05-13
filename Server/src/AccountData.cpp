@@ -2,14 +2,14 @@
 // Created by 14773 on 2022/3/5.
 //
 
-#include "AccountData.h"
+#include "../include/AccountData.h"
 #include <utility>
 
-const std::string &AccountData::getUserAccount() const {
+int AccountData::getUserAccount() const {
     return user_account;
 }
 
-void AccountData::setUserAccount(const std::string &userAccount) {
+void AccountData::setUserAccount(int userAccount) {
     user_account = userAccount;
 }
 
@@ -41,21 +41,21 @@ unsigned int AccountData::getGender() const {
     return gender;
 }
 
-void AccountData::setGender(unsigned int gender) {
-    AccountData::gender = gender;
+void AccountData::setGender(unsigned int _gender) {
+    AccountData::gender = _gender;
 }
 
 const std::string &AccountData::getArea() const {
     return area;
 }
 
-void AccountData::setArea(const std::string &area) {
-    AccountData::area = area;
+void AccountData::setArea(const std::string& _area) {
+    AccountData::area = _area;
 }
 
-AccountData::AccountData(std::string userAccount,std::string userPwd,std::string userName,
+AccountData::AccountData(int userAccount,std::string userPwd,std::string userName,
                          std::string userIconPath,unsigned int gender,std::string area) :
-                         user_account(std::move(userAccount)),
+                         user_account(userAccount),
                          user_pwd(std::move(userPwd)),
                          user_name(std::move(userName)),
                          user_icon_path(std::move(userIconPath)),

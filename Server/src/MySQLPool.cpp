@@ -1,16 +1,10 @@
-#include "MySQLPool.h"
-#include <cppconn/connection.h>
-#include <cppconn/exception.h>
-#include <exception>
-#include <memory>
-#include <pthread.h>
-#include <iostream>
-#include <utility>
+#include "../include/MySQLPool.h"
+
 
 const string defaultHost = "localhost";
 const string defaultUser = "neo";
 const string defaultPass = "123456";
-const unsigned maxsize = 20;
+const unsigned maxsize = 10;
 pthread_mutex_t poolLock;
 
 
@@ -127,6 +121,7 @@ void ConnectionPool::releaseConnection(Connection* pConn)
     if(pConn)
     {
         pthread_mutex_lock(&lock);
+        pConn->reconnect();
         m_connList.push_back(pConn);
         pthread_mutex_unlock(&lock);
     }    
