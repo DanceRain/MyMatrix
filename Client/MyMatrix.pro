@@ -56,6 +56,7 @@ HEADERS += \
 		Headers/mult_item_delegate.h \
 		Headers/picture_bubble.h \
 		Headers/register.h \
+		Headers/rsa.h \
 		Headers/text_bubble.h \
 		Headers/user_detail_dlg.h \
 		Headers/user_main_window.h \
@@ -81,4 +82,9 @@ RESOURCES += \
 
 LIBS += -lwsock32
 LIBS += -lws2_32
+
+LIBS += D:\Qt\Tools\mingw730_64\opt\bin\libeay32.dll
+LIBS += D:\Qt\Tools\mingw730_64\opt\bin\ssleay32.dll
+
+INCLUDEPATH += $$quote(D:\OpenSSL-Win64\include)
 

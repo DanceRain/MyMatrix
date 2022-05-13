@@ -53,6 +53,7 @@ void DatabaseController::createTable()
 void DatabaseController::insertMessage(int ros, const QString& message, int type)
 {
 
+    qDebug() << "this is " << ros << endl;
     QString query_str = QString("INSERT INTO message_table (message_type, message_ros, message_content) VALUES(?, ?, ?)");
     QSqlQuery query;
     query.prepare(query_str);
