@@ -149,6 +149,7 @@ void UserMainWindow::initFriendsView()
 
 void UserMainWindow::initMainWindowLayout()
 {
+    ui->label_inforAreaName->setText("");
     ui->wdt_userDetail->hide();
     ui->treeView_friendsList->hide();
     this->resize(1000, 610);
@@ -307,7 +308,7 @@ void UserMainWindow::getMessage(QJsonObject& message)
         {
             QMessageBox::StandardButton box;
             box = QMessageBox::question(this, "A new friend request.",
-                            QString::number(message["infor_sender"].toInt()) + " want to be your friend.",
+                            message["infor_sender"].toString() + " want to be your friend.",
                     QMessageBox::Yes | QMessageBox::No);
             if(box == QMessageBox::No)
             {
@@ -315,6 +316,17 @@ void UserMainWindow::getMessage(QJsonObject& message)
             }
             else
             {
+                QStandardItem *pItem = new QStandardItem;
+                MuItemData itemData;
+                itemData.userAccount = message["friend"].toObject()["user_account"].toInt();
+                itemData.userName = message["friend"].toObject()["user_name"].toString();
+                itemData.icon = QPixmap(":/ui/image/icon/log.png");
+                itemData.recentMessage = "Hello, I'm " + itemData.userName;
+                itemData.userGender = message["friend"].toObject()["user_gender"].toInt();
+                itemData.userArea = message["friend"].toObject()["user_area"].toString();
+                pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
+                pItem->setData(itemData.userName, Qt::UserRole);
+                m_UserDataModel->appendRow(pItem);
                 Morpheus->m_responseAddFriend(true, QString::number(message["infor_sender"].toInt()));
             }
             break;
@@ -334,6 +346,17 @@ void UserMainWindow::getMessage(QJsonObject& message)
         case 6:
         {
             QMessageBox::information(nullptr, "A new friend", QString::number(message["infor_sender"].toString().toInt()) + " agree to be your friend.");
+            QStandardItem *pItem = new QStandardItem;
+            MuItemData itemData;
+            itemData.userAccount = message["friend"].toObject()["user_account"].toInt();
+            itemData.userName = message["friend"].toObject()["user_name"].toString();
+            itemData.icon = QPixmap(":/ui/image/icon/log.png");
+            itemData.recentMessage = "Hello, I'm " + itemData.userName;
+            itemData.userGender = message["friend"].toObject()["user_gender"].toInt();
+            itemData.userArea = message["friend"].toObject()["user_area"].toString();
+            pItem->setData(QVariant::fromValue(itemData), Qt::UserRole+1);
+            pItem->setData(itemData.userName, Qt::UserRole);
+            m_UserDataModel->appendRow(pItem);
             break;
         }
         case 7:

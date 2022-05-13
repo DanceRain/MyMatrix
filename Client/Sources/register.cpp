@@ -189,10 +189,6 @@ void Register::on_lineEdit_userName_textChanged(const QString &arg1)
 void Register::inforUserNewId(const QString& new_id)
 {
     QString addZeroPrefixId(new_id);
-    while(addZeroPrefixId.size() < 8)
-    {
-        addZeroPrefixId.push_front('0');
-    }
     QMessageBox::information(nullptr, "Your Account",
                              "YOUR MATRIX CALL NUMBER IS " + addZeroPrefixId +
                              ", PLEASE KEEP FIRMLY IN MIND!");
