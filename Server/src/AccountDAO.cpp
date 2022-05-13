@@ -8,25 +8,24 @@
 
 using namespace std;
 
-string AccountDAO::insert(const AccountData& userData)
+int AccountDAO::insert(const AccountData& userData)
 {
     Connection* pConn = ConnectionPool::getConnectionPool().getConnectionFromPool();
-    string newId;
+    int newId = 0;
     if(nullptr != pConn) {
         try {
-            cout << "start prepareStatement 1" << endl;
             pConn->setSchema(getMatrixDBName());
-            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("CALL insertUserDetail(?, ?)"));
-            unique_ptr<ResultSet> pRes;
+            unique_ptr<PreparedStatement> pStmt(pConn->prepareStatement("INSERT INTO user_detail_table (user_pwd, user_name) VALUES(?, ?)"));
+
             pStmt->setString(1,  userData.getUserPwd());
             pStmt->setString(2, userData.getUserName());
-            if(pStmt->execute())
-            {
-                pRes.reset(pStmt->getResultSet());
-            }
+            pStmt->execute();
+            pStmt.reset(pConn->prepareStatement("SELECT LAST_INSERT_ID() as _userId FROM user_detail_table LIMIT 1,1"));
+            pStmt->execute();
+            unique_ptr<ResultSet> pRes(pStmt->getResultSet());
             while(pRes->next())
             {
-                newId = pRes->getString("_userId");
+                newId = pRes->getInt("_userId");
             }
         }
         catch (SQLException &e) {

@@ -14,10 +14,7 @@ add_library(lib SHARED ${SRCLIST})
 add_executable(CallNumber main.cpp)
 
 include_directories(${Boost_INCLUDE_DIRS})
-set(DEP_LIBS
-        OpenSSL::Crypto OpenSSL::SSL  # modern
-        #${OPENSSL_SSL_LIBRARY} ${OPENSSL_CRYPTO_LIBRARY}  # old style
-        )
+set(DEP_LIBS OpenSSL::Crypto OpenSSL::SSL)
 target_link_libraries(CallNumber  ${Boost_LIBRARIES} lib mysqlcppconn OpenSSL::SSL ${DEP_LIBS})
 
 
